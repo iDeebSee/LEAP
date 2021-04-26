@@ -11,4 +11,6 @@ public class Capability {
     @Id
     @GeneratedValue
     private Long id;
+
+    
 }
