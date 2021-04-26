@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
-import { Avatar } from '@material-ui/core';
+import { Avatar, Button } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -20,6 +20,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
+import { red } from '@material-ui/core/colors';
+import "../styling/Index.css";
 
 // import Chart from './Chart';
 // import Deposits from './Deposits';
@@ -59,7 +61,9 @@ const useStyles = makeStyles((theme) => ({
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
+            
         }),
+        backgroundColor:"#97000C",
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -117,6 +121,7 @@ const useStyles = makeStyles((theme) => ({
     fixedHeight: {
         height: 240,
     },
+    
 }));
 
 export default function Index() {
@@ -133,8 +138,8 @@ export default function Index() {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-                <Toolbar className={classes.toolbar}>
+            <AppBar   position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+                <Toolbar c className={classes.toolbar}>
                     <IconButton
                         edge="start"
                         color="inherit"
@@ -179,6 +184,8 @@ export default function Index() {
                         {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
                             <Paper className={fixedHeightPaper}>
+                            <Button className="AddCap" backgroundColor="red" variant="contained">Add Capability</Button>
+
                                 {/* <Chart /> */}
                             </Paper>
                             {/* </Grid> */}
