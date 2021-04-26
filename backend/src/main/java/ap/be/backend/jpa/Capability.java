@@ -35,6 +35,14 @@ public class Capability {
         this.parent = parent;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -54,15 +62,12 @@ public class Capability {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public Capability getParent() {
         return parent;
     }
 
     public void setParent(Capability parent) {
         this.parent = parent;
+        this.level = parent.getLevel() + 1;
     }
 }
