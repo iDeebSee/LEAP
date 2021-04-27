@@ -21,6 +21,7 @@ import { mainListItems, secondaryListItems } from '../components/AsideItems';
 import Copyright from '../components/Copyright';
 import "../styling/Index.css"
 import SimpleModal from "../components/PopUp"
+import SimpleList from "../components/CapList"
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -163,6 +164,8 @@ export default function Index() {
                         <Grid item xs={12} md={12} lg={12}>
                             <Paper className={fixedHeightPaper}>
                             <SimpleModal title="izan" body="3alal" ></SimpleModal>
+                            <SimpleList></SimpleList>
+
                                 {/* <Chart /> */}
                             </Paper>
                             {/* </Grid> */}
