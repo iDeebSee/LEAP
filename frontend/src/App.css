@@ -39,6 +39,7 @@
 }
 .MuiListItemText-root{
   display: inline-block;
+  vertical-align: bottom;
 }
 
 @keyframes App-logo-spin {
