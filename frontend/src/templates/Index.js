@@ -14,13 +14,14 @@ import { Avatar, Button } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
 import Copyright from '../components/Copyright';
 import "../styling/Index.css"
-import SimpleModal from "../components/PopUp"
+import SimpleModal from "../components/PopUp";
+
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -162,7 +163,7 @@ export default function Index() {
                         {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
                             <Paper className={fixedHeightPaper}>
-                            <SimpleModal title="izan" body="3alal" ></SimpleModal>
+                            <SimpleModal title="izan" body="3alal" name="Add Capability"></SimpleModal>
                                 {/* <Chart /> */}
                             </Paper>
                             {/* </Grid> */}

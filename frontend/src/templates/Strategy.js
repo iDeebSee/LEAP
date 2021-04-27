@@ -20,6 +20,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
+import SimpleModal from '../components/PopUp';
 
 // import Chart from './Chart';
 // import Deposits from './Deposits';
@@ -119,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Index() {
+export default function Strategy() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
@@ -176,10 +177,10 @@ export default function Index() {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                        {/* Chart */}
+                      
                         <Grid item xs={12} md={12} lg={12}>
                             <Paper className={fixedHeightPaper}>
-                                {/* <Chart /> */}
+                                <SimpleModal title="Strategy" body="Add a strategy" name="Add Strategy"></SimpleModal>
                             </Paper>
                             {/* </Grid> */}
                             {/* Recent Deposits */}

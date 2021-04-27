@@ -20,6 +20,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
+import SimpleModal from '../components/PopUp';
 
 // import Chart from './Chart';
 // import Deposits from './Deposits';
@@ -119,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Index() {
+export default function Applications() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
