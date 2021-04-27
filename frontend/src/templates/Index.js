@@ -18,7 +18,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
 import Copyright from '../components/Copyright';
-import "../styling/Index.css"
 import SimpleModal from "../components/PopUp";
 
 
