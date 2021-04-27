@@ -25,27 +25,14 @@ export default function SimpleList() {
 
   return (
     <div className={classes.root}>
-      <List component="nav" aria-label="main mailbox folders">
-        <ListItem button>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary="Inbox" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </ListItem>
-      </List>
-      <Divider />
+      
+      
       <List component="nav" aria-label="secondary mailbox folders">
         <ListItem button>
-          <ListItemText primary="Trash" />
+          <ListItemText primary="capability 1" />
         </ListItem>
         <ListItemLink href="#simple-list">
-          <ListItemText primary="Spam" />
+          <ListItemText primary="capâbility 2" />
         </ListItemLink>
       </List>
     </div>
