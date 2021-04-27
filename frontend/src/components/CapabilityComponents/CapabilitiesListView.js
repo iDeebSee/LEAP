@@ -2,8 +2,19 @@ import React, {Component} from "react";
 import CapabilityService from "../../services/CapabilityService";
 import CapabilityListItem from "./CapabilitiesListItem"
 import { nanoid } from 'nanoid';
+import List from '@material-ui/core/List';
+import { withStyles } from '@material-ui/core/styles';
 
-export default class CapabilitiesListView extends Component {
+
+const styles = theme => ({
+    root: {
+        width: '100%',
+        maxWidth: 360,
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: '5px',
+    },
+});
+class CapabilitiesListView extends Component {
     constructor(props) {
         super(props);
 
@@ -15,18 +26,6 @@ export default class CapabilitiesListView extends Component {
     }
 
     componentDidMount() {
-        let test1 = {"name": "test 1", "description": "this is the 1st test"}, test11 = {"name": "test 1.1", "description": "this is the 1st test child of the 1st test", "parent":test1}
-        CapabilityService.deleteAll().then();
-        CapabilityService.create(test1)
-            .then(res => {
-                console.log(res);
-                console.log("success");
-            });
-            CapabilityService.create(test11)
-            .then(res => {
-                console.log(res);
-                console.log("success");
-            });
         this.getCapabilities();
     }
 
@@ -42,18 +41,20 @@ export default class CapabilitiesListView extends Component {
     }
 
     render() {
-        const {capabilities} = this.state;
+        const {capabilities} = this.state, classes = this.props;
 
         return (
-            <div>
-                <ul>
+            <div className={classes.root}>
+                <List component="ul">
                 {capabilities.map(cap => {
                         return (
                             <CapabilityListItem capability={cap} key={nanoid()}/>
                         )
                     })}
-                </ul>
+                </List>
             </div>
         )
     }
 }
+
+export default withStyles(styles)(CapabilitiesListView)
