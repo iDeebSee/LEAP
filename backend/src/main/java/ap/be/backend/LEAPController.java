@@ -4,8 +4,8 @@ package ap.be.backend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import ap.be.backend.jpa.Capability;
-import ap.be.backend.jpa.CapabilityRepository;
+import ap.be.backend.Repositories.CapabilityRepository;
+import ap.be.backend.models.Capability;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +30,7 @@ public class LEAPController {
     }
 
     @GetMapping("/{id}")
-    public Capability readCapability(@PathVariable("id") Long id) {
+    public Capability readCapability(@PathVariable("id") String id) {
         return capabilityRepository.findById(id).get();
     }
     
@@ -40,7 +40,7 @@ public class LEAPController {
     }
     
     @PutMapping("/{id}")
-    public Capability updateCapability(@PathVariable("id") Long id, @RequestBody Capability newCapability) {
+    public Capability updateCapability(@PathVariable("id") String id, @RequestBody Capability newCapability) {
         return capabilityRepository.findById(id)
             .map(capability -> {
                 capability.setName(newCapability.getName());
@@ -55,7 +55,12 @@ public class LEAPController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCapability(@PathVariable("id") Long id) {
+    public void deleteCapability(@PathVariable("id") String id) {
         capabilityRepository.deleteById(id);
+    }
+
+    @DeleteMapping("/")
+    public void deleteAll() {
+        capabilityRepository.deleteAll();
     }
 }

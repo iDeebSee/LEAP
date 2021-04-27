@@ -1,27 +1,21 @@
-package ap.be.backend.jpa;
+package ap.be.backend.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
 
-@Entity
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "Capabilities")
 public class Capability {
     
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
-    @Column
     private String name;
 
-    @Column
     private String description;
 
-    @Column
     private int level = 1;
 
-    @Column
     private Capability parent = null;
 
     public Capability() {}
@@ -37,11 +31,11 @@ public class Capability {
         this.parent = parent;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
