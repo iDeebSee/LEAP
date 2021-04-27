@@ -24,6 +24,8 @@ public class Capability {
     @Column
     private Capability parent = null;
 
+    public Capability() {}
+
     public Capability(String name, String description) {
         this.name = name;
         this.description = description;

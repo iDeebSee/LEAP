@@ -3,11 +3,11 @@ package ap.be.backend;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
 
 import ap.be.backend.jpa.Capability;
 import ap.be.backend.jpa.CapabilityRepository;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class LEAPController {
-
-    private final String baseURL = "localhost:/3000/"; 
     
     @Autowired
     private CapabilityRepository capabilityRepository;
@@ -36,17 +35,13 @@ public class LEAPController {
     }
     
     @PostMapping("/add")
-    public RedirectView createCapability(@RequestBody Capability capability) {
-        capabilityRepository.save(capability);
-        
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl(baseURL + capability.getId());
-        return redirectView;
+    public Capability createCapability(@RequestBody Capability capability) {
+        return capabilityRepository.save(capability);
     }
     
     @PutMapping("/{id}")
-    public RedirectView updateCapability(@PathVariable("id") Long id, @RequestBody Capability newCapability) {
-        capabilityRepository.findById(id)
+    public Capability updateCapability(@PathVariable("id") Long id, @RequestBody Capability newCapability) {
+        return capabilityRepository.findById(id)
             .map(capability -> {
                 capability.setName(newCapability.getName());
                 capability.setDescription(newCapability.getDescription());
@@ -57,17 +52,10 @@ public class LEAPController {
                 newCapability.setId(id);
                 return capabilityRepository.save(newCapability);
             });
-            RedirectView redirectView = new RedirectView();
-            redirectView.setUrl(baseURL + id);
-            return redirectView;
     }
 
     @DeleteMapping("/{id}")
-    public RedirectView deleteCapability(@PathVariable("id") Long id) {
+    public void deleteCapability(@PathVariable("id") Long id) {
         capabilityRepository.deleteById(id);
-
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl(baseURL);
-        return redirectView;
     }
 }
