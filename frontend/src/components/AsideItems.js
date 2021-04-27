@@ -6,26 +6,34 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import TimelineIcon from '@material-ui/icons/Timeline';
+import {Link} from 'react-router-dom';
 
 export const mainListItems = (
     <div>
         <ListItem button>
-            <ListItemIcon>
-                <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
+            <Link to="/" style={{'text-decorations': 'none'}}>
+                <ListItemIcon>
+                    <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Dashboard" />
+            </Link>
         </ListItem>
         <ListItem button>
-            <ListItemIcon>
-                <BarChartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Reports" />
+            <Link to="/strategy">
+                <ListItemIcon>
+                    <TimelineIcon />
+                </ListItemIcon>
+                <ListItemText primary="Strategy" path="strategy"/>
+            </Link>
         </ListItem>
         <ListItem button>
-            <ListItemIcon>
-                <LayersIcon />
-            </ListItemIcon>
-            <ListItemText primary="Integrations" />
+            <Link to="/applications">
+                <ListItemIcon>
+                    <LayersIcon />
+                </ListItemIcon>
+                <ListItemText primary="Applications" />
+            </Link>
         </ListItem>
     </div>
 );
