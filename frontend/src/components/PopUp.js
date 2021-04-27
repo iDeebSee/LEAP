@@ -55,7 +55,7 @@ export default function SimpleModal(props) {
     <div>
       
       
-      <Button className="AddCap" onClick={handleOpen} variant="contained">Add Capability</Button>
+      <Button className="AddCap" onClick={handleOpen} variant="contained">{props.name}</Button>
 
       <Modal
         open={open}

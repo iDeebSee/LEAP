@@ -118,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Strategy() {
+export default function Applications() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
@@ -175,10 +175,10 @@ export default function Strategy() {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                      
+                        {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
                             <Paper className={fixedHeightPaper}>
-                                <SimpleModal title="Strategy" body="Add a strategy" name="Add Strategy"></SimpleModal>
+                                {/* <Chart /> */}
                             </Paper>
                             {/* </Grid> */}
                             {/* Recent Deposits */}
