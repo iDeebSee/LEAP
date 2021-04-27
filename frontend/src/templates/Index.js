@@ -184,7 +184,7 @@ export default function Index() {
                         {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
                             <Paper className={fixedHeightPaper}>
-                            <Button className="AddCap" backgroundColor="red" variant="contained">Add Capability</Button>
+                            <Button className="AddCap"  variant="contained">Add Capability</Button>
 
                                 {/* <Chart /> */}
                             </Paper>
