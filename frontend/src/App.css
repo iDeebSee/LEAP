@@ -27,6 +27,20 @@
 .App-link {
   color: #61dafb;
 }
+.AddCap {
+  background-color: red;
+  
+}
+.MuiList-root a{
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  display: inline-block;
+}
+.MuiListItemText-root{
+  display: inline-block;
+  vertical-align: bottom;
+}
 
 @keyframes App-logo-spin {
   from {
