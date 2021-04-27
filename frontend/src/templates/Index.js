@@ -20,6 +20,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
 import Copyright from '../components/Copyright';
 import "../styling/Index.css"
+import SimpleModal from "../components/PopUp"
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -161,8 +162,7 @@ export default function Index() {
                         {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
                             <Paper className={fixedHeightPaper}>
-                            <Button className="AddCap"  variant="contained">Add Capability</Button>
-
+                            <SimpleModal title="izan" body="3alal" ></SimpleModal>
                                 {/* <Chart /> */}
                             </Paper>
                             {/* </Grid> */}
