@@ -5,6 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
 import CapabilitiesListView from '../components/CapabilityComponents/CapabilitiesListView';
+import SimpleModal from '../components/PopUp'
 
 import { 
     CssBaseline,

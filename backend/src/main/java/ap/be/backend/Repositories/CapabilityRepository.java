@@ -7,5 +7,6 @@ import ap.be.backend.models.Capability;
 
 @Repository
 public interface CapabilityRepository extends MongoRepository<Capability, String>{
-    
+    public Capability findByName(String name); 
+    public void deleteByName(String name);
 }

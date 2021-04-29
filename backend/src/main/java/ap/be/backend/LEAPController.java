@@ -29,9 +29,9 @@ public class LEAPController {
         return capabilityRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Capability readCapability(@PathVariable("id") String id) {
-        return capabilityRepository.findById(id).get();
+    @GetMapping("/{name}")
+    public Capability readCapability(@PathVariable("name") String name) {
+        return capabilityRepository.findByName(name);
     }
     
     @PostMapping("/add")
@@ -39,24 +39,18 @@ public class LEAPController {
         return capabilityRepository.save(capability);
     }
     
-    @PutMapping("/{id}")
-    public Capability updateCapability(@PathVariable("id") String id, @RequestBody Capability newCapability) {
-        return capabilityRepository.findById(id)
-            .map(capability -> {
+    @PutMapping("/{name}")
+    public Capability updateCapability(@PathVariable("name") String name, @RequestBody Capability newCapability) {
+        Capability capability = capabilityRepository.findByName(name);
                 capability.setName(newCapability.getName());
                 capability.setDescription(newCapability.getDescription());
                 capability.setParent(newCapability.getParent());
                 return capabilityRepository.save(capability);
-            })
-            .orElseGet(() -> {
-                newCapability.setId(id);
-                return capabilityRepository.save(newCapability);
-            });
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteCapability(@PathVariable("id") String id) {
-        capabilityRepository.deleteById(id);
+    @DeleteMapping("/{name}")
+    public void deleteCapability(@PathVariable("name") String name) {
+        capabilityRepository.deleteByName(name);
     }
 
     @DeleteMapping("/")
