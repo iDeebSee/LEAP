@@ -7,22 +7,18 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect
 } from "react-router-dom";
 
 function App() {
   return (
-    <Router>
+    <Router basename="/Leap">
       <Switch>
-        <Route exact path="/">
-          <Index />
-        </Route>
-        <Route path="/applications">
-          <Applications />
-        </Route>
-        <Route path="/strategy">
-          <Strategy />
-        </Route>
-        <Route component={Index} />
+        <Route exact path="/" render={() => <Redirect to={{pathname: "/home"}}/>}/>
+        <Route exact path="/home" component={Index}/>
+        <Route exact path="/applications" component={Applications}/>
+        <Route exact path="/strategy" component={Strategy}/>
+        <Route render={() => <Redirect to={{pathname: "/home"}} />} />
       </Switch>
     </Router>
   );
