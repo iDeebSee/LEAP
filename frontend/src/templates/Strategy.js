@@ -178,8 +178,10 @@ export default function Strategy() {
                       
                         <Grid item xs={12} md={12} lg={12}>
                             <Paper className={fixedHeightPaper}>
-                                <SimpleModal title="Strategy" body="Add a strategy" name="Add Strategy"></SimpleModal>
+                                <SimpleModal title="Name your strategy" body="Add a strategy" name="Add Strategy"></SimpleModal>
+                                
                             </Paper>
+                            
                             {/* </Grid> */}
                             {/* Recent Deposits */}
                             {/* <Grid item xs={12} md={4} lg={3}> */}
@@ -192,6 +194,7 @@ export default function Strategy() {
                             {/* <Paper className={classes.paper}> */}
                             {/* <Orders /> */}
                             {/* </Paper> */}
+                            
                         </Grid>
                     </Grid>
                     <Box pt={4}>
