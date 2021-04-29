@@ -18,7 +18,7 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
-import SimplePaper from '../components/LegendePaper'
+
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -172,15 +172,10 @@ export default function Applications() {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
                         {/* Chart */}
-                        
                         <Grid item xs={12} md={12} lg={12}>
-                        <SimplePaper></SimplePaper>
-
-                
                             <Paper className={fixedHeightPaper}>
                                 {/* <Chart /> */}
                             </Paper>
