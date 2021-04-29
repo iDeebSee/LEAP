@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
-import CapabilitiesListView from '../components/CapabilityComponents/CapabilitiesListView';
+import CapabilitiesCardList from '../components/CapabilityComponents/CapabilitiesCardList';
 import SimpleModal from '../components/PopUp'
 
 import { 
@@ -181,7 +181,7 @@ export default function Index() {
                     <Grid container spacing={3}>
                         {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
-                            <CapabilitiesListView/>
+                            <CapabilitiesCardList/>
                             <Paper className={fixedHeightPaper}>
                             <SimpleModal title="izan" body="3alal" name="Add Capability"></SimpleModal>
                                 {/* <Chart /> */}

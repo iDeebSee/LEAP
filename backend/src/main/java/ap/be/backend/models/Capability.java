@@ -20,12 +20,21 @@ public class Capability {
 
     public Capability() {}
 
+    /**
+     * @param name
+     * @param description
+     */
     public Capability(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public Capability(String name, String description, Capability parent) {
+    /**
+     * @param name
+     * @param description
+     * @param parent
+     */
+    public Capability(String name, String description, Capability parent) throws IllegalArgumentException {
         this(name, description);
         this.level = parent.getLevel() + 1;
         this.parent = parent;
@@ -65,5 +74,17 @@ public class Capability {
     public void setParent(Capability parent) {
         this.parent = parent;
         this.level = parent.getLevel() + 1;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("\n\nCapability:{ \nname=").append(this.name)
+        .append(", \ndescription=").append(this.description)
+        .append(", \nlevel=").append(this.level)
+        .append(", \nparent=").append(this.parent)
+        .append("}\n");
+        return builder.toString();
     }
 }
