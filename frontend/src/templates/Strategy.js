@@ -14,28 +14,11 @@ import { Avatar } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
 import SimpleModal from '../components/PopUp';
-
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://www.ap.be/">
-                AP Hogeschool
-      </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import Copyright from "../components/Copyright";
 
 const drawerWidth = 240;
 
@@ -176,13 +159,13 @@ export default function Strategy() {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                      
+
                         <Grid item xs={12} md={12} lg={12}>
                             <Paper className={fixedHeightPaper}>
                                 <SimpleModal title="Name your strategy" body="Add a strategy" name="Add Strategy"></SimpleModal>
-                                
+
                             </Paper>
-                            
+
                             {/* </Grid> */}
                             {/* Recent Deposits */}
                             {/* <Grid item xs={12} md={4} lg={3}> */}
@@ -195,7 +178,7 @@ export default function Strategy() {
                             {/* <Paper className={classes.paper}> */}
                             {/* <Orders /> */}
                             {/* </Paper> */}
-                            
+
                         </Grid>
                     </Grid>
                     <Box pt={4}>
