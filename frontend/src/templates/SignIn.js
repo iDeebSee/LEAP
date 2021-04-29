@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from '../components/Copyright'
+import {FormControlLabel, Checkbox} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
