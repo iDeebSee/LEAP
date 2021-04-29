@@ -55,7 +55,7 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Forgot Password
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
@@ -64,15 +64,16 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
+                id="2FA"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
               />
-            </Grid>  
+            </Grid>
+            
           </Grid>
-
-          <Link href="/2FA">
+         
+          <Link href="/signIn">
           <Button
             //type="submit" 
             fullWidth
@@ -80,19 +81,9 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            Send Email
+            Get New Password
           </Button>
           </Link>
-    
-          
-          
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/signIn" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={5}>
