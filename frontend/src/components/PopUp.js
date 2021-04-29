@@ -45,12 +45,6 @@ export default function SimpleModal(props) {
     setOpen(false);
   };
 
-  const addCapability = () => {
-    console.log("Button clicked, cap added");
-    // return <MessageBox message={props.message}></MessageBox>
-    this.handleClose();
-  }
-
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <h2 id="simple-modal-title">{props.title}</h2>
@@ -63,7 +57,6 @@ export default function SimpleModal(props) {
       <ResourceDropDown></ResourceDropDown>
       <BPDropDown></BPDropDown>
       <Button variant="contained" onClick={handleClose}>Add</Button>
-      {/* <MessageBox message={props.message} variant="contained"></MessageBox> */}
 
     </div>
   );

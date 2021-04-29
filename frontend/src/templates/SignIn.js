@@ -12,19 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
-function Copyright() {
-  return (
-      <Typography variant="body2" color="textSecondary" align="center">
-          {'Copyright © '}
-          <Link color="inherit" href="https://material-ui.com/">
-              AP Hogeschool
-    </Link>{' '}
-          {new Date().getFullYear()}
-          {'.'}
-      </Typography>
-  );
-}
+import Copyright from '../components/Copyright'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -53,10 +41,10 @@ export default function SignIn() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-      <Avatar className={classes.avatar}>
+        <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-      
+
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
@@ -87,16 +75,16 @@ export default function SignIn() {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-          
+
           <Link href="/">
-          <Button
-            //type="submit" 
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
+            <Button
+              //type="submit" 
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign In
           </Button>
           </Link>
 
@@ -115,8 +103,8 @@ export default function SignIn() {
         </form>
       </div>
       <Box pt={4}>
-                        <Copyright />
-                    </Box>
+        <Copyright />
+      </Box>
     </Container>
   );
 }

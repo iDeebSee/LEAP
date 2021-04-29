@@ -6,8 +6,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
 import CapabilitiesListView from '../components/CapabilityComponents/CapabilitiesListView';
 import SimpleModal from '../components/PopUp'
+import Copyright from "../components/Copyright";
 
-import { 
+import {
     CssBaseline,
     Drawer,
     Box,
@@ -27,19 +28,6 @@ import {
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-        <Link color="inherit" href="https://material-ui.com/">
-                AP Hogeschool
-        </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 const drawerWidth = 240;
 
@@ -181,7 +169,7 @@ export default function Index() {
                     <Grid container spacing={3}>
                         {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
-                            <CapabilitiesListView/>
+                            <CapabilitiesListView />
                             <Paper className={fixedHeightPaper}>
                                 <SimpleModal title="Add a capability" body="" name="Capability" message="Capability has been added!"></SimpleModal>
                                 {/* <Chart /> */}
