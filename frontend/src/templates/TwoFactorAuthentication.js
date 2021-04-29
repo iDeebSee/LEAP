@@ -21,6 +21,7 @@ function Copyright() {
             {new Date().getFullYear()}
             {'.'}
         </Typography>
+        
     );
 }
 
@@ -55,7 +56,7 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Two Factor Authentication
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
@@ -64,15 +65,16 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
+                id="2FA"
+                label="Enter 2FA code"
                 name="email"
                 autoComplete="email"
               />
-            </Grid>  
+            </Grid>
+            
           </Grid>
-
-          <Link href="/2FA">
+         
+          <Link href="/">
           <Button
             //type="submit" 
             fullWidth
@@ -80,19 +82,9 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            Send Email
+            Sign Up
           </Button>
           </Link>
-    
-          
-          
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/signIn" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={5}>
