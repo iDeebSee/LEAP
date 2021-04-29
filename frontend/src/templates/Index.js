@@ -162,7 +162,7 @@ export default function Index() {
                         {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
                             <Paper className={fixedHeightPaper}>
-                            <SimpleModal title="izan" body="3alal" name="Add Capability"></SimpleModal>
+                                <SimpleModal title="Add a capability" body="" name="Capability" message="Capability has been added!"></SimpleModal>
                                 {/* <Chart /> */}
                             </Paper>
                             {/* </Grid> */}
