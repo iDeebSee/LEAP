@@ -144,6 +144,7 @@ export default function Index() {
                         </Badge> */}
                         <Avatar alt="Profile icon" src="" className={classes.large} />
                     </IconButton>
+                    John Doe
                 </Toolbar>
             </AppBar>
             <Drawer

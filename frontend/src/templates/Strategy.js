@@ -135,6 +135,7 @@ export default function Strategy() {
                         </Badge> */}
                         <Avatar alt="Profile icon" src="" className={classes.large} />
                     </IconButton>
+                    John Doe
                 </Toolbar>
             </AppBar>
             <Drawer
