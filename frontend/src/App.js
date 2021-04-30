@@ -7,6 +7,7 @@ import SignIn from "./templates/SignIn.js"
 import SignUp from "./templates/SignUp.js"
 import TwoFactorAuthentication from "./templates/TwoFactorAuthentication.js"
 import Password from "./templates/ForgotPassword.js"
+import Admin from "./templates/Admin"
 
 import {
   BrowserRouter as Router,
@@ -16,6 +17,7 @@ import {
 
 function App() {
   return (
+    
     <Router>
       <Switch>
         <Route exact path="/">
@@ -26,6 +28,9 @@ function App() {
         </Route>
         <Route path="/strategy">
           <Strategy />
+        </Route>
+        <Route path="/admin">
+          <Admin />
         </Route>
         <Route path="/signIn">
           <SignIn />
