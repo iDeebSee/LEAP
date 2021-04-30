@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
-import CapabilitiesListView from '../components/CapabilityComponents/CapabilitiesListView';
 import SimpleModal from '../components/PopUp'
 import Copyright from "../components/Copyright";
 import InteractiveList from "../components/UserList"
@@ -23,7 +22,6 @@ import {
     Container,
     Grid,
     Paper,
-    Link
 } from '@material-ui/core';
 
 
@@ -164,7 +162,6 @@ export default function Index() {
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={12} lg={12}>
-                            <CapabilitiesListView />
 
                             <Paper className={fixedHeightPaper}>
                             <SimpleModal title="Add a user" body="" name="user" message="user has been added!"></SimpleModal>

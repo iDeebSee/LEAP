@@ -40,13 +40,11 @@ export const mainListItems = (
 export const secondaryListItems = (
     <div>
         {/* <ListSubheader inset>Saved reports</ListSubheader> */}
-        <ListItem button>
-        <Link to="/SignIn">
+        <ListItem button component={Link} to="/SignIn">
             <ListItemIcon>
                 <ExitToAppIcon />
             </ListItemIcon>
             <ListItemText primary="Log out" />
-        </Link>
         </ListItem>
     </div>
 );

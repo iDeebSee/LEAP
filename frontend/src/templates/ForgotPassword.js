@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function ForgotPassword() {
   const classes = useStyles();
 
   return (
