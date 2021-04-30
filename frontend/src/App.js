@@ -44,6 +44,9 @@ function App() {
         <Route path="/password">
           <Password />
         </Route>
+        <Route path="/profile">
+          <User />
+        </Route>
         <Route component={Index} />
       </Switch>
     </Router>
