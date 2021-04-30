@@ -6,8 +6,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
 import CapabilitiesListView from '../components/CapabilityComponents/CapabilitiesListView';
 import SimpleModal from '../components/PopUp'
+import Copyright from "../components/Copyright";
 
-import { 
+import {
     CssBaseline,
     Drawer,
     Box,
@@ -24,22 +25,6 @@ import {
     Link
 } from '@material-ui/core';
 
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-        <Link color="inherit" href="https://material-ui.com/">
-                AP Hogeschool
-        </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 const drawerWidth = 240;
 
@@ -151,11 +136,9 @@ export default function Index() {
                         Dashboard
                     </Typography>
                     <IconButton color="inherit">
-                        {/* <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge> */}
                         <Avatar alt="Profile icon" src="" className={classes.large} />
                     </IconButton>
+                    John Doe
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -179,25 +162,11 @@ export default function Index() {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                        {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
-                            <CapabilitiesListView/>
+                            <CapabilitiesListView />
                             <Paper className={fixedHeightPaper}>
-                            <SimpleModal title="izan" body="3alal" name="Add Capability"></SimpleModal>
-                                {/* <Chart /> */}
+                                <SimpleModal title="Add a capability" body="" name="Capability" message="Capability has been added!"></SimpleModal>
                             </Paper>
-                            {/* </Grid> */}
-                            {/* Recent Deposits */}
-                            {/* <Grid item xs={12} md={4} lg={3}> */}
-                            {/* <Paper className={fixedHeightPaper}> */}
-                            {/* <Deposits /> */}
-                            {/* </Paper> */}
-                            {/* </Grid> */}
-                            {/* Recent Orders */}
-                            {/* <Grid item xs={12}> */}
-                            {/* <Paper className={classes.paper}> */}
-                            {/* <Orders /> */}
-                            {/* </Paper> */}
                         </Grid>
                     </Grid>
                     <Box pt={4}>
