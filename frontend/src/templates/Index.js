@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
 export default function Index() {
     const classes = useStyles();
 
