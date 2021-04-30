@@ -8,7 +8,7 @@ export default function Copyright() {
             {'Copyright © '}
             <Link color="inherit" href="https://ap.be/">
                 AP Hogeschool
-        </Link>{' '}
+      </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>

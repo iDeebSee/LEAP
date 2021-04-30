@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Modal, Button } from '@material-ui/core';
-import InputTextField from './RequiredInputField';
-import { StrategyDropDown, ResourceDropDown, BPDropDown } from './DropDown';
+import {Modal, Button} from '@material-ui/core';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -30,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function SimpleModal(props) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
@@ -48,22 +45,18 @@ export default function SimpleModal(props) {
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <h2 id="simple-modal-title">{props.title}</h2>
-
       <p id="simple-modal-description">
         {props.body}
       </p>
-      <InputTextField></InputTextField>
-      <StrategyDropDown></StrategyDropDown>
-      <ResourceDropDown></ResourceDropDown>
-      <BPDropDown></BPDropDown>
-      <Button variant="contained" onClick={handleClose}>Add</Button>
-
     </div>
   );
 
   return (
     <div>
-      <Button className="AddCap" onClick={handleOpen} variant="contained">Add {props.name}</Button>
+      
+      
+      <Button className="AddCap" onClick={handleOpen} variant="contained">{props.name}</Button>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -73,6 +66,5 @@ export default function SimpleModal(props) {
         {body}
       </Modal>
     </div>
-    
   );
 }
