@@ -20,7 +20,7 @@ import {
 export default function Routes() {
     return (
         <Switch>
-            <Route exact path="/" render={() => <Redirect to={{pathname: "/home"}}/>}/>
+            
             <Route exact path="/home" component={Index}/>
             <Route exact path="/capabilities" component={CapabilityCardList}/>
             <Route exact path="/capabilities/:name" component={CapabilityDetailView}/>
@@ -32,6 +32,7 @@ export default function Routes() {
             <Route exact path="/signUp" component={SignUp}/>
             <Route exact path="/2FA" component={TwoFactorAuthentication}/>
             <Route exact path="/password" component={ForgotPassword}/>
+            <Route exact path="/" render={() => <Redirect to={{pathname: "/home"}}/>}/>
             <Route render={() => <Redirect to={{pathname: "/home"}} />} />
         </Switch>
     );
