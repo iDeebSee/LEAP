@@ -22,6 +22,10 @@ export default function Routes() {
             <Route exact path="/strategy" component={Strategy}/>
             <Route exact path="/profile" /*component={User}*//>
             <Route exact path="/admin" /*component={Admin}*//>
+            <Route exact path="/signIn" /*component={SignIn}*//>
+            <Route exact path="/signUp" /*component={SignUp}*//>
+            <Route exact path="/2FA" /*component={TwoFactorAuthentication}*//>
+            <Route exact path="/password" /*component={Password}*//>
             <Route render={() => <Redirect to={{pathname: "/home"}} />} />
         </Switch>
     );
