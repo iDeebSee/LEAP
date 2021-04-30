@@ -4,12 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
-import CapabilitiesListView from '../components/CapabilityComponents/CapabilitiesListView';
-import SimpleModal from '../components/PopUp'
 import Copyright from "../components/Copyright";
-import User from './User';
-import { Link } from 'react-router-dom';
-
 
 import {
     CssBaseline,
@@ -24,7 +19,8 @@ import {
     Avatar,
     Container,
     Grid,
-    Paper
+    Paper,
+    Link
 } from '@material-ui/core';
 
 
@@ -109,8 +105,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-export default function Index() {
+export default function User() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
@@ -138,12 +133,10 @@ export default function Index() {
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                         Dashboard
                     </Typography>
-                    <Link to="/profile" style={{ 'text-decoration': 'none', 'color': 'inherit' }}>
-                        <IconButton color="inherit">
-                            <Avatar alt="Profile icon" src="" className={classes.large} />
-                        </IconButton>
+                    <IconButton color="inherit">
+                        <Avatar alt="Profile icon" src="" className={classes.large} />
+                    </IconButton>
                     John Doe
-                    </Link>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -168,9 +161,9 @@ export default function Index() {
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={12} lg={12}>
-                            <CapabilitiesListView />
+                            
                             <Paper className={fixedHeightPaper}>
-                                <SimpleModal title="Add a capability" body="" name="Capability" message="Capability has been added!"></SimpleModal>
+                                
                             </Paper>
                         </Grid>
                     </Grid>
