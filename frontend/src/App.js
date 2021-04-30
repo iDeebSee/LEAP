@@ -7,6 +7,7 @@ import SignIn from "./templates/SignIn.js"
 import SignUp from "./templates/SignUp.js"
 import TwoFactorAuthentication from "./templates/TwoFactorAuthentication.js"
 import Password from "./templates/ForgotPassword.js"
+import User from "./templates/User.js"
 
 import {
   BrowserRouter as Router,
@@ -38,6 +39,9 @@ function App() {
         </Route>
         <Route path="/password">
           <Password />
+        </Route>
+        <Route path="/profile">
+          <User />
         </Route>
         <Route component={Index} />
       </Switch>
