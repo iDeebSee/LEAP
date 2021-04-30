@@ -25,9 +25,6 @@ import {
     Link
 } from '@material-ui/core';
 
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
 
 const drawerWidth = 240;
 
@@ -139,9 +136,6 @@ export default function Index() {
                         Dashboard
                     </Typography>
                     <IconButton color="inherit">
-                        {/* <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge> */}
                         <Avatar alt="Profile icon" src="" className={classes.large} />
                     </IconButton>
                     John Doe
@@ -168,25 +162,11 @@ export default function Index() {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                        {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
                             <CapabilitiesListView />
                             <Paper className={fixedHeightPaper}>
                                 <SimpleModal title="Add a capability" body="" name="Capability" message="Capability has been added!"></SimpleModal>
-                                {/* <Chart /> */}
                             </Paper>
-                            {/* </Grid> */}
-                            {/* Recent Deposits */}
-                            {/* <Grid item xs={12} md={4} lg={3}> */}
-                            {/* <Paper className={fixedHeightPaper}> */}
-                            {/* <Deposits /> */}
-                            {/* </Paper> */}
-                            {/* </Grid> */}
-                            {/* Recent Orders */}
-                            {/* <Grid item xs={12}> */}
-                            {/* <Paper className={classes.paper}> */}
-                            {/* <Orders /> */}
-                            {/* </Paper> */}
                         </Grid>
                     </Grid>
                     <Box pt={4}>
