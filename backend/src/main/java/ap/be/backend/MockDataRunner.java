@@ -32,7 +32,7 @@ public class MockDataRunner implements CommandLineRunner {
         capability12 = new Capability("test 1.2", "this is the 2nd child of the 1st test capability", capability1),
         capability111 = new Capability("test 1.1.1", "this is the 1st child of the 1st child of the 1st test capability", capability11),
         capability112 = new Capability("test 1.1.2", "this is the 2nd child of the 1st child of the 1st test capability", capability11),
-        capability113 = new Capability("test 1.1.2", "this is the 3rd child of the 1st child of the 1st test capability", capability11);
+        capability113 = new Capability("test 1.1.3", "this is the 3rd child of the 1st child of the 1st test capability", capability11);
 
         capabilityRepository.save(capability1);
         capabilityRepository.save(capability2);

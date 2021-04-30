@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import {
     Card,
@@ -7,14 +7,13 @@ import {
     ButtonGroup,
     Button,
     Grid,
-    makeStyles,
+    withStyles,
     Typography
 } from '@material-ui/core';
 import { nanoid } from 'nanoid';
 import Lvl3CapabilityCard from "./Lvl3CapabilityCard";
-import CapabilityService from "../../services/CapabilityService";
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
     root: {
         flexGrow: 1,
         '&:hover': {
@@ -32,40 +31,58 @@ const useStyles = makeStyles((theme) => ({
     buttonGroup: {
         display: 'none',
     },
-}));
+});
 
-const Lvl2CapabilityCard = (props) => {
-    const classes = useStyles(), { capability, children } = props.data;
+class Lvl2CapabilityCard extends Component {
+    constructor(props) {
+        super(props);
 
-    let Lvl3CardGrid;
-    if(children.length > 0) {
-        Lvl3CardGrid =
-        <Grid container spacing={2}>
-            {
-                children.map(lvl3Cap => {
-                    return (
-                        <Lvl3CapabilityCard key={nanoid()} data={lvl3Cap}/>
-                    )
-                })
-            }
-        </Grid>
+        this.handleDelete = this.handleDelete.bind(this);
+
+        this.state = {
+            capability: this.props.data.capability,
+            children: this.props.data.children,
+        }
     }
-    return(
-        <Grid item xs>
-            <Card className={classes.root}>
-                <CardContent>
-                    <Typography className={classes.title} color="textSecondary" gutterBottom>{capability.name}</Typography>
-                    {Lvl3CardGrid}
-                </CardContent>
-                <CardActions>
-                    <ButtonGroup color="primary" className={classes.buttonGroup}>
-                        <Button component={Link} to={`/view/${capability.name}`} className={classes.button}>View</Button>
-                        <Button className={classes.button} onClick={() => {CapabilityService.delete(capability.name)}}>Delete</Button>
-                    </ButtonGroup>
-                </CardActions>
-            </Card>
-        </Grid>
-    );
+
+    handleDelete(capability) {
+        this.setState({capability: {}, children: []});
+        this.props.handleDelete(capability);
+    }
+
+    render() {
+        const { classes } = this.props, { capability, children } = this.state;
+
+        let Lvl3CardGrid;
+        if(children.length > 0) {
+            Lvl3CardGrid =
+            <Grid container spacing={2}>
+                {
+                    children.map(lvl3Cap => {
+                        return (
+                            <Lvl3CapabilityCard key={nanoid()} data={lvl3Cap} handleDelete={this.handleDelete}/>
+                        )
+                    })
+                }
+            </Grid>
+        }
+        return(
+            <Grid item xs>
+                <Card className={classes.root}>
+                    <CardContent>
+                        <Typography className={classes.title} color="textSecondary" gutterBottom>{capability.name}</Typography>
+                        {Lvl3CardGrid}
+                    </CardContent>
+                    <CardActions>
+                        <ButtonGroup color="primary" className={classes.buttonGroup}>
+                            <Button component={Link} to={`/view/${capability.name}`} className={classes.button}>View</Button>
+                            <Button className={classes.button} onClick={() => this.handleDelete(capability.name)}>Delete</Button>
+                        </ButtonGroup>
+                    </CardActions>
+                </Card>
+            </Grid>
+        );
+    }
 }
 
-export default Lvl2CapabilityCard;
+export default withStyles(styles)(Lvl2CapabilityCard);

@@ -27,44 +27,59 @@ class CapabilitiesCardList extends Component {
 
         this.getCapabilities = this.getCapabilities.bind(this);
         this.getCapabilityChildren = this.getCapabilityChildren.bind(this);
+        this.sortCapabilities = this.sortCapabilities.bind(this);
+        this.onCardDelete = this.onCardDelete.bind(this);
 
         this.state = {
+            capabilities: [],
             lvl1Capabilities: [],
             lvl2Capabilities: [],
-            lvl3Capabilities: []
+            lvl3Capabilities: [],
         };
     }
 
     componentDidMount() {
         this.getCapabilities();
+
     }
 
     getCapabilities() {
         CapabilityService.getAll()
             .then(res => {
-                let lvl1Capabilities = [], lvl2Capabilities = [], lvl3Capabilities = [];
-                res.data.forEach(capability => {
-                    
-                    switch(capability.level) {
-                        case 1: 
-                            lvl1Capabilities.push(capability);
-                            break;
-                        case 2:
-                            lvl2Capabilities.push(capability);
-                            break;
-                        case 3:
-                            lvl3Capabilities.push(capability);
-                            break;
-                        default:
-                        break;
-                    }
-                });
-                this.setState({lvl1Capabilities: lvl1Capabilities, lvl2Capabilities: lvl2Capabilities, lvl3Capabilities: lvl3Capabilities})
-                console.log("incoming capabilities", res.data)
+                this.setState({capabilities: res.data});
+                console.log("incoming capabilities", res.data);
+                this.sortCapabilities();
             })
             .catch(e => {
                 console.log(e);
             });
+    }
+
+    sortCapabilities() {
+        let lvl1Capabilities = [], lvl2Capabilities = [], lvl3Capabilities = [];
+        this.state.capabilities.forEach(capability => {       
+            switch(capability.level) {
+                case 1: 
+                    lvl1Capabilities.push(capability);
+                    break;
+                case 2:
+                    lvl2Capabilities.push(capability);
+                    break;
+                case 3:
+                    lvl3Capabilities.push(capability);
+                    break;
+                default:
+                break;
+                }
+            });
+        this.setState({lvl1Capabilities: lvl1Capabilities, lvl2Capabilities: lvl2Capabilities, lvl3Capabilities: lvl3Capabilities})
+    }
+
+    onCardDelete(capabilityName) {
+        CapabilityService.delete(capabilityName)
+        .then(() => {
+            this.getCapabilities();
+        });
     }
 
     getCapabilityChildren(capability) {
@@ -88,12 +103,11 @@ class CapabilitiesCardList extends Component {
 
     render() {
         const { lvl1Capabilities } = this.state;
-
         return(
             <Grid container spacing={3}>
                 {lvl1Capabilities.map(lvl1cap => {
                     return(
-                        <Lvl1CapabilityCard key={nanoid()} data={this.getCapabilityChildren(lvl1cap)}/>
+                        <Lvl1CapabilityCard key={nanoid()} data={this.getCapabilityChildren(lvl1cap)} handleDelete={this.onCardDelete}/>
                     )
                 })}
             </Grid>

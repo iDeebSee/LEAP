@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import {
     Card,
@@ -7,12 +7,11 @@ import {
     ButtonGroup,
     Button,
     Grid,
-    makeStyles,
+    withStyles,
     Typography
 } from '@material-ui/core';
-import CapabilityService from "../../services/CapabilityService";
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
     root: {
         flexGrow: 1,
         '&:hover': {
@@ -31,26 +30,43 @@ const useStyles = makeStyles((theme) => ({
     buttonGroup: {
         display: 'none',
     },
-}));
+});
 
-const Lvl3CapabilityCard = (props) => {
-    const classes = useStyles(), capability = props.data;
+class Lvl3CapabilityCard extends Component {
+    constructor(props) {
+        super(props);
 
-    return(
-        <Grid item xs>
-            <Card className={classes.root}>
-                <CardContent>
-                    <Typography className={classes.title} color="textSecondary" gutterBottom>{capability.name}</Typography>
-                </CardContent>
-                <CardActions>
-                    <ButtonGroup color="primary" className={classes.buttonGroup}>
-                        <Button component={Link} to={`/view/${capability.name}`} className={classes.button}>View</Button>
-                        <Button className={classes.button} onClick={() => {CapabilityService.delete(capability.name)}}>Delete</Button>
-                    </ButtonGroup>
-                </CardActions>
-            </Card>
-        </Grid>
-    );
+        this.handleDelete = this.handleDelete.bind(this);
+
+        this.state = {
+            capability: this.props.data
+        };
+    }
+
+    handleDelete(capability) {
+        this.setState({capability: {}});
+        this.props.handleDelete(capability);
+    }
+
+    render() {
+        const { classes } = this.props, { capability } = this.state;
+
+        return(
+            <Grid item xs>
+                <Card className={classes.root}>
+                    <CardContent>
+                        <Typography className={classes.title} color="textSecondary" gutterBottom>{capability.name}</Typography>
+                    </CardContent>
+                    <CardActions>
+                        <ButtonGroup color="primary" className={classes.buttonGroup}>
+                            <Button component={Link} to={`/view/${capability.name}`} className={classes.button}>View</Button>
+                            <Button className={classes.button} onClick={() => {this.handleDelete(capability.name)}}>Delete</Button>
+                        </ButtonGroup>
+                    </CardActions>
+                </Card>
+            </Grid>
+        );
+    }
 }
 
-export default Lvl3CapabilityCard;
+export default withStyles(styles)(Lvl3CapabilityCard);

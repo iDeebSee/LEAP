@@ -10,29 +10,29 @@ import {Link} from 'react-router-dom';
 
 export const mainListItems = (
     <div>
-        <ListItem button>
-            <Link to="/" style={{'text-decorations': 'none'}}>
-                <ListItemIcon>
-                    <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Dashboard" />
-            </Link>
+        <ListItem button component={Link} to="/home">
+            <ListItemIcon>
+                <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
         </ListItem>
-        <ListItem button>
-            <Link to="/strategy">
-                <ListItemIcon>
-                    <TimelineIcon />
-                </ListItemIcon>
-                <ListItemText primary="Strategy" path="strategy"/>
-            </Link>
+        <ListItem button component={Link} to="/capabilities"> 
+            <ListItemIcon>
+                <LayersIcon />
+            </ListItemIcon>
+            <ListItemText primary="Capabilities" />
         </ListItem>
-        <ListItem button>
-            <Link to="/applications">
-                <ListItemIcon>
-                    <LayersIcon />
-                </ListItemIcon>
-                <ListItemText primary="Applications" />
-            </Link>
+        <ListItem button component={Link} to="/strategy">
+            <ListItemIcon>
+                <TimelineIcon />
+            </ListItemIcon>
+            <ListItemText primary="Strategy"/>
+        </ListItem>
+        <ListItem button component={Link} to="/applications"> 
+            <ListItemIcon>
+                <LayersIcon />
+            </ListItemIcon>
+            <ListItemText primary="Applications" />
         </ListItem>
     </div>
 );

@@ -1,5 +1,7 @@
 package ap.be.backend.Repositories;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +11,5 @@ import ap.be.backend.models.Capability;
 public interface CapabilityRepository extends MongoRepository<Capability, String>{
     public Capability findByName(String name); 
     public void deleteByName(String name);
+    public List<Capability> findAllByParent(Capability parent);
 }

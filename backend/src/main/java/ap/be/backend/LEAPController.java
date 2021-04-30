@@ -50,6 +50,9 @@ public class LEAPController {
 
     @DeleteMapping("/{name}")
     public void deleteCapability(@PathVariable("name") String name) {
+        capabilityRepository.findAllByParent(capabilityRepository.findByName(name)).forEach(capability -> {
+            capabilityRepository.deleteByName(capability.getName());
+        });
         capabilityRepository.deleteByName(name);
     }
 
