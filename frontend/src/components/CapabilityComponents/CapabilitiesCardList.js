@@ -75,8 +75,8 @@ class CapabilitiesCardList extends Component {
         this.setState({lvl1Capabilities: lvl1Capabilities, lvl2Capabilities: lvl2Capabilities, lvl3Capabilities: lvl3Capabilities})
     }
 
-    onCardDelete(capabilityName) {
-        CapabilityService.delete(capabilityName)
+    onCardDelete(capabilityId) {
+        CapabilityService.delete(capabilityId)
         .then(() => {
             this.getCapabilities();
         });

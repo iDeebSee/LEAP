@@ -23,7 +23,7 @@ export default function Routes() {
             
             <Route exact path="/home" component={Index}/>
             <Route exact path="/capabilities" component={CapabilityCardList}/>
-            <Route exact path="/capabilities/:name" component={CapabilityDetailView}/>
+            <Route exact path="/capabilities/:id" component={CapabilityDetailView}/>
             <Route exact path="/applications" component={Applications}/>
             <Route exact path="/strategy" component={Strategy}/>
             <Route exact path="/profile" component={User}/>

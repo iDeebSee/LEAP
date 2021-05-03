@@ -18,11 +18,11 @@ class CapabilityDetailView extends Component {
     }
 
     componentDidMount() {
-        this.getCapability(this.props.match.params.name);
+        this.getCapability(this.props.match.params.id);
     }
 
-    getCapability(name) {
-        CapabilityService.get(name)
+    getCapability(id) {
+        CapabilityService.get(id)
             .then(res => {
                 this.setState({capability: res.data});
                 console.log(res.data);
