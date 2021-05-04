@@ -25,9 +25,9 @@ public class MockDataRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         capabilityRepository.deleteAll();
 
-        Capability capability1 = new Capability("test 1", "this is the 1st test capability"),
-        capability2 = new Capability("test 2", "this is the 2nd test capability"),
-        capability3 = new Capability("test 3", "this is the 3rd test capability"),
+        Capability capability1 = new Capability("test 1", "this is the 1st test capability", null),
+        capability2 = new Capability("test 2", "this is the 2nd test capability", null),
+        capability3 = new Capability("test 3", "this is the 3rd test capability", null),
         capability11 = new Capability("test 1.1", "this is the 1st child of the 1st test capability", capability1),
         capability12 = new Capability("test 1.2", "this is the 2nd child of the 1st test capability", capability1),
         capability111 = new Capability("test 1.1.1", "this is the 1st child of the 1st child of the 1st test capability", capability11),

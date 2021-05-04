@@ -1,6 +1,8 @@
 package ap.be.backend;
 
 
+import java.util.LinkedHashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +37,14 @@ public class LEAPController {
     }
     
     @PostMapping("/add")
-    public Capability createCapability(@RequestBody Capability capability) {
-        return capabilityRepository.save(capability);
+    public Capability createCapability(@RequestBody LinkedHashMap<Object, Object> data) {
+        Capability newCapability = new Capability();
+        System.out.println(data);
+        newCapability.setName(data.get("name").toString());
+        newCapability.setDescription(data.get("description").toString());
+        if(data.containsKey("parentId"))
+            newCapability.setParent(capabilityRepository.findById(data.get("parentId").toString()).get());
+        return capabilityRepository.save(newCapability);
     }
     
     @PutMapping("/{id}")

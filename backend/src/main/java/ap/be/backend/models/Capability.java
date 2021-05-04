@@ -1,5 +1,7 @@
 package ap.be.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import org.springframework.data.annotation.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,21 +25,16 @@ public class Capability {
     /**
      * @param name
      * @param description
-     */
-    public Capability(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    /**
-     * @param name
-     * @param description
      * @param parent
      */
     public Capability(String name, String description, Capability parent) throws IllegalArgumentException {
-        this(name, description);
-        this.level = parent.getLevel() + 1;
-        this.parent = parent;
+        //this(name, description);
+        this.name = name;
+        this.description = description;
+        if(parent != null && parent.getName() != null) {
+            this.level = parent.getLevel() + 1;
+            this.parent = parent;
+        }
     }
 
     public String getId() {
