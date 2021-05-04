@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/AsideItems';
-import SimpleModal from '../components/PopUp'
+import SimpleDialog from '../components/PopUp'
 import Copyright from "../components/Copyright";
-import InteractiveList from "../components/UserList"
+import InteractiveList from "./UserList"
 
 import {
     CssBaseline,
@@ -164,7 +164,7 @@ export default function Index() {
                         <Grid item xs={12} md={12} lg={12}>
 
                             <Paper className={fixedHeightPaper}>
-                            <SimpleModal title="Add a user" body="" name="user" message="user has been added!"></SimpleModal>
+                            <SimpleDialog title="Add a user" body="" name="user" message="user has been added!"></SimpleDialog>
 
                                 <InteractiveList></InteractiveList>
                             </Paper>

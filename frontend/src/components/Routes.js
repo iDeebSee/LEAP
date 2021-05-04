@@ -3,7 +3,7 @@ import Index from "../templates/Index.js";
 import Applications from "../templates/Applications.js";
 import Strategy from "../templates/Strategy.js";
 import CapabilityDetailView from './CapabilityComponents/CapabilityDetailView';
-import CapabilityCardList from './CapabilityComponents/CapabilitiesCardList'
+import CapabilityList from './CapabilityComponents/CapabilityList'
 import User from '../templates/User';
 import Admin from '../templates/Admin';
 import SignUp from '../templates/SignUp';
@@ -20,10 +20,9 @@ import {
 export default function Routes() {
     return (
         <Switch>
-            
             <Route exact path="/home" component={Index}/>
-            <Route exact path="/capabilities" component={CapabilityCardList}/>
-            <Route exact path="/capabilities/:name" component={CapabilityDetailView}/>
+            <Route exact path="/capabilities" component={CapabilityList}/>
+            <Route exact path="/capabilities/:id" component={CapabilityDetailView}/>
             <Route exact path="/applications" component={Applications}/>
             <Route exact path="/strategy" component={Strategy}/>
             <Route exact path="/profile" component={User}/>

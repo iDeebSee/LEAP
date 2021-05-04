@@ -1,11 +1,9 @@
 import clsx from 'clsx';
-import { Container, DialogContent, Grid, Paper, TextField, MenuItem, DialogActions, ButtonGroup, Button, Dialog, DialogTitle } from "@material-ui/core";
+import { Container, DialogContent, Grid, Paper, TextField, MenuItem, DialogActions, ButtonGroup, Button, Dialog, DialogTitle, Input, DialogContentText } from "@material-ui/core";
 import React, { Component } from "react";
 import CapabilityService from "../../services/CapabilityService";
-import Lvl1CapabilityCard from './Lvl1CapabilityCard';
 import { nanoid } from 'nanoid';
 import { withStyles } from '@material-ui/core/styles';
-import _ from 'lodash';
 
 const styles = theme => ({
     root: {
@@ -41,24 +39,20 @@ class CapabilitiesCardList extends Component {
         super(props);
 
         this.getCapabilities = this.getCapabilities.bind(this);
-        this.getCapabilityChildren = this.getCapabilityChildren.bind(this);
         this.sortCapabilities = this.sortCapabilities.bind(this);
         this.onCardDelete = this.onCardDelete.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.createCapability = this.createCapability.bind(this);
 
-        this.newCapabilityName = React.createRef();
+        this.dialogText = React.createRef();
 
         this.state = {
             capabilities: [],
-            lvl1Capabilities: [],
-            lvl2Capabilities: [],
-            lvl3Capabilities: [],
             open: false,
             newCapabilityName: '',
             newCapabilityDescription: '',
-            newCapabilityParent: {},
+            newCapabilityParent: null,
         };
     }
 
@@ -79,23 +73,7 @@ class CapabilitiesCardList extends Component {
     }
 
     sortCapabilities() {
-        let lvl1Capabilities = [], lvl2Capabilities = [], lvl3Capabilities = [];
-        this.state.capabilities.forEach(capability => {       
-            switch(capability.level) {
-                case 1: 
-                    lvl1Capabilities.push(capability);
-                    break;
-                case 2:
-                    lvl2Capabilities.push(capability);
-                    break;
-                case 3:
-                    lvl3Capabilities.push(capability);
-                    break;
-                default:
-                break;
-                }
-            });
-        this.setState({lvl1Capabilities: lvl1Capabilities, lvl2Capabilities: lvl2Capabilities, lvl3Capabilities: lvl3Capabilities})
+
     }
 
     onCardDelete(capabilityId) {
@@ -105,27 +83,26 @@ class CapabilitiesCardList extends Component {
         });
     }
 
-    getCapabilityChildren(capability) {
-        const { lvl2Capabilities, lvl3Capabilities } = this.state;
-        let lvl2Children = [], lvl3Children = [];
-
-        lvl2Capabilities.forEach(lvl2Cap => {
-            if(_.isEqual(lvl2Cap.parent, capability)) {
-                lvl2Children.push(lvl2Cap);
-
-                lvl3Capabilities.forEach(lvl3Cap => {
-                    if(_.isEqual(lvl3Cap.parent, lvl2Cap)) {
-                        lvl3Children.push(lvl3Cap)
-                    }
-                })
-            }
-        })
-
-        return {capability: capability, lvl2Children: lvl2Children, lvl3Children: lvl3Children}
-    }
-
     createCapability() {
-        console.log(this.newCapabilityName.current.input)
+        if(this.state.newCapabilityName !== '' && this.state.newCapabilityDescription !== '') {
+            console.log(this.state.newCapabilityParent)
+            let data = {"name": this.state.newCapabilityName, "description": this.state.newCapabilityDescription};
+            if(this.state.newCapabilityParent != null) {
+                data.parentId = this.state.newCapabilityParent.id;
+            }
+            CapabilityService.create(data)
+                .then(res => {
+                    console.log(res);
+                    this.setState({newCapabilityName: '', newCapabilityDescription: '', newCapabilityParent: {}})
+                    this.getCapabilities();
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        } else {
+            this.dialogText.current.innerText = "Please make sure all required fields are filled in";
+        }
+        this.setState({open: false});
     }
 
     handleOpen() {
@@ -138,19 +115,10 @@ class CapabilitiesCardList extends Component {
 
 
     render() {
-        const { lvl1Capabilities } = this.state, 
-        { classes } = this.props, 
-        fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+        const { classes } = this.props;
         return(
             <Container>
-                <Grid container spacing={3}>
-                    {lvl1Capabilities.map(lvl1cap => {
-                        return(
-                            <Lvl1CapabilityCard key={nanoid()} data={this.getCapabilityChildren(lvl1cap)} handleDelete={this.onCardDelete}/>
-                        )
-                    })}
-                </Grid>
-                <Paper className={fixedHeightPaper}>
+                <Paper className={clsx(classes.paper, classes.fixedHeight)}>
                     <ButtonGroup className={classes.buttonGroup}>
                         <Button variant="contained" color="primary" onClick={this.handleOpen}>Add Capability</Button>
                         <Button variant="contained" color="primary">Generate Capability Map</Button>
@@ -159,13 +127,14 @@ class CapabilitiesCardList extends Component {
                     <Dialog onClose={this.handleClose} open={this.state.open} className={classes.dialog}>
                         <DialogTitle>Create new capability</DialogTitle>
                         <DialogContent>
+                            <DialogContentText ref={this.dialogText}></DialogContentText>
                             <TextField
                                 label="Name"
                                 type="text"
                                 variant="filled"
                                 color="primary"
                                 required
-                                ref={this.newCapabilityName}
+                                onChange={e => this.setState({newCapabilityName: e.target.value})}
                             />
                             <TextField
                                 id="outlined-multiline-static"
@@ -177,19 +146,20 @@ class CapabilitiesCardList extends Component {
                                 multiline
                                 rowsMax={6}
                                 rows={6}
+                                onChange={e => this.setState({newCapabilityDescription: e.target.value})}
                             />
                             <TextField
                                 label="Parent"
                                 select
                                 variant="filled"
                                 color="primary"
-                                required
                                 defaultValue='None'
+                                onChange={e => this.setState({newCapabilityParent: (e.target.value === "None" ? null : e.target.value) })}
                             >
                                 <MenuItem value='None'>
                                     None
                                 </MenuItem>
-                                {this.state.lvl1Capabilities.map(cap => {
+                                {this.state.capabilities.map(cap => {
                                     return(
                                         <MenuItem key={nanoid()} value={cap}>
                                             {cap.name}

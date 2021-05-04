@@ -59,8 +59,8 @@ class Lvl3CapabilityCard extends Component {
                     </CardContent>
                     <CardActions>
                         <ButtonGroup color="primary" className={classes.buttonGroup}>
-                            <Button component={Link} to={`/view/${capability.name}`} className={classes.button}>View</Button>
-                            <Button className={classes.button} onClick={() => {this.handleDelete(capability.name)}}>Delete</Button>
+                            <Button component={Link} to={`/capabilities/${capability.id}`} className={classes.button}>View</Button>
+                            <Button className={classes.button} onClick={() => {this.handleDelete(capability.id)}}>Delete</Button>
                         </ButtonGroup>
                     </CardActions>
                 </Card>

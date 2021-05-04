@@ -1,6 +1,8 @@
 package ap.be.backend;
 
 
+import java.util.LinkedHashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,31 +31,42 @@ public class LEAPController {
         return capabilityRepository.findAll();
     }
 
-    @GetMapping("/{name}")
-    public Capability readCapability(@PathVariable("name") String name) {
-        return capabilityRepository.findByName(name);
+    @GetMapping("/{id}")
+    public Capability readCapability(@PathVariable("id") String id) {
+        return capabilityRepository.findById(id).orElseThrow(RuntimeException::new);
     }
     
     @PostMapping("/add")
-    public Capability createCapability(@RequestBody Capability capability) {
-        return capabilityRepository.save(capability);
+    public Capability createCapability(@RequestBody LinkedHashMap<Object, Object> data) {
+        Capability newCapability = new Capability();
+        System.out.println(data);
+        newCapability.setName(data.get("name").toString());
+        newCapability.setDescription(data.get("description").toString());
+        if(data.containsKey("parentId"))
+            newCapability.setParent(capabilityRepository.findById(data.get("parentId").toString()).get());
+        return capabilityRepository.save(newCapability);
     }
     
-    @PutMapping("/{name}")
-    public Capability updateCapability(@PathVariable("name") String name, @RequestBody Capability newCapability) {
-        Capability capability = capabilityRepository.findByName(name);
+    @PutMapping("/{id}")
+    public Capability updateCapability(@PathVariable("id") String id, @RequestBody Capability newCapability) {
+        Capability capability = capabilityRepository.findById(id).orElseThrow(RuntimeException::new);
                 capability.setName(newCapability.getName());
                 capability.setDescription(newCapability.getDescription());
                 capability.setParent(newCapability.getParent());
                 return capabilityRepository.save(capability);
     }
 
-    @DeleteMapping("/{name}")
-    public void deleteCapability(@PathVariable("name") String name) {
-        capabilityRepository.findAllByParent(capabilityRepository.findByName(name)).forEach(capability -> {
-            capabilityRepository.deleteByName(capability.getName());
+    @DeleteMapping("/{id}")
+    public void deleteCapability(@PathVariable("id") String id) {
+        capabilityRepository.findAllByParent(capabilityRepository.findById(id).orElseThrow(RuntimeException::new)).forEach(capX -> {
+            if(capX.getLevel() < 3) {
+                capabilityRepository.findAllByParent(capX).forEach(capY -> {
+                    capabilityRepository.deleteById(capY.getId());
+                });
+            }
+            capabilityRepository.deleteById(capX.getId());
         });
-        capabilityRepository.deleteByName(name);
+        capabilityRepository.deleteById(id);
     }
 
     @DeleteMapping("/")
