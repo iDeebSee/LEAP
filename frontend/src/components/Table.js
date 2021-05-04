@@ -21,12 +21,11 @@ const useRowStyles = makeStyles({
             borderBottom: 'unset',
 
         },
-        width: '100%',
-    },
-    MuiTableCell: {
-
 
     },
+    border: {
+        borderBottom: '1px solid rgba(224, 224, 224, 1)',
+    }
 });
 
 function createData(name, calories, fat, carbs, protein, price, something, nothing, here) {
@@ -63,14 +62,14 @@ function Row(props) {
                 <TableCell component="th" scope="row">
                     {row.name}
                 </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
-                <TableCell align="right">{row.price}</TableCell>
-                <TableCell align="right">{row.something}</TableCell>
-                <TableCell align="right">{row.nothing}</TableCell>
-                <TableCell align="right">{row.here}</TableCell>
+                <TableCell className={classes.border} align="right">{row.calories}</TableCell>
+                <TableCell className={classes.border} align="right">{row.fat}</TableCell>
+                <TableCell className={classes.border} align="right">{row.carbs}</TableCell>
+                <TableCell className={classes.border} align="right">{row.protein}</TableCell>
+                <TableCell className={classes.border} align="right">{row.price}</TableCell>
+                <TableCell className={classes.border} align="right">{row.something}</TableCell>
+                <TableCell className={classes.border} align="right">{row.nothing}</TableCell>
+                <TableCell className={classes.border} align="right">{row.here}</TableCell>
 
             </TableRow>
             <TableRow>
