@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import CapabilityService from "../../services/CapabilityService";
 import { withStyles } from '@material-ui/core/styles';
+import { Paper, Typography } from '@material-ui/core';
+import clsx from 'clsx';
 
 const styles = theme => ({
-
+    paper: {
+        padding: theme.spacing(2),
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'column',
+    },
+    fixedHeight: {
+        height: 240,
+    },
 });
 
 class CapabilityDetailView extends Component {
@@ -33,10 +43,11 @@ class CapabilityDetailView extends Component {
     }
 
     render() {
+        const { classes } = this.props;
         return(
-            <div>
-                {this.state.capability.name}
-            </div>
+            <Paper className={clsx(classes.paper, classes.fixedHeight)}>
+                <Typography>{this.state.capability.name}</Typography>
+            </Paper>
         )
     }
 }

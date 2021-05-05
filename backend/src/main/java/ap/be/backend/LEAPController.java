@@ -50,10 +50,16 @@ public class LEAPController {
     @PutMapping("/{id}")
     public Capability updateCapability(@PathVariable("id") String id, @RequestBody Capability newCapability) {
         Capability capability = capabilityRepository.findById(id).orElseThrow(RuntimeException::new);
-                capability.setName(newCapability.getName());
-                capability.setDescription(newCapability.getDescription());
-                capability.setParent(newCapability.getParent());
-                return capabilityRepository.save(capability);
+        if(!newCapability.getName().isBlank())
+            capability.setName(newCapability.getName());
+        
+        if(!newCapability.getDescription().isBlank())
+            capability.setDescription(newCapability.getDescription());
+
+        if(newCapability.getParent() != null)
+            capability.setParent(newCapability.getParent());
+
+        return capabilityRepository.save(capability);
     }
 
     @DeleteMapping("/{id}")

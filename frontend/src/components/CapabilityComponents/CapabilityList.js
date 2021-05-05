@@ -1,17 +1,27 @@
+import { 
+    Button, 
+    ButtonGroup, 
+    Dialog, 
+    ListItem, 
+    ListItemText,
+    Paper,
+    List,
+    ListSubheader, 
+    makeStyles,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    TextField,
+    MenuItem
+} from "@material-ui/core";
+import React, { useState } from "react";
+import { Link } from 'react-router-dom'
 import clsx from 'clsx';
-import { Container, DialogContent, Grid, Paper, TextField, MenuItem, DialogActions, ButtonGroup, Button, Dialog, DialogTitle, Input, DialogContentText } from "@material-ui/core";
-import React, { Component } from "react";
-import CapabilityService from "../../services/CapabilityService";
 import { nanoid } from 'nanoid';
-import { withStyles } from '@material-ui/core/styles';
+import CapabilityService from "../../services/CapabilityService";
 
-const styles = theme => ({
-    root: {
-        width: '100%',
-        maxWidth: 360,
-        backgroundColor: theme.palette.background.paper,
-        borderRadius: '5px',
-    },
+const useStyles = (makeStyles((theme) => ({
     paper: {
         padding: theme.spacing(2),
         display: 'flex',
@@ -21,164 +31,107 @@ const styles = theme => ({
     fixedHeight: {
         height: 240,
     },
-    buttonGroup: {
-        '& a, button': {
-            textTransform: 'none',
-        }
-    },
     dialog: {
         '& .MuiTextField-root': {
             marginBottom: theme.spacing(2),
             width: '100%'
         }
-    }
-});
+    },
+})));
 
-class CapabilitiesCardList extends Component {
-    constructor(props) {
-        super(props);
+const CapabilityList = (props) => {
+    const classes = useStyles(),
+    capabilities = props.data,
+    [open, setOpen] = useState(false),
+    [newName, setNewName] = useState(''),
+    [newDesc, setNewDesc] = useState(''),
+    [newParent, setNewParent] = useState(null),
+    [id, setId] = useState('');
 
-        this.getCapabilities = this.getCapabilities.bind(this);
-        this.sortCapabilities = this.sortCapabilities.bind(this);
-        this.onCardDelete = this.onCardDelete.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleOpen = this.handleOpen.bind(this);
-        this.createCapability = this.createCapability.bind(this);
-
-        this.dialogText = React.createRef();
-
-        this.state = {
-            capabilities: [],
-            open: false,
-            newCapabilityName: '',
-            newCapabilityDescription: '',
-            newCapabilityParent: null,
-        };
-    }
-
-    componentDidMount() {
-        this.getCapabilities();
-    }
-
-    getCapabilities() {
-        CapabilityService.getAll()
-            .then(res => {
-                this.setState({capabilities: res.data});
-                console.log("incoming capabilities", res.data);
-                this.sortCapabilities();
-            })
-            .catch(e => {
-                console.log(e);
-            });
-    }
-
-    sortCapabilities() {
-
-    }
-
-    onCardDelete(capabilityId) {
-        CapabilityService.delete(capabilityId)
-        .then(() => {
-            this.getCapabilities();
+    const editCapability = () => {
+        let data = {"name": newName, "description": newDesc};
+        if(newParent != null) {
+            data.parentId = newParent.id;
+        }
+        CapabilityService.update(id, data)
+        .then(res => {
+            console.log(res.data);
+            props.getCapabilities();
+            setOpen(false);
+        })
+        .catch(e => {
+            console.log(e);
         });
     }
-
-    createCapability() {
-        if(this.state.newCapabilityName !== '' && this.state.newCapabilityDescription !== '') {
-            console.log(this.state.newCapabilityParent)
-            let data = {"name": this.state.newCapabilityName, "description": this.state.newCapabilityDescription};
-            if(this.state.newCapabilityParent != null) {
-                data.parentId = this.state.newCapabilityParent.id;
-            }
-            CapabilityService.create(data)
-                .then(res => {
-                    console.log(res);
-                    this.setState({newCapabilityName: '', newCapabilityDescription: '', newCapabilityParent: {}})
-                    this.getCapabilities();
-                })
-                .catch(e => {
-                    console.log(e);
-                })
-        } else {
-            this.dialogText.current.innerText = "Please make sure all required fields are filled in";
-        }
-        this.setState({open: false});
-    }
-
-    handleOpen() {
-        this.setState({open: true});
-    }
-
-    handleClose() {
-        this.setState({open: false});
-    }
-
-
-    render() {
-        const { classes } = this.props;
-        return(
-            <Container>
-                <Paper className={clsx(classes.paper, classes.fixedHeight)}>
-                    <ButtonGroup className={classes.buttonGroup}>
-                        <Button variant="contained" color="primary" onClick={this.handleOpen}>Add Capability</Button>
-                        <Button variant="contained" color="primary">Generate Capability Map</Button>
-                        <Button variant="contained" color="primary">Delete All</Button>
-                    </ButtonGroup>
-                    <Dialog onClose={this.handleClose} open={this.state.open} className={classes.dialog}>
-                        <DialogTitle>Create new capability</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText ref={this.dialogText}></DialogContentText>
-                            <TextField
-                                label="Name"
-                                type="text"
-                                variant="filled"
-                                color="primary"
-                                required
-                                onChange={e => this.setState({newCapabilityName: e.target.value})}
-                            />
-                            <TextField
-                                id="outlined-multiline-static"
-                                label="Description"
-                                type="text"
-                                variant="filled"
-                                color="primary"
-                                required
-                                multiline
-                                rowsMax={6}
-                                rows={6}
-                                onChange={e => this.setState({newCapabilityDescription: e.target.value})}
-                            />
-                            <TextField
-                                label="Parent"
-                                select
-                                variant="filled"
-                                color="primary"
-                                defaultValue='None'
-                                onChange={e => this.setState({newCapabilityParent: (e.target.value === "None" ? null : e.target.value) })}
-                            >
-                                <MenuItem value='None'>
-                                    None
-                                </MenuItem>
-                                {this.state.capabilities.map(cap => {
-                                    return(
-                                        <MenuItem key={nanoid()} value={cap}>
-                                            {cap.name}
-                                        </MenuItem>
-                                    )
-                                })}
-                            </TextField>
-                        </DialogContent>
-                        <DialogActions>
+    
+    return(
+        <Paper className={clsx(classes.paper, classes.fixedHeight)}>
+            <List>
+                <ListSubheader>Capability list</ListSubheader>
+                {capabilities.map(cap => {
+                    return (
+                        <ListItem key={nanoid()}>
+                            <ListItemText>{cap.name}</ListItemText>
                             <ButtonGroup>
-                                <Button variant="text" color="primary" onClick={this.createCapability} type="submit">Create</Button>
-                                <Button variant="text" color="primary" onClick={this.handleClose}>Cancel</Button>
+                                <Button component={Link} to={`/capabilities/${cap.id}`}>View</Button>
+                                <Button onClick={() => {setOpen(true); setId(cap.id)}}>Edit</Button>
+                                <Button onClick={() => props.onCardDelete(cap.id)}>Delete</Button>
                             </ButtonGroup>
-                        </DialogActions>
-                    </Dialog>
-                </Paper>
-            </Container>
-        )
-    }
-}
+                        </ListItem>
+                    );
+                })}
+            </List>
+            <Dialog open={open} onClose={() => setOpen(false)} className={classes.dialog}>
+                <DialogTitle>Edit capability</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>Blank fields will retain their previous value</DialogContentText>
+                    <TextField
+                            label="Name"
+                            type="text"
+                            variant="filled"
+                            color="primary"
+                            onChange={e => setNewName(e.target.value)}
+                        />
+                        <TextField
+                            id="outlined-multiline-static"
+                            label="Description"
+                            type="text"
+                            variant="filled"
+                            color="primary"
+                            multiline
+                            rowsMax={6}
+                            rows={6}
+                            onChange={e => setNewDesc(e.target.value)}
+                        />
+                        <TextField
+                            label="Parent"
+                            select
+                            variant="filled"
+                            color="primary"
+                            defaultValue="None"
+                            onChange={e => setNewParent((e.target.value === "None" ? null : e.target.value))}
+                        >
+                            <MenuItem value='None'>
+                                None
+                            </MenuItem>
+                            {capabilities.map(cap => {
+                                return(
+                                    <MenuItem key={nanoid()} value={cap}>
+                                        {cap.name}
+                                    </MenuItem>
+                                )
+                            })}
+                        </TextField>
+                </DialogContent>
+                <DialogActions>
+                    <ButtonGroup>
+                        <Button variant="text" color="primary" onClick={() => {editCapability()}}>Edit</Button>
+                        <Button variant="text" color="primary" onClick={() => setOpen(false)}>Cancel</Button>
+                    </ButtonGroup>
+                </DialogActions>
+            </Dialog>
+        </Paper>
+    );
+};
 
-export default withStyles(styles)(CapabilitiesCardList);
+export default CapabilityList;
