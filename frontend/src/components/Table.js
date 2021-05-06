@@ -14,7 +14,8 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
+import SimpleDialog from '../components/PopUp';
 
 const useRowStyles = makeStyles({
     root: {
@@ -136,27 +137,24 @@ const rows = [
     createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5, 1.5, 1.5, 1.5),
 ];
 
+let teller = 0;
+
 export default function SimpleTable() {
 
-    const [rowsState, setRows] = useState([]);
-    const [data, setData] = useState('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5);
+
+    const [data, setData] = useState();
     const [map, setMap] = useState(new Map());
 
     const updateMap = (k, v) => {
         setMap(new Map(map.set(k, v)));
     }
 
-    function handleData() {
-        setData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5);
-    }
 
-    function handleRow() {
-        handleData();
-        setRows(data);
+
+    async function handleRow() {
+        setData(teller++, 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5);
         updateMap(createData(data));
-        console.table(rowsState);
     }
-
 
 
 
@@ -185,12 +183,11 @@ export default function SimpleTable() {
 
                     ))} */}
                     {[...map.keys()].map(k => (
-                        <Row key={k.name} row={k}/>
+                        <Row key={k.name} row={k} />
                     ))}
                 </TableBody>
             </Table>
             <Button onClick={handleRow}>Add</Button>
-
         </TableContainer>
 
     );
