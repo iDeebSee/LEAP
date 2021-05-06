@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -14,14 +14,13 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { Button } from '@material-ui/core';
 
 const useRowStyles = makeStyles({
     root: {
         '& > *': {
             borderBottom: 'unset',
-
         },
-
     },
     border: {
         borderBottom: '1px solid rgba(224, 224, 224, 1)',
@@ -138,7 +137,31 @@ const rows = [
 ];
 
 export default function SimpleTable() {
+
+    const [rowsState, setRows] = useState([]);
+    const [data, setData] = useState('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5);
+    const [map, setMap] = useState(new Map());
+
+    const updateMap = (k, v) => {
+        setMap(new Map(map.set(k, v)));
+    }
+
+    function handleData() {
+        setData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5);
+    }
+
+    function handleRow() {
+        handleData();
+        setRows(data);
+        updateMap(createData(data));
+        console.table(rowsState);
+    }
+
+
+
+
     return (
+
         <TableContainer component={Paper}>
             <Table aria-label="collapsible table">
                 <TableHead>
@@ -154,13 +177,21 @@ export default function SimpleTable() {
                         <TableCell align="right">Correctness</TableCell>
                         <TableCell align="right">Availability</TableCell>
                     </TableRow>
+
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
+                    {/* {rows.map((row) => (
                         <Row key={row.name} row={row} />
+
+                    ))} */}
+                    {[...map.keys()].map(k => (
+                        <Row key={k.name} row={k}/>
                     ))}
                 </TableBody>
             </Table>
+            <Button onClick={handleRow}>Add</Button>
+
         </TableContainer>
+
     );
 }
