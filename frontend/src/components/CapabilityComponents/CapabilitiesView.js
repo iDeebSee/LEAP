@@ -119,7 +119,7 @@ class CapabilitiesView extends Component {
         const { classes } = this.props;
         return(
             <Container>
-                <CapabilityList data={this.state.capabilities} getCapabilities={this.getCapabilities}/>
+                <CapabilityList onCardDelete={this.onCardDelete} data={this.state.capabilities} getCapabilities={this.getCapabilities}/>
                 <ButtonGroup className={classes.buttonGroup}>
                     <Button variant="contained" color="primary" onClick={this.handleOpen}>Add Capability</Button>
                     <Button variant="contained" color="primary">Generate Capability Map</Button>
