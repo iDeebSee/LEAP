@@ -39,7 +39,6 @@ public class LEAPController {
     @PostMapping("/add")
     public Capability createCapability(@RequestBody LinkedHashMap<Object, Object> data) {
         Capability newCapability = new Capability();
-        System.out.println(data);
         newCapability.setName(data.get("name").toString());
         newCapability.setDescription(data.get("description").toString());
         if(data.containsKey("parentId"))
@@ -48,16 +47,14 @@ public class LEAPController {
     }
     
     @PutMapping("/{id}")
-    public Capability updateCapability(@PathVariable("id") String id, @RequestBody Capability newCapability) {
+    public Capability updateCapability(@PathVariable("id") String id, @RequestBody LinkedHashMap<Object, Object> data) {
         Capability capability = capabilityRepository.findById(id).orElseThrow(RuntimeException::new);
-        if(!newCapability.getName().isBlank())
-            capability.setName(newCapability.getName());
-        
-        if(!newCapability.getDescription().isBlank())
-            capability.setDescription(newCapability.getDescription());
+        System.out.println(data);
 
-        if(newCapability.getParent() != null)
-            capability.setParent(newCapability.getParent());
+        capability.setName(data.get("name").toString());
+        capability.setDescription(data.get("description").toString());
+        if(data.containsKey("parentId"))
+        capability.setParent(capabilityRepository.findById(data.get("parentId").toString()).get());
 
         return capabilityRepository.save(capability);
     }
