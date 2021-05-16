@@ -10,7 +10,7 @@ class CapabilityService {
     }
 
     create(data) {
-        return http.post("/add", data);
+        return http.post("/", data);
     }
 
     update(id, data) {

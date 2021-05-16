@@ -1,4 +1,4 @@
-package ap.be.backend.Repositories;
+package ap.be.backend.repositories;
 
 import java.util.List;
 

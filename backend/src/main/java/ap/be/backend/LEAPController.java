@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import ap.be.backend.Repositories.CapabilityRepository;
+import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.models.Capability;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,25 +36,26 @@ public class LEAPController {
         return capabilityRepository.findById(id).orElseThrow(RuntimeException::new);
     }
     
-    @PostMapping("/add")
+    @PostMapping("/")
     public Capability createCapability(@RequestBody LinkedHashMap<Object, Object> data) {
         Capability newCapability = new Capability();
+
         newCapability.setName(data.get("name").toString());
         newCapability.setDescription(data.get("description").toString());
         if(data.containsKey("parentId"))
             newCapability.setParent(capabilityRepository.findById(data.get("parentId").toString()).get());
+
         return capabilityRepository.save(newCapability);
     }
     
     @PutMapping("/{id}")
     public Capability updateCapability(@PathVariable("id") String id, @RequestBody LinkedHashMap<Object, Object> data) {
         Capability capability = capabilityRepository.findById(id).orElseThrow(RuntimeException::new);
-        System.out.println(data);
 
         capability.setName(data.get("name").toString());
         capability.setDescription(data.get("description").toString());
         if(data.containsKey("parentId"))
-        capability.setParent(capabilityRepository.findById(data.get("parentId").toString()).get());
+            capability.setParent(capabilityRepository.findById(data.get("parentId").toString()).get());
 
         return capabilityRepository.save(capability);
     }
