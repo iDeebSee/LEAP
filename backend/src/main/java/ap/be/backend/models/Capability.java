@@ -1,7 +1,5 @@
 package ap.be.backend.models;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import org.springframework.data.annotation.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,9 +21,9 @@ public class Capability {
     public Capability() {}
 
     /**
-     * @param name
-     * @param description
-     * @param parent
+     * @param name the name of the capability.
+     * @param description describes what the capability does within the business.
+     * @param parent the parent of this capability, has to be an existing capability and cannot be level 3 or lower.
      */
     public Capability(String name, String description, Capability parent) throws IllegalArgumentException {
         //this(name, description);

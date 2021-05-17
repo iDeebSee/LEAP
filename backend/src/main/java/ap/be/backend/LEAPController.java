@@ -6,20 +6,15 @@ import java.util.LinkedHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import ap.be.backend.Repositories.CapabilityRepository;
+import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.models.Capability;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-
-
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class LEAPController {
     
@@ -36,28 +31,26 @@ public class LEAPController {
         return capabilityRepository.findById(id).orElseThrow(RuntimeException::new);
     }
     
-    @PostMapping("/add")
+    @PostMapping("/")
     public Capability createCapability(@RequestBody LinkedHashMap<Object, Object> data) {
         Capability newCapability = new Capability();
-        System.out.println(data);
+
         newCapability.setName(data.get("name").toString());
         newCapability.setDescription(data.get("description").toString());
         if(data.containsKey("parentId"))
             newCapability.setParent(capabilityRepository.findById(data.get("parentId").toString()).get());
+
         return capabilityRepository.save(newCapability);
     }
     
     @PutMapping("/{id}")
-    public Capability updateCapability(@PathVariable("id") String id, @RequestBody Capability newCapability) {
+    public Capability updateCapability(@PathVariable("id") String id, @RequestBody LinkedHashMap<Object, Object> data) {
         Capability capability = capabilityRepository.findById(id).orElseThrow(RuntimeException::new);
-        if(!newCapability.getName().isBlank())
-            capability.setName(newCapability.getName());
-        
-        if(!newCapability.getDescription().isBlank())
-            capability.setDescription(newCapability.getDescription());
 
-        if(newCapability.getParent() != null)
-            capability.setParent(newCapability.getParent());
+        capability.setName(data.get("name").toString());
+        capability.setDescription(data.get("description").toString());
+        if(data.containsKey("parentId"))
+            capability.setParent(capabilityRepository.findById(data.get("parentId").toString()).get());
 
         return capabilityRepository.save(capability);
     }

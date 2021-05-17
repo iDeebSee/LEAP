@@ -119,7 +119,6 @@ export default function App() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
     <Router baseName='/Leap'>

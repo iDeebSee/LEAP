@@ -117,7 +117,6 @@ export default function User() {
 
     return (
         <div className={classes.root}>
-           
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
