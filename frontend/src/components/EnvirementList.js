@@ -19,7 +19,7 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom'
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
-import CapabilityService from "../services/CapabilityService";
+import EnvironmentService from "../services/EnvironmentService";
 
 const useStyles = (makeStyles((theme) => ({
     paper: {
@@ -45,18 +45,16 @@ const EnvirementList = (props) => {
     [open, setOpen] = useState(false),
     [newName, setNewName] = useState(''),
     [newDesc, setNewDesc] = useState(''),
-    [newParent, setNewParent] = useState(null),
     [id, setId] = useState('');
 
     const editEnvironment = () => {
         let data = {"name": newName, "description": newDesc};
-        if(newParent != null) {
-            data.parentId = newParent.id;
-        }
-        CapabilityService.update(id, data)
+       
+        
+        EnvironmentService.update(id, data)
         .then(res => {
             console.log(res.data);
-            props.getenvironment();
+            props.getenvironments();
             setOpen(false);
         })
         .catch(e => {
@@ -68,14 +66,14 @@ const EnvirementList = (props) => {
         <Paper className={clsx(classes.paper, classes.fixedHeight)}>
             <List>
                 <ListSubheader>Envirement list</ListSubheader>
-                {Environments.map(cap => {
+                {Environments.map(env => {
                     return (
                         <ListItem key={nanoid()}>
-                            <ListItemText>{cap.name}</ListItemText>
+                            <ListItemText>{env.name}</ListItemText>
                             <ButtonGroup>
-                                <Button component={Link} to={`/capabilities/${cap.id}`}>View</Button>
-                                <Button onClick={() => {setOpen(true); setId(cap.id)}}>Edit</Button>
-                                <Button onClick={() => props.onCardDelete(cap.id)}>Delete</Button>
+                                <Button component={Link} to={`/capabilities/${env.id}`}>View</Button>
+                                <Button onClick={() => {setOpen(true); setId(env.id)}}>Edit</Button>
+                                <Button onClick={() => props.onCardDelete(env.id)}>Delete</Button>
                             </ButtonGroup>
                         </ListItem>
                     );
@@ -103,25 +101,8 @@ const EnvirementList = (props) => {
                             rows={6}
                             onChange={e => setNewDesc(e.target.value)}
                         />
-                        <TextField
-                            label="Parent"
-                            select
-                            variant="filled"
-                            color="primary"
-                            defaultValue="None"
-                            onChange={e => setNewParent((e.target.value === "None" ? null : e.target.value))}
-                        >
-                            <MenuItem value='None'>
-                                None
-                            </MenuItem>
-                            {Environments.map(cap => {
-                                return(
-                                    <MenuItem key={nanoid()} value={cap}>
-                                        {cap.name}
-                                    </MenuItem>
-                                )
-                            })}
-                        </TextField>
+                        
+                        
                 </DialogContent>
                 <DialogActions>
                     <ButtonGroup>
