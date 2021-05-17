@@ -78,6 +78,7 @@ public class LEAPController {
 
     @GetMapping("/environment")
     public Iterable<Environment> readEnvironment() {
+        System.out.println(envirenmentRepository.findAll());
         return envirenmentRepository.findAll();
     }
     @GetMapping("/environment/{id}")

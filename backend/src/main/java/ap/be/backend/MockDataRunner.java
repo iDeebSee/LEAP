@@ -28,7 +28,9 @@ public class MockDataRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+       //verwijder alles uit de database voor nieuwe test data toe te voegen.g
         capabilityRepository.deleteAll();
+        envirenmentRepository.deleteAll();
 
         Capability capability1 = new Capability("test 1", "this is the 1st test capability", null);
         Capability capability2 = new Capability("test 2", "this is the 2nd test capability", null);
