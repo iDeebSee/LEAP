@@ -41,14 +41,14 @@ const useStyles = (makeStyles((theme) => ({
 
 const EnvirementList = (props) => {
     const classes = useStyles(),
-    capabilities = props.data,
+    Environments = props.data,
     [open, setOpen] = useState(false),
     [newName, setNewName] = useState(''),
     [newDesc, setNewDesc] = useState(''),
     [newParent, setNewParent] = useState(null),
     [id, setId] = useState('');
 
-    const editCapability = () => {
+    const editEnvironment = () => {
         let data = {"name": newName, "description": newDesc};
         if(newParent != null) {
             data.parentId = newParent.id;
@@ -56,7 +56,7 @@ const EnvirementList = (props) => {
         CapabilityService.update(id, data)
         .then(res => {
             console.log(res.data);
-            props.getCapabilities();
+            props.getenvironment();
             setOpen(false);
         })
         .catch(e => {
@@ -68,7 +68,7 @@ const EnvirementList = (props) => {
         <Paper className={clsx(classes.paper, classes.fixedHeight)}>
             <List>
                 <ListSubheader>Envirement list</ListSubheader>
-                {capabilities.map(cap => {
+                {Environments.map(cap => {
                     return (
                         <ListItem key={nanoid()}>
                             <ListItemText>{cap.name}</ListItemText>
@@ -114,7 +114,7 @@ const EnvirementList = (props) => {
                             <MenuItem value='None'>
                                 None
                             </MenuItem>
-                            {capabilities.map(cap => {
+                            {Environments.map(cap => {
                                 return(
                                     <MenuItem key={nanoid()} value={cap}>
                                         {cap.name}
@@ -125,7 +125,7 @@ const EnvirementList = (props) => {
                 </DialogContent>
                 <DialogActions>
                     <ButtonGroup>
-                        <Button variant="text" color="primary" onClick={() => {editCapability()}}>Edit</Button>
+                        <Button variant="text" color="primary" onClick={() => {editEnvironment()}}>Edit</Button>
                         <Button variant="text" color="primary" onClick={() => setOpen(false)}>Cancel</Button>
                     </ButtonGroup>
                 </DialogActions>

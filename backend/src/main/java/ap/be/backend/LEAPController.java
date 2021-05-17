@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import ap.be.backend.repositories.CapabilityRepository;
+import ap.be.backend.repositories.EnvirenmentRepository;
 import ap.be.backend.models.Capability;
+import ap.be.backend.models.Environment;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,9 @@ public class LEAPController {
     
     @Autowired
     private CapabilityRepository capabilityRepository;
+
+    @Autowired
+    private EnvirenmentRepository envirenmentRepository;
 
     @GetMapping("/")
     public Iterable<Capability> readCapabilities() {
@@ -68,8 +73,43 @@ public class LEAPController {
         capabilityRepository.deleteById(id);
     }
 
-    @DeleteMapping("/")
-    public void deleteAll() {
-        capabilityRepository.deleteAll();
+   
+
+
+    @GetMapping("/environment")
+    public Iterable<Environment> readEnvironment() {
+        return envirenmentRepository.findAll();
     }
+    @GetMapping("/environment/{id}")
+    public Environment readenvironment(@PathVariable("id") String id) {
+        return envirenmentRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
+    @PostMapping("/environment")
+    public Environment createEnvironment(@RequestBody LinkedHashMap<Object, Object> data) {
+        Environment newEnvironment = new Environment();
+
+        newEnvironment.setName(data.get("name").toString());
+        newEnvironment.setDescription(data.get("description").toString());
+        
+
+        return envirenmentRepository.save(newEnvironment);
+    }
+    @PutMapping("/environment/{id}")
+    public Environment updatEnvironment(@PathVariable("id") String id, @RequestBody LinkedHashMap<Object, Object> data) {
+        Environment environment = envirenmentRepository.findById(id).orElseThrow(RuntimeException::new);
+
+        environment.setName(data.get("name").toString());
+        environment.setDescription(data.get("description").toString());
+        
+
+        return envirenmentRepository.save(environment);
+    }
+    @DeleteMapping("/environment/{id}")
+    public void deleteEnvironment(@PathVariable("id") String id) {
+        
+            
+        envirenmentRepository.deleteById(id);
+    }
+    
+
 }
