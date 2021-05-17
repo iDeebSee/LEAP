@@ -30,7 +30,7 @@ const useStyles = (makeStyles((theme) => ({
         flexDirection: 'column',
     },
     fixedHeight: {
-        height: 700,
+        height: "42rem",
     },
     dialog: {
         '& .MuiTextField-root': {
@@ -167,7 +167,7 @@ const CapabilityList = (props) => {
                             None
                         </MenuItem>
                         {capabilities.map(cap => {
-                            if(!_.isEqual(cap, currentCap) && notInHierarchy(cap)) {
+                            if(!_.isEqual(cap, currentCap) && notInHierarchy(cap) && cap.level < 3) {
                                 return(
                                     <MenuItem key={nanoid()} value={cap.id}>
                                         {cap.name}

@@ -159,15 +159,11 @@ class CapabilitiesView extends Component {
                                 None
                             </MenuItem>
                             {this.state.capabilities.map(cap => {
-                                if(cap.level < 3) {
-                                    return(
-                                        <MenuItem key={nanoid()} value={cap}>
-                                            {cap.name}
-                                        </MenuItem>
-                                    )
-                                } else {
-                                    return null;
-                                }
+                                return(
+                                    <MenuItem key={nanoid()} value={cap}>
+                                        {cap.name}
+                                    </MenuItem>
+                                )
                             })}
                         </TextField>
                     </DialogContent>
