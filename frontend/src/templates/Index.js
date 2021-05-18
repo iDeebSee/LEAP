@@ -120,8 +120,6 @@ class EnvirenmentView extends Component {
                 <EnvirementList data={this.state.environments} getenvironments={this.getenvironments} onCardDelete={this.onCardDelete}/>
                 <ButtonGroup className={classes.buttonGroup}>
                     <Button variant="contained" color="primary" onClick={this.handleOpen}>Add environment</Button>
-                  
-                    <Button variant="contained" color="primary" onClick={() => EnvironmentService.deleteAll()}>Delete All</Button>
                 </ButtonGroup>
                 <Dialog onClose={this.handleClose} open={this.state.open} className={classes.dialog}>
                     <DialogTitle>Create new Envirement</DialogTitle>

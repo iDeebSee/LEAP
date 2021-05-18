@@ -42,10 +42,44 @@ const useStyles = (makeStyles((theme) => ({
 const EnvirementList = (props) => {
     const classes = useStyles(),
     Environments = props.data,
+    [openEdit, setOpenedit] = useState(false),
+    [openDelete, setOpenDelete] = useState(false),
     [open, setOpen] = useState(false),
     [newName, setNewName] = useState(''),
+    [currentEnv, setCurrentEnv] = useState(null),
     [newDesc, setNewDesc] = useState(''),
     [id, setId] = useState('');
+
+
+    const openDeleteDialog = (id) => {
+        setOpenDelete(true);
+        setId(id);
+    }
+
+    const closeDeleteDialog = () => {
+        setOpenDelete(false);
+    }
+
+    const deleteEnvironment = () => {
+        props.onCardDelete(id);
+        closeDeleteDialog();
+        
+    }
+    const deleteDialog = (
+        <Dialog open={openDelete} onClose={() => {closeDeleteDialog()}} className={classes.dialog}>
+            <DialogTitle>Are you sure you want to delete this capability?</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    This action cannot be reversed! Deleting this capability will also delete all of it's children!
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <ButtonGroup>
+                    <Button variant="text" color="primary" onClick={() => {deleteEnvironment()}}>Delete</Button>
+                    <Button variant="text" color="primary" onClick={() => {closeDeleteDialog()}}>Cancel</Button>
+                </ButtonGroup>
+            </DialogActions>
+        </Dialog>);
 
     const editEnvironment = () => {
         let data = {"name": newName, "description": newDesc};
@@ -55,13 +89,57 @@ const EnvirementList = (props) => {
         .then(res => {
             console.log(res.data);
             props.getenvironments();
-            setOpen(false);
+            setOpenedit(false);
         })
         .catch(e => {
             console.log(e);
         });
     }
-    
+    const openEditDialog = (environment) => {
+        setCurrentEnv(environment);
+        setId(environment.id);
+        setNewName(environment.name);
+        setNewDesc(environment.description);
+        setOpenedit(true);
+    };
+    const closeEditDialog = () => {
+        setOpenedit(false);
+        setCurrentEnv(null);
+    }
+    const editDialog = (
+        <Dialog open={openEdit} onClose={() => {closeEditDialog()}} className={classes.dialog}>
+            <DialogTitle>Edit capability</DialogTitle>
+            <DialogContent>
+                <TextField
+                        label="Name"
+                        type="text"
+                        variant="filled"
+                        color="primary"
+                        defaultValue={currentEnv === null ? "" : currentEnv.name}
+                        onChange={e => setNewName(e.target.value)}
+                    />
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="Description"
+                        type="text"
+                        variant="filled"
+                        color="primary"
+                        multiline
+                        rowsMax={6}
+                        rows={6}
+                        defaultValue={currentEnv === null ? "" : currentEnv.description}
+                        onChange={e => setNewDesc(e.target.value)}
+                    />
+                    
+            </DialogContent>
+            <DialogActions>
+                <ButtonGroup>
+                    <Button variant="text" color="primary" onClick={() => {editEnvironment()}}>Edit</Button>
+                    <Button variant="text" color="primary" onClick={() => {closeEditDialog()}}>Cancel</Button>
+                </ButtonGroup>
+            </DialogActions>
+        </Dialog>
+    );
     return(
         <Paper className={clsx(classes.paper, classes.fixedHeight)}>
             <List>
@@ -71,47 +149,19 @@ const EnvirementList = (props) => {
                         <ListItem key={nanoid()}>
                             <ListItemText>{env.name}</ListItemText>
                             <ButtonGroup>
-                                <Button component={Link} to={`/capabilities/${env.id}`}>View</Button>
-                                <Button onClick={() => {setOpen(true); setId(env.id)}}>Edit</Button>
-                                <Button onClick={() => props.onCardDelete(env.id)}>Delete</Button>
+                                <Button component={Link} to={`/environments/${env.id}`}>View</Button>
+                                <Button onClick={() => openEditDialog(env)}>Edit</Button>
+                                <Button onClick={() => openDeleteDialog(env.id)}>Delete</Button>
                             </ButtonGroup>
                         </ListItem>
                     );
                 })}
             </List>
-            <Dialog open={open} onClose={() => setOpen(false)} className={classes.dialog}>
-                <DialogTitle>Edit Envirement</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>Blank fields will retain their previous value</DialogContentText>
-                    <TextField
-                            label="Name"
-                            type="text"
-                            variant="filled"
-                            color="primary"
-                            onChange={e => setNewName(e.target.value)}
-                        />
-                        <TextField
-                            id="outlined-multiline-static"
-                            label="Description"
-                            type="text"
-                            variant="filled"
-                            color="primary"
-                            multiline
-                            rowsMax={6}
-                            rows={6}
-                            onChange={e => setNewDesc(e.target.value)}
-                        />
-                        
-                        
-                </DialogContent>
-                <DialogActions>
-                    <ButtonGroup>
-                        <Button variant="text" color="primary" onClick={() => {editEnvironment()}}>Edit</Button>
-                        <Button variant="text" color="primary" onClick={() => setOpen(false)}>Cancel</Button>
-                    </ButtonGroup>
-                </DialogActions>
-            </Dialog>
+            {editDialog}
+            {deleteDialog}
+            
         </Paper>
+
     );
 };
 
