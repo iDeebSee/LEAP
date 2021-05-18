@@ -7,10 +7,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Env;
 import org.springframework.stereotype.Component;
 
-import ap.be.backend.repositories.CapabilityRepository;
-import ap.be.backend.repositories.EnvirenmentRepository;
 import ap.be.backend.models.Capability;
 import ap.be.backend.models.Environment;
+import ap.be.backend.models.Strategy;
+import ap.be.backend.repositories.CapabilityRepository;
+import ap.be.backend.repositories.EnvirenmentRepository;
+import ap.be.backend.repositories.StrategyRepository;
 
 
 /*
@@ -25,13 +27,15 @@ public class MockDataRunner implements CommandLineRunner {
     private CapabilityRepository capabilityRepository;
     @Autowired
     private EnvirenmentRepository envirenmentRepository;
+    @Autowired 
+    private StrategyRepository strategyRepository;
 
     @Override
     public void run(String... args) throws Exception {
        //verwijder alles uit de database voor nieuwe test data toe te voegen.g
         capabilityRepository.deleteAll();
         envirenmentRepository.deleteAll();
-
+        strategyRepository.deleteAll();
         Capability capability1 = new Capability("test 1", "this is the 1st test capability", null);
         Capability capability2 = new Capability("test 2", "this is the 2nd test capability", null);
         Capability capability3 = new Capability("test 3", "this is the 3rd test capability", null);
@@ -67,8 +71,22 @@ public class MockDataRunner implements CommandLineRunner {
         envirenmentRepository.save(env5);
         envirenmentRepository.findAll().forEach(env ->{logger.info("{}",env);});
         
-        
+        Strategy strategy1 = new Strategy("strategy1", null);
+        Strategy strategyItem1 = new Strategy("strategy Item 1",strategy1);
+        Strategy strategyItem12 = new Strategy("strategy Item 2",strategy1);
+        Strategy strategy2 = new Strategy("strategy2",null);
+        Strategy strategyItem2 = new Strategy("strategy Item 1 ",strategy1);
+        Strategy strategyItem21 = new Strategy("strategy Item 2",strategy1);
 
+
+        strategyRepository.save(strategy1);
+        strategyRepository.save(strategyItem1);
+        strategyRepository.save(strategyItem12);
+        strategyRepository.save(strategy2);
+        strategyRepository.save(strategyItem2);
+        strategyRepository.save(strategyItem21);
+
+        strategyRepository.findAll().forEach(strat ->{logger.info("{}", strat);});
     }
     
 }

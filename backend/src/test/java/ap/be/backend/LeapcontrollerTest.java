@@ -6,8 +6,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import ap.CapabilityService;
-import ap.be.backend.Repositories.CapabilityRepository;
 import ap.be.backend.models.Capability;
+import ap.be.backend.repositories.CapabilityRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

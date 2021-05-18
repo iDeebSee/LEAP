@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ap.be.backend.Repositories.StrategyRepository;
 import ap.be.backend.models.Strategy;
+import ap.be.backend.repositories.StrategyRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -35,14 +35,14 @@ public class StrategyController {
     @PostMapping("/strategy")
     public Strategy createStrategy(@RequestBody LinkedHashMap<Object, Object> data) {
         Strategy newStrategy = new Strategy();
-        System.out.println(data);
+
         newStrategy.setName(data.get("name").toString());
         if(data.containsKey("parentId"))
             newStrategy.setParent(strategyRepository.findById(data.get("parentId").toString()).get());
         return strategyRepository.save(newStrategy);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/strategy/{id}")
     public Strategy updStrategy(@PathVariable("id") String id, @RequestBody Strategy newStrategy) {
         Strategy strategy = strategyRepository.findById(id).orElseThrow(RuntimeException::new);
         if(!newStrategy.getName().isBlank())
@@ -54,7 +54,7 @@ public class StrategyController {
         return strategyRepository.save(strategy);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/strategy/{id}")
     public void deleteStrategy(@PathVariable("id") String id) {
         strategyRepository.findAllByParent(strategyRepository.findById(id).orElseThrow(RuntimeException::new)).forEach(strX -> {
             strategyRepository.deleteById(strX.getId());
@@ -62,9 +62,5 @@ public class StrategyController {
         strategyRepository.deleteById(id);
     }
 
-    @DeleteMapping("/")
-    public void deleteAll() {
-        strategyRepository.deleteAll();
-    }
 
 }

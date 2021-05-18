@@ -11,10 +11,10 @@ import {
     DialogContentText, 
 } from "@material-ui/core";
 import React, { Component } from "react";
-import CapabilityService from "../../services/CapabilityService";
+import StrategyService from "../../services/StrategyService";
 import { nanoid } from 'nanoid';
 import { withStyles } from '@material-ui/core/styles';
-import CapabilityList from './CapabilityList';
+import StrategyList from './StrategyList'
 
 const styles = theme => ({
     root: {
@@ -45,57 +45,59 @@ const styles = theme => ({
     }
 });
 
-class CapabilitiesView extends Component {
+class StrategiesView extends Component {
     constructor(props) {
         super(props);
 
-        this.getCapabilities = this.getCapabilities.bind(this);
+        this.getStrategies = this.getStrategies.bind(this);
         this.onCardDelete = this.onCardDelete.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
-        this.createCapability = this.createCapability.bind(this);
+        this.createStrategy = this.createStrategy.bind(this);
 
         this.state = {
-            capabilities: [],
+            strategies: [],
             dialogText: '',
             open: false
         };
     }
 
     componentDidMount() {
-        this.getCapabilities();
+        this.getStrategies();
     }
 
-    getCapabilities() {
-        CapabilityService.getAll()
+    getStrategies() {
+        StrategyService.getAll()
             .then(res => {
-                this.setState({capabilities: res.data});
-                console.log("incoming capabilities", res.data);
+                this.setState({strategies: res.data});
+                console.log("incoming strategies", res.data);
             })
             .catch(e => {
                 console.log(e);
             });
     }
 
-    onCardDelete(capabilityId) {
-        CapabilityService.delete(capabilityId)
+    onCardDelete(strategyId) {
+        StrategyService.delete(strategyId)
         .then(() => {
-            this.getCapabilities();
+            this.getStrategies();
         });
     }
 
-    createCapability() {
+
+
+    createStrategy() {
         let text = "";
-        if(this.state.newCapabilityName !== '' && this.state.newCapabilityDescription !== '') {
-            let data = {"name": this.state.newCapabilityName, "description": this.state.newCapabilityDescription};
-            if(this.state.newCapabilityParent != null) {
-                data.parentId = this.state.newCapabilityParent.id;
+        if(this.state.newStrategyName !== '') {
+            let data = {"name": this.state.newStrategyName};
+            if(this.state.newStrategyParent != null) {
+                data.parentId = this.state.newStrategyParent.id;
             }
-            CapabilityService.create(data)
+            StrategyService.create(data)
                 .then(res => {
                     console.log(res);
-                    this.setState({newCapabilityName: '', newCapabilityDescription: '', newCapabilityParent: {}})
-                    this.getCapabilities();
+                    this.setState({newStrategyName: '', newStrategyParent: {}})
+                    this.getStrategies();
                 })
                 .catch(e => {
                     console.log(e);
@@ -119,13 +121,12 @@ class CapabilitiesView extends Component {
         const { classes } = this.props;
         return(
             <Container>
-                <CapabilityList data={this.state.capabilities} getCapabilities={this.getCapabilities} onCardDelete={this.onCardDelete}/>
+                <StrategyList data={this.state.strategies} getStrategies={this.getStrategies} onCardDelete={this.onCardDelete}/>
                 <ButtonGroup className={classes.buttonGroup}>
-                    <Button variant="contained" color="primary" onClick={this.handleOpen}>Add Capability</Button>
-                    
+                    <Button variant="contained" color="primary" onClick={this.handleOpen}>Add strategy</Button>
                 </ButtonGroup>
                 <Dialog onClose={this.handleClose} open={this.state.open} className={classes.dialog}>
-                    <DialogTitle>Create new capability</DialogTitle>
+                    <DialogTitle>Create new strategy</DialogTitle>
                     <DialogContent>
                         <DialogContentText>{this.state.dialogText}</DialogContentText>
                         <TextField
@@ -134,19 +135,7 @@ class CapabilitiesView extends Component {
                             variant="filled"
                             color="primary"
                             required
-                            onChange={e => this.setState({newCapabilityName: e.target.value})}
-                        />
-                        <TextField
-                            id="outlined-multiline-static"
-                            label="Description"
-                            type="text"
-                            variant="filled"
-                            color="primary"
-                            required
-                            multiline
-                            rowsMax={6}
-                            rows={6}
-                            onChange={e => this.setState({newCapabilityDescription: e.target.value})}
+                            onChange={e => this.setState({newStrategyName: e.target.value})}
                         />
                         <TextField
                             label="Parent"
@@ -154,15 +143,16 @@ class CapabilitiesView extends Component {
                             variant="filled"
                             color="primary"
                             defaultValue='None'
-                            onChange={e => this.setState({newCapabilityParent: (e.target.value === "None" ? null : e.target.value) })}
+                            onChange={e => this.setState({newStrategyParent: (e.target.value === "None" ? null : e.target.value) })}
                         >
                             <MenuItem value='None'>
                                 None
                             </MenuItem>
-                            {this.state.capabilities.map(cap => {
+                            {this.state.strategies.map(strat => {
                                 return(
-                                    <MenuItem key={nanoid()} value={cap}>
-                                        {cap.name}
+                                    <MenuItem key={nanoid()} value={strat}>
+                                      {strat.name}
+                                        
                                     </MenuItem>
                                 )
                             })}
@@ -170,7 +160,7 @@ class CapabilitiesView extends Component {
                     </DialogContent>
                     <DialogActions>
                         <ButtonGroup>
-                            <Button variant="text" color="primary" onClick={this.createCapability}>Create</Button>
+                            <Button variant="text" color="primary" onClick={this.createStrategy}>Create</Button>
                             <Button variant="text" color="primary" onClick={this.handleClose}>Cancel</Button>
                         </ButtonGroup>
                     </DialogActions>
@@ -180,4 +170,4 @@ class CapabilitiesView extends Component {
     }
 }
 
-export default withStyles(styles)(CapabilitiesView);
+export default withStyles(styles)(StrategiesView);
