@@ -22,23 +22,6 @@ import {
 import SimpleMenu from './Menu';
 
 function AddDialog(props) {
-    const dialogStyles = makeStyles({
-        businessFit: {
-            backgroundColor: 'red',
-        },
-        informationQuality: {
-            backgroundColor: 'orange',
-        },
-        technicalQuality: {
-            backgroundColor: 'blue',
-        },
-        costImpact: {
-            backgroundColor: 'green',
-        },
-        inputPadding: {
-            backgroundColor: '10px',
-        }
-    })
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -93,6 +76,10 @@ function AddDialog(props) {
         currentValueForMoney,
         importance,
         efficiencySupport,
+        acquisitionDate,
+        endOfLife,
+        timeValue,
+        costCurrency,
     }
 
 
@@ -106,6 +93,8 @@ function AddDialog(props) {
 
     const handleRow = () => {
         setOpen(false);
+        console.log("handleRow in dialog");
+        console.log(values);
         return values;
     }
 
@@ -222,10 +211,10 @@ function Row(props) {
                 <TableCell className={classes.border} align="center">{row.acquisitionDate}</TableCell>
                 <TableCell className={classes.border} align="center">{row.endOfLife}</TableCell>
                 <TableCell className={classes.border} align="center">{row.timeValue}</TableCell>
-                
-                
 
-                
+
+
+
                 <TableCell className={classes.border} align="center">{row.currentScalability}</TableCell>
                 <TableCell className={classes.border} align="center">{row.expectedScalability}</TableCell>
                 <TableCell className={classes.border} align="center">{row.currentPerformance}</TableCell>
@@ -234,7 +223,7 @@ function Row(props) {
                 <TableCell className={classes.border} align="center">{row.expectedSecurityLevel}</TableCell>
                 <TableCell className={classes.border} align="center">{row.costCurrency}</TableCell>
                 <TableCell className={classes.border} align="center">{row.currentValueForMoney}</TableCell>
-                
+
                 <TableCell className={classes.border} align="center" >{row.importance}</TableCell>
                 <TableCell className={classes.border} align="center" >{row.efficiencySupport}</TableCell>
                 <TableCell className={classes.border} align="center" >{row.functionalCoverage}</TableCell>
@@ -269,12 +258,12 @@ Row.propTypes = {
         currentValueForMoney: PropTypes.number.isRequired,
         importance: PropTypes.number.isRequired,
         efficiencySupport: PropTypes.number.isRequired,
-        functionalCoverage:PropTypes.number.isRequired,
-        bfCorrectness:PropTypes.number.isRequired,
-        futurePotential:PropTypes.number.isRequired,
-        completeness:PropTypes.number.isRequired,
-        iqCorrectness:PropTypes.number.isRequired,
-        availability:PropTypes.number.isRequired,
+        functionalCoverage: PropTypes.number.isRequired,
+        bfCorrectness: PropTypes.number.isRequired,
+        futurePotential: PropTypes.number.isRequired,
+        completeness: PropTypes.number.isRequired,
+        iqCorrectness: PropTypes.number.isRequired,
+        availability: PropTypes.number.isRequired,
     }).isRequired,
 };
 
