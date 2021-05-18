@@ -11,10 +11,10 @@ import {
     DialogContentText, 
 } from "@material-ui/core";
 import React, { Component } from "react";
-import CapabilityService from "../services/CapabilityService";
 import { nanoid } from 'nanoid';
 import { withStyles } from '@material-ui/core/styles';
 import EnvirementList from '../components/EnvirementList';
+import EnvironmentService from "../services/EnvironmentService";
 
 const styles = theme => ({
     root: {
@@ -45,57 +45,55 @@ const styles = theme => ({
     }
 });
 
-class CapabilitiesView extends Component {
+class EnvirenmentView extends Component {
     constructor(props) {
         super(props);
 
-        this.getCapabilities = this.getCapabilities.bind(this);
+        this.getenvironments = this.getenvironments.bind(this);
         this.onCardDelete = this.onCardDelete.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
-        this.createCapability = this.createCapability.bind(this);
+        this.createEnvironment = this.createEnvironment.bind(this);
 
         this.state = {
-            capabilities: [],
+            environments:[],
             dialogText: '',
             open: false
         };
     }
 
     componentDidMount() {
-        this.getCapabilities();
+        this.getenvironments();
     }
 
-    getCapabilities() {
-        CapabilityService.getAll()
+    getenvironments() {
+        EnvironmentService.getAll()
             .then(res => {
-                this.setState({capabilities: res.data});
-                console.log("incoming capabilities", res.data);
+                this.setState({environments: res.data});
+                console.log("incoming environments", res.data);
             })
             .catch(e => {
                 console.log(e);
             });
     }
 
-    onCardDelete(capabilityId) {
-        CapabilityService.delete(capabilityId)
+    onCardDelete(environmentID) {
+        EnvironmentService.delete(environmentID)
         .then(() => {
-            this.getCapabilities();
+            this.getenvironments();
         });
     }
 
-    createCapability() {
+    createEnvironment() {
         let text = "";
-        if(this.state.newCapabilityName !== '' && this.state.newCapabilityDescription !== '') {
-            let data = {"name": this.state.newCapabilityName, "description": this.state.newCapabilityDescription};
-            if(this.state.newCapabilityParent != null) {
-                data.parentId = this.state.newCapabilityParent.id;
-            }
-            CapabilityService.create(data)
+        if(this.state.newEnvironmentName !== '' && this.state.newEnvironmentDescription !== '') {
+            let data = {"name": this.state.newEnvironmentName, "description": this.state.newEnvironmentDescription};
+            
+            EnvironmentService.create(data)
                 .then(res => {
                     console.log(res);
-                    this.setState({newCapabilityName: '', newCapabilityDescription: '', newCapabilityParent: {}})
-                    this.getCapabilities();
+                    this.setState({newEnvironmentName: '', newEnvironmentDescription: ''})
+                    this.getenvironments();
                 })
                 .catch(e => {
                     console.log(e);
@@ -119,11 +117,9 @@ class CapabilitiesView extends Component {
         const { classes } = this.props;
         return(
             <Container>
-                <EnvirementList data={this.state.capabilities} getCapabilities={this.getCapabilities}/>
+                <EnvirementList data={this.state.environments} getenvironments={this.getenvironments} onCardDelete={this.onCardDelete}/>
                 <ButtonGroup className={classes.buttonGroup}>
-                    <Button variant="contained" color="primary" onClick={this.handleOpen}>Add Envirement</Button>
-                  
-                    <Button variant="contained" color="primary" onClick={() => CapabilityService.deleteAll()}>Delete All</Button>
+                    <Button variant="contained" color="primary" onClick={this.handleOpen}>Add environment</Button>
                 </ButtonGroup>
                 <Dialog onClose={this.handleClose} open={this.state.open} className={classes.dialog}>
                     <DialogTitle>Create new Envirement</DialogTitle>
@@ -135,7 +131,7 @@ class CapabilitiesView extends Component {
                             variant="filled"
                             color="primary"
                             required
-                            onChange={e => this.setState({newCapabilityName: e.target.value})}
+                            onChange={e => this.setState({newEnvironmentName: e.target.value})}
                         />
                         <TextField
                             id="outlined-multiline-static"
@@ -147,7 +143,7 @@ class CapabilitiesView extends Component {
                             multiline
                             rowsMax={6}
                             rows={6}
-                            onChange={e => this.setState({newCapabilityDescription: e.target.value})}
+                            onChange={e => this.setState({newEnvironmentDescription: e.target.value})}
                         />
                         
                           
@@ -155,7 +151,7 @@ class CapabilitiesView extends Component {
                     </DialogContent>
                     <DialogActions>
                         <ButtonGroup>
-                            <Button variant="text" color="primary" onClick={this.createCapability}>Create</Button>
+                            <Button variant="text" color="primary" onClick={this.createEnvironment}>Create</Button>
                             <Button variant="text" color="primary" onClick={this.handleClose}>Cancel</Button>
                         </ButtonGroup>
                     </DialogActions>
@@ -165,4 +161,4 @@ class CapabilitiesView extends Component {
     }
 }
 
-export default withStyles(styles)(CapabilitiesView);
+export default withStyles(styles)(EnvirenmentView);
