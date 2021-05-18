@@ -10,17 +10,16 @@ import {
     makeStyles,
     DialogTitle,
     DialogContent,
+    DialogContentText,
     DialogActions,
     TextField,
-    MenuItem,
-    DialogContentText,
+    MenuItem
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link } from 'react-router-dom'
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
-import CapabilityService from "../../services/CapabilityService";
-import _ from 'lodash';
+import EnvironmentService from "../services/EnvironmentService";
 
 const useStyles = (makeStyles((theme) => ({
     paper: {
@@ -30,7 +29,7 @@ const useStyles = (makeStyles((theme) => ({
         flexDirection: 'column',
     },
     fixedHeight: {
-        height: "42rem",
+        height: 240,
     },
     dialog: {
         '& .MuiTextField-root': {
@@ -38,23 +37,19 @@ const useStyles = (makeStyles((theme) => ({
             width: '100%'
         }
     },
-    listSubHeader: {
-        backgroundColor: "lightgrey",
-        margin: 0,
-        width: "100%"
-    }
 })));
 
-const CapabilityList = (props) => {
+const EnvirementList = (props) => {
     const classes = useStyles(),
-    capabilities = props.data,
+    Environments = props.data,
     [openEdit, setOpenedit] = useState(false),
     [openDelete, setOpenDelete] = useState(false),
+    [open, setOpen] = useState(false),
     [newName, setNewName] = useState(''),
+    [currentEnv, setCurrentEnv] = useState(null),
     [newDesc, setNewDesc] = useState(''),
-    [newParentId, setNewParentId] = useState(null),
-    [id, setId] = useState(''),
-    [currentCap, setCurrentCap] = useState(null);
+    [id, setId] = useState('');
+
 
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
@@ -65,11 +60,11 @@ const CapabilityList = (props) => {
         setOpenDelete(false);
     }
 
-    const deleteCapability = () => {
+    const deleteEnvironment = () => {
         props.onCardDelete(id);
         closeDeleteDialog();
+        
     }
-    
     const deleteDialog = (
         <Dialog open={openDelete} onClose={() => {closeDeleteDialog()}} className={classes.dialog}>
             <DialogTitle>Are you sure you want to delete this capability?</DialogTitle>
@@ -80,57 +75,37 @@ const CapabilityList = (props) => {
             </DialogContent>
             <DialogActions>
                 <ButtonGroup>
-                    <Button variant="text" color="primary" onClick={() => {deleteCapability()}}>Delete</Button>
+                    <Button variant="text" color="primary" onClick={() => {deleteEnvironment()}}>Delete</Button>
                     <Button variant="text" color="primary" onClick={() => {closeDeleteDialog()}}>Cancel</Button>
                 </ButtonGroup>
             </DialogActions>
-        </Dialog>
-    );
-    
+        </Dialog>);
 
-    const editCapability = () => {
+    const editEnvironment = () => {
         let data = {"name": newName, "description": newDesc};
-        if(newParentId != null) {
-            data.parentId = newParentId;
-        }
-        CapabilityService.update(id, data)
+       
+        
+        EnvironmentService.update(id, data)
         .then(res => {
             console.log(res.data);
-            props.getCapabilities();
+            props.getenvironments();
             setOpenedit(false);
         })
         .catch(e => {
             console.log(e);
         });
-    };
-
-    const notInHierarchy = (capability) => {
-        let output = true;
-        if(currentCap !== null) {
-            if(capability.level > 1) {
-                if(_.isEqual(currentCap, capability.parent.parent)) {
-                    output = false
-                } else if (_.isEqual(currentCap, capability.parent)) {
-                    output = false
-                } 
-            }
-            return output;
-        }
-    };
-
-    const openEditDialog = (capability) => {
-        setCurrentCap(capability);
-        setId(capability.id);
-        setNewName(capability.name);
-        setNewDesc(capability.description);
+    }
+    const openEditDialog = (environment) => {
+        setCurrentEnv(environment);
+        setId(environment.id);
+        setNewName(environment.name);
+        setNewDesc(environment.description);
         setOpenedit(true);
     };
-
     const closeEditDialog = () => {
         setOpenedit(false);
-        setCurrentCap(null);
+        setCurrentEnv(null);
     }
-
     const editDialog = (
         <Dialog open={openEdit} onClose={() => {closeEditDialog()}} className={classes.dialog}>
             <DialogTitle>Edit capability</DialogTitle>
@@ -140,7 +115,7 @@ const CapabilityList = (props) => {
                         type="text"
                         variant="filled"
                         color="primary"
-                        defaultValue={currentCap === null ? "" : currentCap.name}
+                        defaultValue={currentEnv === null ? "" : currentEnv.name}
                         onChange={e => setNewName(e.target.value)}
                     />
                     <TextField
@@ -152,54 +127,31 @@ const CapabilityList = (props) => {
                         multiline
                         rowsMax={6}
                         rows={6}
-                        defaultValue={currentCap === null ? "" : currentCap.description}
+                        defaultValue={currentEnv === null ? "" : currentEnv.description}
                         onChange={e => setNewDesc(e.target.value)}
                     />
-                    <TextField
-                        label="Parent"
-                        select
-                        variant="filled"
-                        color="primary"
-                        defaultValue={currentCap === null ? "None" : currentCap.parent === null ? "None" : currentCap.parent.id}
-                        onChange={e => setNewParentId((e.target.value === "None" ? null : e.target.value))}
-                    >
-                        <MenuItem value='None'>
-                            None
-                        </MenuItem>
-                        {capabilities.map(cap => {
-                            if(!_.isEqual(cap, currentCap) && notInHierarchy(cap) && cap.level < 3) {
-                                return(
-                                    <MenuItem key={nanoid()} value={cap.id}>
-                                        {cap.name}
-                                    </MenuItem>
-                                )
-                            } else {
-                                return null;
-                            }
-                        })}
-                    </TextField>
+                    
             </DialogContent>
             <DialogActions>
                 <ButtonGroup>
-                    <Button variant="text" color="primary" onClick={() => {editCapability()}}>Edit</Button>
+                    <Button variant="text" color="primary" onClick={() => {editEnvironment()}}>Edit</Button>
                     <Button variant="text" color="primary" onClick={() => {closeEditDialog()}}>Cancel</Button>
                 </ButtonGroup>
             </DialogActions>
         </Dialog>
     );
-    
     return(
         <Paper className={clsx(classes.paper, classes.fixedHeight)}>
             <List>
-                <ListSubheader className={classes.listSubHeader}>Capability list</ListSubheader>
-                {capabilities.map(cap => {
+                <ListSubheader>Envirement list</ListSubheader>
+                {Environments.map(env => {
                     return (
                         <ListItem key={nanoid()}>
-                            <ListItemText>{cap.name}</ListItemText>
+                            <ListItemText>{env.name}</ListItemText>
                             <ButtonGroup>
-                                <Button component={Link} to={`/capabilities/${cap.id}`}>View</Button>
-                                <Button onClick={() => {openEditDialog(cap)}}>Edit</Button>
-                                <Button onClick={() => {openDeleteDialog(cap.id)}}>Delete</Button>
+                                <Button component={Link} to={`/environments/${env.id}`}>View</Button>
+                                <Button onClick={() => openEditDialog(env)}>Edit</Button>
+                                <Button onClick={() => openDeleteDialog(env.id)}>Delete</Button>
                             </ButtonGroup>
                         </ListItem>
                     );
@@ -207,8 +159,10 @@ const CapabilityList = (props) => {
             </List>
             {editDialog}
             {deleteDialog}
+            
         </Paper>
+
     );
 };
 
-export default CapabilityList;
+export default EnvirementList;
