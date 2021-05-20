@@ -1,7 +1,6 @@
 import React from 'react';
 import Index from "../templates/Index.js";
 import Applications from "../templates/Applications.js";
-import Strategy from "../templates/Strategy.js";
 import CapabilityDetailView from './CapabilityComponents/CapabilityDetailView';
 import CapabilitiesView from './CapabilityComponents/CapabilitiesView'
 import User from '../templates/User';
@@ -10,7 +9,8 @@ import SignUp from '../templates/SignUp';
 import SignIn from '../templates/SignIn';
 import TwoFactorAuthentication from '../templates/TwoFactorAuthentication';
 import ForgotPassword from '../templates/ForgotPassword';
-import EnvironmentDetailView from '../components/EnvironmentDetailView'
+import StrategyDetailView from './StrategyComponents/StrategyDetailView';
+import StrategiesView from './StrategyComponents/StrategiesView';
 
 import {
     Switch,
@@ -27,7 +27,8 @@ export default function Routes() {
             <Route exact path="/Environment/:id" component={EnvironmentDetailView}/>
 
             <Route exact path="/applications" component={Applications}/>
-            <Route exact path="/strategy" component={Strategy}/>
+            <Route exact path="/strategy" component={StrategiesView}/>
+            <Route exact path="/strategy/:id" component={StrategyDetailView}/>
             <Route exact path="/profile" component={User}/>
             <Route exact path="/admin" component={Admin}/>
             <Route exact path="/signIn" component={SignIn}/>

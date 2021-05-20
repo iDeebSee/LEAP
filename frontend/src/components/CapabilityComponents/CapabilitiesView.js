@@ -122,6 +122,7 @@ class CapabilitiesView extends Component {
                 <CapabilityList data={this.state.capabilities} getCapabilities={this.getCapabilities} onCardDelete={this.onCardDelete}/>
                 <ButtonGroup className={classes.buttonGroup}>
                     <Button variant="contained" color="primary" onClick={this.handleOpen}>Add Capability</Button>
+                    
                 </ButtonGroup>
                 <Dialog onClose={this.handleClose} open={this.state.open} className={classes.dialog}>
                     <DialogTitle>Create new capability</DialogTitle>
