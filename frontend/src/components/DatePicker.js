@@ -11,7 +11,7 @@ import {
 
 export default function DatePicker(props) {
 
-    const [selectedDate, setSelectedDate] = React.useState(new Date().toJSON().slice(0, 10));
+    const [selectedDate, setSelectedDate] = React.useState(new Date());
 
     const formatDate = (date) => {
         try {
@@ -26,6 +26,7 @@ export default function DatePicker(props) {
     }
 
     const handleDateChange = (date) => {
+
         console.log("1: " + date);
         setSelectedDate(date);
         console.log("selectedDate state: " + selectedDate);
@@ -42,7 +43,7 @@ export default function DatePicker(props) {
                     format="dd/MM/yyyy"
                     margin="normal"
                     id="date-picker-inline"
-                    label="Date"
+                    label={props.name}
                     value={selectedDate}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
