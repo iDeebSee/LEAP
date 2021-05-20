@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Env;
 import org.springframework.stereotype.Component;
 
 import ap.be.backend.models.Capability;
@@ -71,20 +70,16 @@ public class MockDataRunner implements CommandLineRunner {
         envirenmentRepository.save(env5);
         envirenmentRepository.findAll().forEach(env ->{logger.info("{}",env);});
         
-        Strategy strategy1 = new Strategy("strategy1", null);
-        Strategy strategyItem1 = new Strategy("strategy Item 1",strategy1);
-        Strategy strategyItem12 = new Strategy("strategy Item 2",strategy1);
-        Strategy strategy2 = new Strategy("strategy2",null);
-        Strategy strategyItem2 = new Strategy("strategy Item 1 ",strategy1);
-        Strategy strategyItem21 = new Strategy("strategy Item 2",strategy1);
+        Strategy strategy1 = new Strategy("strategy1");
+        Strategy strategy2 = new Strategy("strategy2");
+        Strategy strategy3 = new Strategy("strategy3");
+
 
 
         strategyRepository.save(strategy1);
-        strategyRepository.save(strategyItem1);
-        strategyRepository.save(strategyItem12);
         strategyRepository.save(strategy2);
-        strategyRepository.save(strategyItem2);
-        strategyRepository.save(strategyItem21);
+        strategyRepository.save(strategy3);
+
 
         strategyRepository.findAll().forEach(strat ->{logger.info("{}", strat);});
     }

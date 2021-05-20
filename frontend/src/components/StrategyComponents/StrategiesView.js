@@ -90,21 +90,17 @@ class StrategiesView extends Component {
         let text = "";
         if(this.state.newStrategyName !== '') {
             let data = {"name": this.state.newStrategyName};
-            if(this.state.newStrategyParent != null) {
-                data.parentId = this.state.newStrategyParent.id;
-            }
+
             StrategyService.create(data)
                 .then(res => {
                     console.log(res);
-                    this.setState({newStrategyName: '', newStrategyParent: {}})
+                    this.setState({newStrategyName: ''})
                     this.getStrategies();
                 })
                 .catch(e => {
                     console.log(e);
                 })
-        } else {
-            text = "Please make sure all required fields are filled in";
-        }
+        } 
         this.setState({open: false, dialogText: text});
     }
 
@@ -137,26 +133,7 @@ class StrategiesView extends Component {
                             required
                             onChange={e => this.setState({newStrategyName: e.target.value})}
                         />
-                        <TextField
-                            label="Parent"
-                            select
-                            variant="filled"
-                            color="primary"
-                            defaultValue='None'
-                            onChange={e => this.setState({newStrategyParent: (e.target.value === "None" ? null : e.target.value) })}
-                        >
-                            <MenuItem value='None'>
-                                None
-                            </MenuItem>
-                            {this.state.strategies.map(strat => {
-                                return(
-                                    <MenuItem key={nanoid()} value={strat}>
-                                      {strat.name}
-                                        
-                                    </MenuItem>
-                                )
-                            })}
-                        </TextField>
+
                     </DialogContent>
                     <DialogActions>
                         <ButtonGroup>

@@ -45,19 +45,13 @@ class StrategyDetailView extends Component {
     render() {
         const { classes } = this.props;
 
-        let parent = null;
-        if(this.state.strategy.parent !== null && this.state.strategy.parent !== undefined) {
-            parent =
-            <Grid item>
-                <Typography>Parent: {this.state.strategy.parent.name}</Typography>
-            </Grid>
-        }
+        
         return(
             <Paper className={clsx(classes.paper, classes.fixedHeight)}>
                 <Grid container spacing={3}>
                     <Grid item>
                         <Typography>Name: {this.state.strategy.name}</Typography>
-                        {parent}
+                        
                     </Grid>
                 </Grid>
                 

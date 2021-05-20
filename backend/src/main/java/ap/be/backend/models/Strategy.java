@@ -1,5 +1,4 @@
 package ap.be.backend.models;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,20 +7,15 @@ public class Strategy {
     @Id
     private String id;
     private String name;
-    private Strategy parent = null;;
     
     public Strategy(){}
     /**
-     * @param name
-     * @param parent
+     * @param name of the strategy
      */
     
 
-    public Strategy(String name, Strategy parent){
+    public Strategy(String name){
         this.name = name;
-        if(parent != null && parent.getName() != null) {
-            this.parent = parent;
-        }
     }
     public String getId() {
         return id;
@@ -38,17 +32,9 @@ public class Strategy {
         this.name = name;
     }
 
-    public Strategy getParent() {
-        return parent;
-    }
-
-    public void setParent(Strategy parent) {
-        this.parent = parent;
-    }
-
     @Override
     public String toString() {
-        return "Strategy:"+"\nname= "+this.name + "\nparent: "+this.parent;
+        return "Strategy:"+"\nname= "+this.name;
     }
 
 }

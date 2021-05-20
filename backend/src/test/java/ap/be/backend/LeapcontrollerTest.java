@@ -42,7 +42,8 @@ public class LeapcontrollerTest {
 
     @Test
     void returnAllCapabilities() {
-        List<Capability> capabilities = new ArrayList();
+        
+        List<Capability> capabilities = new ArrayList<>();
         capabilities.add(new Capability("test1", "test capability 1", null));
         capabilities.add(new Capability("test2", "test capability 2", null));
         capabilities.add(new Capability("test3", "test capability 3", null));
@@ -81,7 +82,7 @@ public class LeapcontrollerTest {
 
     @Test
     void deleteAll(){
-        List<Capability> capabilities = new ArrayList();
+        List<Capability> capabilities = new ArrayList<>();
         capabilities.add(new Capability("test1", "test capability 1", null));
         capabilities.add(new Capability("test2", "test capability 2", null));
 

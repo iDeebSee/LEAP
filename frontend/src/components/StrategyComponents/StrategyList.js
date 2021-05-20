@@ -128,29 +128,6 @@ const StrategyList = (props) => {
                         defaultValue={currentStrat === null ? "" : currentStrat.name}
                         onChange={e => setNewName(e.target.value)}
                     />
-                    <TextField
-                        label="Parent"
-                        select
-                        variant="filled"
-                        color="primary"
-                        defaultValue={currentStrat === null ? "None" : currentStrat.parent === null ? "None" : currentStrat.parent.id}
-                        onChange={e => setNewParentId((e.target.value === "None" ? null : e.target.value))}
-                    >
-                        <MenuItem value='None'>
-                            None
-                        </MenuItem>
-                        {strategies.map(strat => {
-                            if(!_.isEqual(strat, currentStrat)) {
-                                return(
-                                    <MenuItem key={nanoid()} value={strat.id}>
-                                        {strat.name}
-                                    </MenuItem>
-                                )
-                            } else {
-                                return null;
-                            }
-                        })}
-                    </TextField>
             </DialogContent>
             <DialogActions>
                 <ButtonGroup>
