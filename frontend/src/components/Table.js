@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import DatePicker from './DatePicker';
 import {
     Button, TextField, Dialog, DialogTitle, DialogContent,
     DialogContentText, DialogActions
@@ -40,10 +41,10 @@ function AddDialog(props) {
     const [currentPerformance, setCurrentPerformance] = React.useState(0);
     const [expectedPerformance, setExpectedPerformance] = React.useState(0);
 
-    const [acquisitionDate, setAcquisitionDate] = React.useState(0);
-    const [endOfLife, setEndOfLife] = React.useState(0);
-    const [timeValue, setTimeValue] = React.useState(0);
-    const [costCurrency, setCostCurrency] = React.useState(0);
+    const [acquisitionDate, setAcquisitionDate] = React.useState();
+    const [endOfLife, setEndOfLife] = React.useState();
+    const [timeValue, setTimeValue] = React.useState();
+    const [costCurrency, setCostCurrency] = React.useState('€');
 
     const [currentTotalCostPerYear, setCurrentTotalCostPerYear] = React.useState(0);
     const [toleratedTotalCostPerYear, setToleratedTotalCostPerYear] = React.useState(0);
@@ -98,6 +99,26 @@ function AddDialog(props) {
         return values;
     }
 
+    const handleDateChange = (date) => {
+        if (date !== null || date !== undefined) {
+            console.log(date);
+            //let acqDate = date.toJSON().slice(0, 10);
+            setAcquisitionDate(date)
+            // setSelectedDate(date);
+            // console.log(selectedDate);
+            // props.date(date);
+            console.log("acq date " + date);
+
+        }
+
+    };
+
+    const getDate = (dates) => {
+        setAcquisitionDate(dates);
+        console.log("dates: " + dates);
+        console.log("acq date state " + acquisitionDate);
+    }
+
     return (
         <div>
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -118,8 +139,8 @@ function AddDialog(props) {
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="version" type="text" value={version} onChange={(e) => setVersion(e.target.value)} />
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="current total cost per year" type="number" value={currentTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setCurrentTotalCostPerYear(0) : setCurrentTotalCostPerYear(e.target.value)} />
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="tolerated total cost per year" type="number" value={toleratedTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setToleratedTotalCostPerYear(0) : setToleratedTotalCostPerYear(e.target.value)} />
-                        <TextField style={{ padding: '10px', }} id="standard-basic" label="acquisition date" value={acquisitionDate} onChange={(e) => setAcquisitionDate(e.target.value)} />
-                        <TextField style={{ padding: '10px', }} id="standard-basic" label="end of life" value={endOfLife} onChange={(e) => setEndOfLife(e.target.value)} />
+                        <DatePicker style={{ padding: '10px', }} id="standard-basic" label="acquisition date" date={handleDateChange} value={acquisitionDate} />
+                        <DatePicker style={{ padding: '10px', }} id="standard-basic" label="end of life" date={handleDateChange} value={endOfLife} />
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="time value" value={timeValue} onChange={(e) => setTimeValue(e.target.value)} />
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="current scalability" type="number" value={currentScalability} onChange={(e) => (e.target.value > 5) ? setCurrentScalability(5) : (e.target.value < 0) ? setCurrentScalability(0) : setCurrentScalability(e.target.value)} />
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="expected scalability" type="number" value={expectedScalability} onChange={(e) => (e.target.value > 5) ? setExpectedScalability(5) : (e.target.value < 0) ? setExpectedScalability(0) : setExpectedScalability(e.target.value)} />
