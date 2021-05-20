@@ -1,4 +1,4 @@
-package ap.be.backend;
+package ap.be.backend.security.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +23,8 @@ public class MockDataRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        
         capabilityRepository.deleteAll();
 
         Capability capability1 = new Capability("test 1", "this is the 1st test capability", null);

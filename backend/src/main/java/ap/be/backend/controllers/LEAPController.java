@@ -1,4 +1,4 @@
-package ap.be.backend;
+package ap.be.backend.controllers;
 
 
 import java.util.LinkedHashMap;
