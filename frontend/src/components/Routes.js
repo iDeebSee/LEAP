@@ -11,6 +11,7 @@ import TwoFactorAuthentication from '../templates/TwoFactorAuthentication';
 import ForgotPassword from '../templates/ForgotPassword';
 import StrategyDetailView from './StrategyComponents/StrategyDetailView';
 import StrategiesView from './StrategyComponents/StrategiesView';
+import EnvironmentDetailView from '../components/EnvironmentDetailView'
 
 import {
     Switch,
