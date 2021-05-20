@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.repositories.EnvirenmentRepository;
-import ap.be.backend.repositories.StrategyRepository;
 import ap.be.backend.models.Capability;
 import ap.be.backend.models.Environment;
-import ap.be.backend.models.Strategy;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +25,6 @@ public class LEAPController {
 
     @Autowired
     private EnvirenmentRepository envirenmentRepository;
-    
-    @Autowired
-    private StrategyRepository strategyRepository;
 
     @GetMapping("/")
     public Iterable<Capability> readCapabilities() {
@@ -117,40 +112,5 @@ public class LEAPController {
         envirenmentRepository.deleteById(id);
     }
     
-    
-
-
-    @GetMapping("/strategy")
-    public Iterable<Strategy> readStrategies() {
-        return strategyRepository.findAll();
-    }
-
-    @GetMapping("/strategy/{id}")
-    public Strategy readStrategy(@PathVariable("id") String id) {
-        return strategyRepository.findById(id).orElseThrow(RuntimeException::new);
-    }
-
-    @PostMapping("/strategy")
-    public Strategy createStrategy(@RequestBody LinkedHashMap<Object, Object> data) {
-        Strategy newStrategy = new Strategy();
-
-        newStrategy.setName(data.get("name").toString());
-        return strategyRepository.save(newStrategy);
-    }
-
-    @PutMapping("/strategy/{id}")
-    public Strategy updStrategy(@PathVariable("id") String id, @RequestBody Strategy newStrategy) {
-        Strategy strategy = strategyRepository.findById(id).orElseThrow(RuntimeException::new);
-        if(!newStrategy.getName().isBlank())
-            strategy.setName(newStrategy.getName());
-        return strategyRepository.save(strategy);
-    }
-
-    @DeleteMapping("/strategy/{id}")
-    public void deleteStrategy(@PathVariable("id") String id) {
-
-        strategyRepository.deleteById(id);
-    }
-
 
 }
