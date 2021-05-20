@@ -19,7 +19,7 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom'
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
-import CapabilityService from "../../services/CapabilityService";
+import CapabilityService from "../../services/Capability.service";
 import _ from 'lodash';
 
 const useStyles = (makeStyles((theme) => ({
@@ -66,7 +66,7 @@ const CapabilityList = (props) => {
     }
 
     const deleteCapability = () => {
-        props.onCardDelete(id);
+        props.onDelete(id);
         closeDeleteDialog();
     }
     
