@@ -24,6 +24,8 @@ export default function Routes() {
             <Route exact path="/home" component={Index}/>
             <Route exact path="/capabilities" component={CapabilitiesView}/>
             <Route exact path="/capabilities/:id" component={CapabilityDetailView}/>
+            <Route exact path="/Environment/:id" component={EnvironmentDetailView}/>
+
             <Route exact path="/applications" component={Applications}/>
             <Route exact path="/strategy" component={StrategiesView}/>
             <Route exact path="/strategy/:id" component={StrategyDetailView}/>

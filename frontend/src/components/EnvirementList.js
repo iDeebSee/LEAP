@@ -29,7 +29,7 @@ const useStyles = (makeStyles((theme) => ({
         flexDirection: 'column',
     },
     fixedHeight: {
-        height: 240,
+        height: "42rem",
     },
     dialog: {
         '& .MuiTextField-root': {
@@ -37,6 +37,11 @@ const useStyles = (makeStyles((theme) => ({
             width: '100%'
         }
     },
+    listSubHeader: {
+        backgroundColor: "lightgrey",
+        margin: 0,
+        width: "100%"
+    }
 })));
 
 const EnvirementList = (props) => {
@@ -143,13 +148,13 @@ const EnvirementList = (props) => {
     return(
         <Paper className={clsx(classes.paper, classes.fixedHeight)}>
             <List>
-                <ListSubheader>Envirement list</ListSubheader>
+            <ListSubheader className={classes.listSubHeader}>Environment list</ListSubheader>
                 {Environments.map(env => {
                     return (
                         <ListItem key={nanoid()}>
                             <ListItemText>{env.name}</ListItemText>
                             <ButtonGroup>
-                                <Button component={Link} to={`/environments/${env.id}`}>View</Button>
+                                <Button component={Link} to={`/Environment/${env.id}`}>View</Button>
                                 <Button onClick={() => openEditDialog(env)}>Edit</Button>
                                 <Button onClick={() => openDeleteDialog(env.id)}>Delete</Button>
                             </ButtonGroup>
