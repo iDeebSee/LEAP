@@ -154,7 +154,7 @@ const EnvirementList = (props) => {
                         <ListItem key={nanoid()}>
                             <ListItemText>{env.name}</ListItemText>
                             <ButtonGroup>
-                                <Button component={Link} to={`/environments/${env.id}`}>View</Button>
+                                <Button component={Link} to={`/Environment/${env.id}`}>View</Button>
                                 <Button onClick={() => openEditDialog(env)}>Edit</Button>
                                 <Button onClick={() => openDeleteDialog(env.id)}>Delete</Button>
                             </ButtonGroup>
