@@ -10,16 +10,17 @@ import {
     makeStyles,
     DialogTitle,
     DialogContent,
-    DialogContentText,
     DialogActions,
     TextField,
-    MenuItem
+    MenuItem,
+    DialogContentText,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link } from 'react-router-dom'
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
-import EnvironmentService from "../services/EnvironmentService";
+import StrategyService from "../../services/StrategyService";
+import _ from 'lodash';
 
 const useStyles = (makeStyles((theme) => ({
     paper: {
@@ -44,17 +45,15 @@ const useStyles = (makeStyles((theme) => ({
     }
 })));
 
-const EnvirementList = (props) => {
+const StrategyList = (props) => {
     const classes = useStyles(),
-    Environments = props.data,
+    strategies = props.data,
     [openEdit, setOpenedit] = useState(false),
     [openDelete, setOpenDelete] = useState(false),
-    [open, setOpen] = useState(false),
     [newName, setNewName] = useState(''),
-    [currentEnv, setCurrentEnv] = useState(null),
-    [newDesc, setNewDesc] = useState(''),
-    [id, setId] = useState('');
-
+    [newParentId, setNewParentId] = useState(null),
+    [id, setId] = useState(''),
+    [currentStrat, setCurrentStrat] = useState(null);
 
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
@@ -65,98 +64,92 @@ const EnvirementList = (props) => {
         setOpenDelete(false);
     }
 
-    const deleteEnvironment = () => {
+    const deleteStrategy = () => {
         props.onCardDelete(id);
         closeDeleteDialog();
-        
     }
+    
     const deleteDialog = (
         <Dialog open={openDelete} onClose={() => {closeDeleteDialog()}} className={classes.dialog}>
-            <DialogTitle>Are you sure you want to delete this capability?</DialogTitle>
+            <DialogTitle>Are you sure you want to delete this strategy?</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    This action cannot be reversed! Deleting this capability will also delete all of it's children!
+                    This action cannot be reversed! 
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <ButtonGroup>
-                    <Button variant="text" color="primary" onClick={() => {deleteEnvironment()}}>Delete</Button>
+                    <Button variant="text" color="primary" onClick={() => {deleteStrategy()}}>Delete</Button>
                     <Button variant="text" color="primary" onClick={() => {closeDeleteDialog()}}>Cancel</Button>
                 </ButtonGroup>
             </DialogActions>
-        </Dialog>);
+        </Dialog>
+    );
+    
 
-    const editEnvironment = () => {
-        let data = {"name": newName, "description": newDesc};
-       
-        
-        EnvironmentService.update(id, data)
+    const editStrategy = () => {
+        let data = {"name": newName};
+        if(newParentId != null) {
+            data.parentId = newParentId;
+        }
+        StrategyService.update(id, data)
         .then(res => {
             console.log(res.data);
-            props.getenvironments();
+            props.getStrategies();
             setOpenedit(false);
         })
         .catch(e => {
             console.log(e);
         });
-    }
-    const openEditDialog = (environment) => {
-        setCurrentEnv(environment);
-        setId(environment.id);
-        setNewName(environment.name);
-        setNewDesc(environment.description);
+    };
+
+
+    const openEditDialog = (strategy) => {
+        setCurrentStrat(strategy);
+        setId(strategy.id);
+        setNewName(strategy.name);
         setOpenedit(true);
     };
+
     const closeEditDialog = () => {
         setOpenedit(false);
-        setCurrentEnv(null);
+        setCurrentStrat(null);
     }
+
     const editDialog = (
         <Dialog open={openEdit} onClose={() => {closeEditDialog()}} className={classes.dialog}>
-            <DialogTitle>Edit capability</DialogTitle>
+            <DialogTitle>Edit strategy</DialogTitle>
             <DialogContent>
                 <TextField
                         label="Name"
                         type="text"
                         variant="filled"
                         color="primary"
-                        defaultValue={currentEnv === null ? "" : currentEnv.name}
+                        defaultValue={currentStrat === null ? "" : currentStrat.name}
                         onChange={e => setNewName(e.target.value)}
                     />
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Description"
-                        type="text"
-                        variant="filled"
-                        color="primary"
-                        multiline
-                        rowsMax={6}
-                        rows={6}
-                        defaultValue={currentEnv === null ? "" : currentEnv.description}
-                        onChange={e => setNewDesc(e.target.value)}
-                    />
-                    
             </DialogContent>
             <DialogActions>
                 <ButtonGroup>
-                    <Button variant="text" color="primary" onClick={() => {editEnvironment()}}>Edit</Button>
+                    <Button variant="text" color="primary" onClick={() => {editStrategy()}}>Edit</Button>
                     <Button variant="text" color="primary" onClick={() => {closeEditDialog()}}>Cancel</Button>
                 </ButtonGroup>
             </DialogActions>
         </Dialog>
     );
+    
     return(
         <Paper className={clsx(classes.paper, classes.fixedHeight)}>
             <List>
-            <ListSubheader className={classes.listSubHeader}>Environment list</ListSubheader>
-                {Environments.map(env => {
+                <ListSubheader className={classes.listSubHeader}>Strategies</ListSubheader>
+                {strategies.map(strat => {
                     return (
                         <ListItem key={nanoid()}>
-                            <ListItemText>{env.name}</ListItemText>
+                            <ListItemText>{strat.name}</ListItemText>
                             <ButtonGroup>
-                                <Button component={Link} to={`/Environment/${env.id}`}>View</Button>
-                                <Button onClick={() => openEditDialog(env)}>Edit</Button>
-                                <Button onClick={() => openDeleteDialog(env.id)}>Delete</Button>
+                                <Button component={Link} to={`/strategy/${strat.id}`}>View</Button>
+                                <Button onClick={() => {openEditDialog(strat)}}>Edit</Button>
+                                <Button onClick={() => {openDeleteDialog(strat.id)}}>Delete</Button>
                             </ButtonGroup>
                         </ListItem>
                     );
@@ -164,10 +157,8 @@ const EnvirementList = (props) => {
             </List>
             {editDialog}
             {deleteDialog}
-            
         </Paper>
-
     );
 };
 
-export default EnvirementList;
+export default StrategyList;

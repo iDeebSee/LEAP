@@ -11,10 +11,10 @@ import {
     DialogContentText, 
 } from "@material-ui/core";
 import React, { Component } from "react";
+import StrategyService from "../../services/StrategyService";
 import { nanoid } from 'nanoid';
 import { withStyles } from '@material-ui/core/styles';
-import EnvirementList from '../components/EnvirementList';
-import EnvironmentService from "../services/EnvironmentService";
+import StrategyList from './StrategyList'
 
 const styles = theme => ({
     root: {
@@ -45,62 +45,62 @@ const styles = theme => ({
     }
 });
 
-class EnvirenmentView extends Component {
+class StrategiesView extends Component {
     constructor(props) {
         super(props);
 
-        this.getenvironments = this.getenvironments.bind(this);
+        this.getStrategies = this.getStrategies.bind(this);
         this.onCardDelete = this.onCardDelete.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
-        this.createEnvironment = this.createEnvironment.bind(this);
+        this.createStrategy = this.createStrategy.bind(this);
 
         this.state = {
-            environments:[],
+            strategies: [],
             dialogText: '',
             open: false
         };
     }
 
     componentDidMount() {
-        this.getenvironments();
+        this.getStrategies();
     }
 
-    getenvironments() {
-        EnvironmentService.getAll()
+    getStrategies() {
+        StrategyService.getAll()
             .then(res => {
-                this.setState({environments: res.data});
-                console.log("incoming environments", res.data);
+                this.setState({strategies: res.data});
+                console.log("incoming strategies", res.data);
             })
             .catch(e => {
                 console.log(e);
             });
     }
 
-    onCardDelete(environmentID) {
-        EnvironmentService.delete(environmentID)
+    onCardDelete(strategyId) {
+        StrategyService.delete(strategyId)
         .then(() => {
-            this.getenvironments();
+            this.getStrategies();
         });
     }
 
-    createEnvironment() {
+
+
+    createStrategy() {
         let text = "";
-        if(this.state.newEnvironmentName !== '' && this.state.newEnvironmentDescription !== '') {
-            let data = {"name": this.state.newEnvironmentName, "description": this.state.newEnvironmentDescription};
-            
-            EnvironmentService.create(data)
+        if(this.state.newStrategyName !== '') {
+            let data = {"name": this.state.newStrategyName};
+
+            StrategyService.create(data)
                 .then(res => {
                     console.log(res);
-                    this.setState({newEnvironmentName: '', newEnvironmentDescription: ''})
-                    this.getenvironments();
+                    this.setState({newStrategyName: ''})
+                    this.getStrategies();
                 })
                 .catch(e => {
                     console.log(e);
                 })
-        } else {
-            text = "Please make sure all required fields are filled in";
-        }
+        } 
         this.setState({open: false, dialogText: text});
     }
 
@@ -117,12 +117,12 @@ class EnvirenmentView extends Component {
         const { classes } = this.props;
         return(
             <Container>
-                <EnvirementList data={this.state.environments} getenvironments={this.getenvironments} onCardDelete={this.onCardDelete}/>
+                <StrategyList data={this.state.strategies} getStrategies={this.getStrategies} onCardDelete={this.onCardDelete}/>
                 <ButtonGroup className={classes.buttonGroup}>
-                    <Button variant="contained" color="primary" onClick={this.handleOpen}>Add environment</Button>
+                    <Button variant="contained" color="primary" onClick={this.handleOpen}>Add strategy</Button>
                 </ButtonGroup>
                 <Dialog onClose={this.handleClose} open={this.state.open} className={classes.dialog}>
-                    <DialogTitle>Create new Envirement</DialogTitle>
+                    <DialogTitle>Create new strategy</DialogTitle>
                     <DialogContent>
                         <DialogContentText>{this.state.dialogText}</DialogContentText>
                         <TextField
@@ -131,27 +131,13 @@ class EnvirenmentView extends Component {
                             variant="filled"
                             color="primary"
                             required
-                            onChange={e => this.setState({newEnvironmentName: e.target.value})}
+                            onChange={e => this.setState({newStrategyName: e.target.value})}
                         />
-                        <TextField
-                            id="outlined-multiline-static"
-                            label="Description"
-                            type="text"
-                            variant="filled"
-                            color="primary"
-                            required
-                            multiline
-                            rowsMax={6}
-                            rows={6}
-                            onChange={e => this.setState({newEnvironmentDescription: e.target.value})}
-                        />
-                        
-                          
-                        
+
                     </DialogContent>
                     <DialogActions>
                         <ButtonGroup>
-                            <Button variant="text" color="primary" onClick={this.createEnvironment}>Create</Button>
+                            <Button variant="text" color="primary" onClick={this.createStrategy}>Create</Button>
                             <Button variant="text" color="primary" onClick={this.handleClose}>Cancel</Button>
                         </ButtonGroup>
                     </DialogActions>
@@ -161,4 +147,4 @@ class EnvirenmentView extends Component {
     }
 }
 
-export default withStyles(styles)(EnvirenmentView);
+export default withStyles(styles)(StrategiesView);
