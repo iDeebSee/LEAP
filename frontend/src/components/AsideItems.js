@@ -7,6 +7,7 @@ import LayersIcon from '@material-ui/icons/Layers';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import {Link} from 'react-router-dom';
+import AuthService from '../services/Auth.service';
 
 export const mainListItems = (
     <div>
@@ -40,7 +41,7 @@ export const mainListItems = (
 export const secondaryListItems = (
     <div>
         {/* <ListSubheader inset>Saved reports</ListSubheader> */}
-        <ListItem button component={Link} to="/SignIn">
+        <ListItem button onClick={() => {AuthService.logout();}}>
             <ListItemIcon>
                 <ExitToAppIcon />
             </ListItemIcon>

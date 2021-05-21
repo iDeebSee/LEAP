@@ -20,10 +20,11 @@ import {
     Container,
     Grid,
 } from '@material-ui/core';
-import Routes from './components/Routes';
+import Routes, { UserRoutes } from './components/Routes';
 import {
     BrowserRouter as Router
 } from "react-router-dom";
+import SignIn from './templates/SignIn';
 
 // import Chart from './Chart';
 // import Deposits from './Deposits';
@@ -108,6 +109,11 @@ const useStyles = makeStyles((theme) => ({
     fixedHeight: {
         height: 240,
     },
+    centered: {
+        display: 'flex',
+        justifyContent: 'center',
+        paddingTop: '10rem'
+    }
 }));
 
 export default function App() {
@@ -120,76 +126,93 @@ export default function App() {
         setOpen(false);
     };
 
-    return (
-    <Router baseName='/Leap'>
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-                <Toolbar className={classes.toolbar} >
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+    if(localStorage.length > 0) {
+        return (
+            <Router baseName='/Leap'>
+                <div className={classes.root}>
+                    <CssBaseline />
+                    <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+                        <Toolbar className={classes.toolbar} >
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                                Dashboard
+                            </Typography>
+                            <IconButton color="inherit">
+                                {/* <Badge badgeContent={4} color="secondary">
+                                    <NotificationsIcon />
+                                </Badge> */}
+                                <Avatar alt="Profile icon" src="" className={classes.large} />
+                            </IconButton>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        variant="permanent"
+                        classes={{
+                            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                        }}
+                        open={open}
                     >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        Dashboard
-                    </Typography>
-                    <IconButton color="inherit">
-                        {/* <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge> */}
-                        <Avatar alt="Profile icon" src="" className={classes.large} />
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                variant="permanent"
-                classes={{
-                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                }}
-                open={open}
-            >
-                <div className={classes.toolbarIcon}>
-                    <IconButton onClick={handleDrawerClose}>
-                        <ChevronLeftIcon />
-                    </IconButton>
+                        <div className={classes.toolbarIcon}>
+                            <IconButton onClick={handleDrawerClose}>
+                                <ChevronLeftIcon />
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <List>{mainListItems}</List>
+                        <Divider />
+                        <List>{secondaryListItems}</List>
+                    </Drawer>
+                    <main className={classes.content}>
+                        <div className={classes.appBarSpacer} />
+                        <Container maxWidth="lg" className={classes.container}>
+                            <Grid container spacing={3}>
+                                {/* Chart */}
+                                <Grid item xs={12} md={12} lg={12}>
+                                    <Routes/>
+                                    {/* </Grid> */}
+                                    {/* Recent Deposits */}
+                                    {/* <Grid item xs={12} md={4} lg={3}> */}
+                                    {/* <Paper className={fixedHeightPaper}> */}
+                                    {/* <Deposits /> */}
+                                    {/* </Paper> */}
+                                    {/* </Grid> */}
+                                    {/* Recent Orders */}
+                                    {/* <Grid item xs={12}> */}
+                                    {/* <Paper className={classes.paper}> */}
+                                    {/* <Orders /> */}
+                                    {/* </Paper> */}
+                                </Grid>
+                            </Grid>
+                        </Container>
+                    </main>
                 </div>
-                <Divider />
-                <List>{mainListItems}</List>
-                <Divider />
-                <List>{secondaryListItems}</List>
-            </Drawer>
-            <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <Grid container spacing={3}>
-                        {/* Chart */}
-                        <Grid item xs={12} md={12} lg={12}>
-                            <Routes/>
-                            {/* </Grid> */}
-                            {/* Recent Deposits */}
-                            {/* <Grid item xs={12} md={4} lg={3}> */}
-                            {/* <Paper className={fixedHeightPaper}> */}
-                            {/* <Deposits /> */}
-                            {/* </Paper> */}
-                            {/* </Grid> */}
-                            {/* Recent Orders */}
-                            {/* <Grid item xs={12}> */}
-                            {/* <Paper className={classes.paper}> */}
-                            {/* <Orders /> */}
-                            {/* </Paper> */}
-                        </Grid>
-                    </Grid>
+                <Box pt={4}>
+                    <Copyright />
+                </Box>
+            </Router>
+            );
+    } else {
+        return(
+        <Router>
+            <Container className={clsx(classes.container && classes.centered)}>
+                <CssBaseline/>
+                <div>
+                    <SignIn/>
                     <Box pt={4}>
                         <Copyright />
                     </Box>
-                </Container>
-            </main>
-        </div>
-    </Router>
-    );
+                </div>
+            </Container>
+        </Router>
+        );
+    }
+    
 }

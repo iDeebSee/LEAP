@@ -6,11 +6,20 @@ class AuthService {
                 email,
                 password
             })
-
+            .then(res => {
+                if(res.data.accessToken) {
+                    localStorage.setItem("user", JSON.stringify(res.data));
+                }
+                return res.data;
+            })
+            .catch(e =>{
+                console.error(e);
+            })
     }
 
     logout() {
         localStorage.removeItem("user");
+        window.location.reload();
     }
 
     register(username, email, password) {
