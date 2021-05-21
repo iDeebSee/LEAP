@@ -19,7 +19,7 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom'
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
-import CapabilityService from "../services/CapabilityService";
+import CapabilityService from "../services/Capability.service";
 
 const useStyles = (makeStyles((theme) => ({
     paper: {

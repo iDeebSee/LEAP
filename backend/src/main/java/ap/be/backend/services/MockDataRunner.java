@@ -1,13 +1,16 @@
-package ap.be.backend.security.services;
+package ap.be.backend.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import ap.be.backend.repositories.CapabilityRepository;
+import ap.be.backend.repositories.UserRepository;
 import ap.be.backend.models.Capability;
+import ap.be.backend.models.User;
 
 
 /*
@@ -21,11 +24,15 @@ public class MockDataRunner implements CommandLineRunner {
     @Autowired 
     private CapabilityRepository capabilityRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
         
         capabilityRepository.deleteAll();
+        userRepository.deleteAll();
 
         Capability capability1 = new Capability("test 1", "this is the 1st test capability", null);
         Capability capability2 = new Capability("test 2", "this is the 2nd test capability", null);
@@ -47,6 +54,12 @@ public class MockDataRunner implements CommandLineRunner {
 
         capabilityRepository.findAll().forEach(cap -> {
             logger.info("{}",cap);
+        });
+
+        userRepository.save(new User("Jonas", "phoenixleague01@gmail.com", new BCryptPasswordEncoder().encode(new StringBuilder("1Divad!!"))));
+
+        userRepository.findAll().forEach(user -> {
+            logger.info("{}", user);
         });
     }
     

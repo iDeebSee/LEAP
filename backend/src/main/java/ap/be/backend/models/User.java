@@ -13,7 +13,7 @@ public class User {
     @Id
     private String id;
 
-    private String username;
+    private String name;
 
     private String email;
 
@@ -24,8 +24,14 @@ public class User {
 
     public User() {}
 
-    public User(String username, String email, String password) {
-        this.username = username;
+    /**
+     * 
+     * @param name the name of the new user, has to be unique. Minimum of 3 letters
+     * @param email the email of the new user, has to be well formed and unique
+     * @param password the password of the new user. Minimum of 8 letters, encrypted in the database
+     */
+    public User(String name, String email, String password) {
+        this.name = name;
         this.email = email;
         this.password = password;
     }
@@ -38,12 +44,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String username) {
+        this.name = username;
     }
 
     public String getEmail() {

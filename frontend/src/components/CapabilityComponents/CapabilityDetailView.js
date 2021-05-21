@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CapabilityService from "../../services/CapabilityService";
+import CapabilityService from "../../services/Capability.service";
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import clsx from 'clsx';

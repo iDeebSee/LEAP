@@ -11,7 +11,7 @@ import {
     DialogContentText, 
 } from "@material-ui/core";
 import React, { Component } from "react";
-import CapabilityService from "../services/CapabilityService";
+import CapabilityService from "../services/Capability.service";
 import { nanoid } from 'nanoid';
 import { withStyles } from '@material-ui/core/styles';
 import EnvirementList from '../components/EnvirementList';
