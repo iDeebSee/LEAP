@@ -1,9 +1,13 @@
 package ap.be.backend;
 
+import ap.be.backend.Repositories.ApplicationRepository;
+import ap.be.backend.models.Application;
+import ap.be.backend.models.TIMEValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import ap.be.backend.models.Capability;
@@ -12,6 +16,8 @@ import ap.be.backend.models.Strategy;
 import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.repositories.EnvirenmentRepository;
 import ap.be.backend.repositories.StrategyRepository;
+
+import java.time.LocalDate;
 
 
 /*
@@ -28,6 +34,9 @@ public class MockDataRunner implements CommandLineRunner {
     private EnvirenmentRepository envirenmentRepository;
     @Autowired 
     private StrategyRepository strategyRepository;
+
+    @Autowired
+    private ApplicationRepository applicationRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -83,5 +92,4 @@ public class MockDataRunner implements CommandLineRunner {
 
         strategyRepository.findAll().forEach(strat ->{logger.info("{}", strat);});
     }
-    
 }
