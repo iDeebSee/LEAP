@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from './components/AsideItems';
-import SimpleModal from './components/PopUp'
 import Copyright from './components/Copyright'
 
 import { 
@@ -20,11 +19,10 @@ import {
     Avatar,
     Container,
     Grid,
-    Paper,
 } from '@material-ui/core';
 import Routes from './components/Routes';
 import {
-  BrowserRouter as Router
+    BrowserRouter as Router
 } from "react-router-dom";
 
 // import Chart from './Chart';
@@ -121,10 +119,9 @@ export default function App() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
-      <Router baseName='/Leap'>
+    <Router baseName='/Leap'>
         <div className={classes.root}>
             <CssBaseline />
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -173,10 +170,6 @@ export default function App() {
                         {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
                             <Routes/>
-                            <Paper className={fixedHeightPaper}>
-                            <SimpleModal title="izan" body="3alal" name="Add Capability"></SimpleModal>
-                                {/* <Chart /> */}
-                            </Paper>
                             {/* </Grid> */}
                             {/* Recent Deposits */}
                             {/* <Grid item xs={12} md={4} lg={3}> */}
@@ -197,6 +190,6 @@ export default function App() {
                 </Container>
             </main>
         </div>
-      </Router>
+    </Router>
     );
 }

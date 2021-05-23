@@ -11,10 +11,10 @@ import {
     DialogContentText, 
 } from "@material-ui/core";
 import React, { Component } from "react";
+import CapabilityService from "../../services/CapabilityService";
 import { nanoid } from 'nanoid';
 import { withStyles } from '@material-ui/core/styles';
-import EnvirementList from '../components/EnvirementList';
-import EnvironmentService from "../services/EnvironmentService";
+import CapabilityList from './CapabilityList';
 
 const styles = theme => ({
     root: {
@@ -45,55 +45,57 @@ const styles = theme => ({
     }
 });
 
-class EnvirenmentView extends Component {
+class CapabilitiesView extends Component {
     constructor(props) {
         super(props);
 
-        this.getenvironments = this.getenvironments.bind(this);
+        this.getCapabilities = this.getCapabilities.bind(this);
         this.onCardDelete = this.onCardDelete.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
-        this.createEnvironment = this.createEnvironment.bind(this);
+        this.createCapability = this.createCapability.bind(this);
 
         this.state = {
-            environments:[],
+            capabilities: [],
             dialogText: '',
             open: false
         };
     }
 
     componentDidMount() {
-        this.getenvironments();
+        this.getCapabilities();
     }
 
-    getenvironments() {
-        EnvironmentService.getAll()
+    getCapabilities() {
+        CapabilityService.getAll()
             .then(res => {
-                this.setState({environments: res.data});
-                console.log("incoming environments", res.data);
+                this.setState({capabilities: res.data});
+                console.log("incoming capabilities", res.data);
             })
             .catch(e => {
                 console.log(e);
             });
     }
 
-    onCardDelete(environmentID) {
-        EnvironmentService.delete(environmentID)
+    onCardDelete(capabilityId) {
+        CapabilityService.delete(capabilityId)
         .then(() => {
-            this.getenvironments();
+            this.getCapabilities();
         });
     }
 
-    createEnvironment() {
+    createCapability() {
         let text = "";
-        if(this.state.newEnvironmentName !== '' && this.state.newEnvironmentDescription !== '') {
-            let data = {"name": this.state.newEnvironmentName, "description": this.state.newEnvironmentDescription};
-            
-            EnvironmentService.create(data)
+        if(this.state.newCapabilityName !== '' && this.state.newCapabilityDescription !== '') {
+            let data = {"name": this.state.newCapabilityName, "description": this.state.newCapabilityDescription};
+            if(this.state.newCapabilityParent != null) {
+                data.parentId = this.state.newCapabilityParent.id;
+            }
+            CapabilityService.create(data)
                 .then(res => {
                     console.log(res);
-                    this.setState({newEnvironmentName: '', newEnvironmentDescription: ''})
-                    this.getenvironments();
+                    this.setState({newCapabilityName: '', newCapabilityDescription: '', newCapabilityParent: {}})
+                    this.getCapabilities();
                 })
                 .catch(e => {
                     console.log(e);
@@ -117,12 +119,13 @@ class EnvirenmentView extends Component {
         const { classes } = this.props;
         return(
             <Container>
-                <EnvirementList data={this.state.environments} getenvironments={this.getenvironments} onCardDelete={this.onCardDelete}/>
+                <CapabilityList data={this.state.capabilities} getCapabilities={this.getCapabilities} onCardDelete={this.onCardDelete}/>
                 <ButtonGroup className={classes.buttonGroup}>
-                    <Button variant="contained" color="primary" onClick={this.handleOpen}>Add environment</Button>
+                    <Button variant="contained" color="primary" onClick={this.handleOpen}>Add Capability</Button>
+                    
                 </ButtonGroup>
                 <Dialog onClose={this.handleClose} open={this.state.open} className={classes.dialog}>
-                    <DialogTitle>Create new Envirement</DialogTitle>
+                    <DialogTitle>Create new capability</DialogTitle>
                     <DialogContent>
                         <DialogContentText>{this.state.dialogText}</DialogContentText>
                         <TextField
@@ -131,7 +134,7 @@ class EnvirenmentView extends Component {
                             variant="filled"
                             color="primary"
                             required
-                            onChange={e => this.setState({newEnvironmentName: e.target.value})}
+                            onChange={e => this.setState({newCapabilityName: e.target.value})}
                         />
                         <TextField
                             id="outlined-multiline-static"
@@ -143,15 +146,31 @@ class EnvirenmentView extends Component {
                             multiline
                             rowsMax={6}
                             rows={6}
-                            onChange={e => this.setState({newEnvironmentDescription: e.target.value})}
+                            onChange={e => this.setState({newCapabilityDescription: e.target.value})}
                         />
-                        
-                          
-                        
+                        <TextField
+                            label="Parent"
+                            select
+                            variant="filled"
+                            color="primary"
+                            defaultValue='None'
+                            onChange={e => this.setState({newCapabilityParent: (e.target.value === "None" ? null : e.target.value) })}
+                        >
+                            <MenuItem value='None'>
+                                None
+                            </MenuItem>
+                            {this.state.capabilities.map(cap => {
+                                return(
+                                    <MenuItem key={nanoid()} value={cap}>
+                                        {cap.name}
+                                    </MenuItem>
+                                )
+                            })}
+                        </TextField>
                     </DialogContent>
                     <DialogActions>
                         <ButtonGroup>
-                            <Button variant="text" color="primary" onClick={this.createEnvironment}>Create</Button>
+                            <Button variant="text" color="primary" onClick={this.createCapability}>Create</Button>
                             <Button variant="text" color="primary" onClick={this.handleClose}>Cancel</Button>
                         </ButtonGroup>
                     </DialogActions>
@@ -161,4 +180,4 @@ class EnvirenmentView extends Component {
     }
 }
 
-export default withStyles(styles)(EnvirenmentView);
+export default withStyles(styles)(CapabilitiesView);

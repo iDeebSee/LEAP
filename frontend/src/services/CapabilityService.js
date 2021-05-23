@@ -5,20 +5,20 @@ class CapabilityService {
         return http.get("/");
     }
 
-    get(name) {
-        return http.get(`/${name}`);
+    get(id) {
+        return http.get(`/${id}`);
     }
 
     create(data) {
-        return http.post("/add", data);
+        return http.post("/", data);
     }
 
-    update(name, data) {
-        return http.put(`/${name}`, data);
+    update(id, data) {
+        return http.put(`/${id}`, data);
     }
 
-    delete(name) {
-        return http.delete(`/${name}`);
+    delete(id) {
+        return http.delete(`/${id}`);
     }
 
     deleteAll() {

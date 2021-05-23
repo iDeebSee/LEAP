@@ -3,15 +3,16 @@ import { Link } from 'react-router-dom';
 import {
     Card,
     CardContent,
-    CardActions,
-    ButtonGroup,
-    Button,
     Grid,
     withStyles,
-    Typography
+    Typography,
+    Button,
+    CardActions,
+    ButtonGroup
 } from '@material-ui/core';
 import { nanoid } from 'nanoid';
-import Lvl3CapabilityCard from "./Lvl3CapabilityCard";
+import Lvl2CapabilityCard from "./Lvl2CapabilityCard";
+import _ from 'lodash'
 
 const styles = (theme) => ({
     root: {
@@ -33,7 +34,7 @@ const styles = (theme) => ({
     },
 });
 
-class Lvl2CapabilityCard extends Component {
+class Lvl1CapabilityCard extends Component {
     constructor(props) {
         super(props);
 
@@ -41,42 +42,50 @@ class Lvl2CapabilityCard extends Component {
 
         this.state = {
             capability: this.props.data.capability,
-            children: this.props.data.children,
+            lvl2Children: this.props.data.lvl2Children,
+            lvl3Children: this.props.data.lvl3Children,
         }
     }
 
     handleDelete(capability) {
-        this.setState({capability: {}, children: []});
+        this.setState({capability: {}, lvl2Children: [], lvl3Children: []});
         this.props.handleDelete(capability);
     }
 
     render() {
-        const { classes } = this.props, { capability, children } = this.state;
+        const { classes } = this.props, { capability, lvl2Children, lvl3Children } = this.state;
 
-        let Lvl3CardGrid;
-        if(children.length > 0) {
-            Lvl3CardGrid =
+        let Lvl2CardGrid;
+        if(lvl2Children.length > 0) {
+            Lvl2CardGrid =
             <Grid container spacing={2}>
                 {
-                    children.map(lvl3Cap => {
-                        return (
-                            <Lvl3CapabilityCard key={nanoid()} data={lvl3Cap} handleDelete={this.handleDelete}/>
+                    lvl2Children.map(lvl2Cap => {
+                        let children = [];
+                        lvl3Children.forEach(lvl3Cap => {
+                            if(_.isEqual(lvl3Cap.parent, lvl2Cap)) {
+                                children.push(lvl3Cap);
+                            }
+                        });
+                        return(
+                            <Lvl2CapabilityCard key={nanoid()} data={{capability: lvl2Cap, children: children}} handleDelete={this.handleDelete}/>
                         )
                     })
                 }
             </Grid>
         }
+
         return(
             <Grid item xs>
                 <Card className={classes.root}>
                     <CardContent>
                         <Typography className={classes.title} color="textSecondary" gutterBottom>{capability.name}</Typography>
-                        {Lvl3CardGrid}
+                        {Lvl2CardGrid}
                     </CardContent>
                     <CardActions>
                         <ButtonGroup color="primary" className={classes.buttonGroup}>
-                            <Button component={Link} to={`/view/${capability.name}`} className={classes.button}>View</Button>
-                            <Button className={classes.button} onClick={() => this.handleDelete(capability.name)}>Delete</Button>
+                            <Button component={Link} to={`/capabilities/${capability.id}`} className={classes.button}>View</Button>
+                            <Button className={classes.button} onClick={() => this.handleDelete(capability.id)}>Delete</Button>
                         </ButtonGroup>
                     </CardActions>
                 </Card>
@@ -85,4 +94,4 @@ class Lvl2CapabilityCard extends Component {
     }
 }
 
-export default withStyles(styles)(Lvl2CapabilityCard);
+export default withStyles(styles)(Lvl1CapabilityCard);

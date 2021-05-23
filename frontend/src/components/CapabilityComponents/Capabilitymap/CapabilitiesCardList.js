@@ -1,6 +1,6 @@
-import { Grid } from "@material-ui/core";
+import { Container, Grid, } from "@material-ui/core";
 import React, { Component } from "react";
-import CapabilityService from "../../services/CapabilityService";
+import CapabilityService from "../../../services/CapabilityService";
 import Lvl1CapabilityCard from './Lvl1CapabilityCard';
 import { nanoid } from 'nanoid';
 import { withStyles } from '@material-ui/core/styles';
@@ -13,12 +13,26 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper,
         borderRadius: '5px',
     },
-    card: {
-        minWidth: 275,
+    paper: {
+        padding: theme.spacing(2),
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'column',
     },
-    title: {
-        fontSize: 14,
+    fixedHeight: {
+        height: 240,
     },
+    buttonGroup: {
+        '& a, button': {
+            textTransform: 'none',
+        }
+    },
+    dialog: {
+        '& .MuiTextField-root': {
+            marginBottom: theme.spacing(2),
+            width: '100%'
+        }
+    }
 });
 
 class CapabilitiesCardList extends Component {
@@ -28,7 +42,8 @@ class CapabilitiesCardList extends Component {
         this.getCapabilities = this.getCapabilities.bind(this);
         this.getCapabilityChildren = this.getCapabilityChildren.bind(this);
         this.sortCapabilities = this.sortCapabilities.bind(this);
-        this.onCardDelete = this.onCardDelete.bind(this);
+
+        this.newCapabilityName = React.createRef();
 
         this.state = {
             capabilities: [],
@@ -40,7 +55,6 @@ class CapabilitiesCardList extends Component {
 
     componentDidMount() {
         this.getCapabilities();
-
     }
 
     getCapabilities() {
@@ -75,13 +89,6 @@ class CapabilitiesCardList extends Component {
         this.setState({lvl1Capabilities: lvl1Capabilities, lvl2Capabilities: lvl2Capabilities, lvl3Capabilities: lvl3Capabilities})
     }
 
-    onCardDelete(capabilityName) {
-        CapabilityService.delete(capabilityName)
-        .then(() => {
-            this.getCapabilities();
-        });
-    }
-
     getCapabilityChildren(capability) {
         const { lvl2Capabilities, lvl3Capabilities } = this.state;
         let lvl2Children = [], lvl3Children = [];
@@ -104,13 +111,15 @@ class CapabilitiesCardList extends Component {
     render() {
         const { lvl1Capabilities } = this.state;
         return(
-            <Grid container spacing={3}>
-                {lvl1Capabilities.map(lvl1cap => {
-                    return(
-                        <Lvl1CapabilityCard key={nanoid()} data={this.getCapabilityChildren(lvl1cap)} handleDelete={this.onCardDelete}/>
-                    )
-                })}
-            </Grid>
+            <Container>
+                <Grid container spacing={3}>
+                    {lvl1Capabilities.map(lvl1cap => {
+                        return(
+                            <Lvl1CapabilityCard key={nanoid()} data={this.getCapabilityChildren(lvl1cap)} handleDelete={this.onCardDelete}/>
+                        )
+                    })}
+                </Grid>
+            </Container>
         )
     }
 }

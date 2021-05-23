@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CapabilityService from "../../services/CapabilityService";
+import StrategyService from "../../services/StrategyService";
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import clsx from 'clsx';
@@ -16,25 +16,25 @@ const styles = theme => ({
     },
 });
 
-class CapabilityDetailView extends Component {
+class StrategyDetailView extends Component {
     constructor(props) {
         super(props);
 
-        this.getCapability = this.getCapability.bind(this);
+        this.getStrategy = this.getStrategy.bind(this);
 
         this.state = {
-            capability: {},
+            strategy: {},
         };
     }
 
     componentDidMount() {
-        this.getCapability(this.props.match.params.id);
+        this.getStrategy(this.props.match.params.id);
     }
 
-    getCapability(id) {
-        CapabilityService.get(id)
+    getStrategy(id) {
+        StrategyService.get(id)
             .then(res => {
-                this.setState({capability: res.data});
+                this.setState({strategy: res.data});
                 console.log(res.data);
             })
             .catch(e => {
@@ -45,21 +45,14 @@ class CapabilityDetailView extends Component {
     render() {
         const { classes } = this.props;
 
-        let parent = null;
-        if(this.state.capability.parent !== null && this.state.capability.parent !== undefined) {
-            parent =
-            <Grid item>
-                <Typography>Parent: {this.state.capability.parent.name}</Typography>
-            </Grid>
-        }
+        
         return(
             <Paper className={clsx(classes.paper, classes.fixedHeight)}>
                 <Grid container spacing={3}>
                     <Grid item>
-                        <Typography>Name: {this.state.capability.name}</Typography>
-                        <Typography component="p">Description: {this.state.capability.description}</Typography>
+                        <Typography>Name: {this.state.strategy.name}</Typography>
+                        
                     </Grid>
-                    {parent}
                 </Grid>
                 
             </Paper>
@@ -67,4 +60,4 @@ class CapabilityDetailView extends Component {
     }
 }
 
-export default withStyles(styles)(CapabilityDetailView);
+export default withStyles(styles)(StrategyDetailView);
