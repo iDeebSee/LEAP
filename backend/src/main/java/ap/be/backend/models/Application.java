@@ -1,6 +1,7 @@
 package ap.be.backend.models;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import org.springframework.data.annotation.Id;
 
@@ -23,7 +24,7 @@ public class Application {
     private LocalDate acquisitionDate;
     private LocalDate endOfLife;
 
-    private final int MAX_RATING = 5;
+    //private final int MAX_RATING = 5;
 
     private int currentScalability;
     private int expectedScalability;
@@ -39,6 +40,7 @@ public class Application {
     private int expectedStability;
 
     private int currentValueForMoney;
+    private TIMEValue timeValue;
 
 
     public Application() {}
@@ -60,12 +62,13 @@ public class Application {
      * @param currentStability
      * @param expectedStability
      * @param currentValueForMoney
+     * @param timeValue
      *
      */
     public Application(String name, String technology, String version, 
     double currentTotalCostPerYear, double toleratedTotalCostPerYear, LocalDate acquisitionDate, 
     LocalDate endOfLife, int currentScalability, int expectedScalability, int currentPerformance, int expectedPerformance,
-    int currentSecurityLevel, int expectedSecurityLevel,  int currentStability, int expectedStability, int currentValueForMoney ) {
+    int currentSecurityLevel, int expectedSecurityLevel,  int currentStability, int expectedStability, int currentValueForMoney, TIMEValue timeValue ) {
         this.name = name;
         this.technology = technology;
         this.version = version;
@@ -82,11 +85,12 @@ public class Application {
         this.currentStability = maxRatingControl(currentStability);
         this.expectedStability = maxRatingControl(expectedStability);
         this.currentValueForMoney = maxRatingControl(currentValueForMoney);
+        this.timeValue = timeValue;
     }
 
     public int maxRatingControl(int rating){
-        if (rating > MAX_RATING){
-            throw new IllegalArgumentException("Rating was higher than " + MAX_RATING);
+        if (rating > 5){
+            throw new IllegalArgumentException("Rating was higher than " + 5);
         }else{
             return rating;
         }
@@ -111,7 +115,7 @@ public class Application {
                 ", toleratedTotalCostPerYear=" + toleratedTotalCostPerYear +
                 ", acquisitionDate=" + acquisitionDate +
                 ", endOfLife=" + endOfLife +
-                ", MAX_RATING=" + MAX_RATING +
+                ", MAX_RATING=" + 5 +
                 ", currentScalability=" + currentScalability +
                 ", expectedScalability=" + expectedScalability +
                 ", currentPerformance=" + currentPerformance +
@@ -121,6 +125,7 @@ public class Application {
                 ", currentStability=" + currentStability +
                 ", expectedStability=" + expectedStability +
                 ", currentValueForMoney=" + currentValueForMoney +
+                ", timeValue=" + timeValue +
                 '}';
     }
 }
