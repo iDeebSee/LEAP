@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems, secondaryListItems } from './components/AsideItems';
+import { mainListItems, secondaryListItems, adminListItems } from './components/AsideItems';
 import Copyright from './components/Copyright'
 
 import { 
@@ -24,11 +24,8 @@ import Routes, { UserRoutes } from './components/Routes';
 import {
     BrowserRouter as Router
 } from "react-router-dom";
-import SignIn from './templates/SignIn';
-
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
+import AuthService from './services/Auth.service';
+import { ProtectedAdmin } from './services/ProtectRoute';
 
 const drawerWidth = 240;
 
@@ -126,7 +123,27 @@ export default function App() {
         setOpen(false);
     };
 
-    if(localStorage.length > 0) {
+    const displayAdminPage = () => {
+        let output;
+
+        if(AuthService.isAdmin()) {
+            ProtectedAdmin.authenticate();
+            output = (
+                <div>
+                    <Divider />
+                    <List>
+                        {adminListItems}
+                    </List>
+                </div>
+            );
+        } else {
+            ProtectedAdmin.LogOut();
+        }
+        return output;
+        
+    }
+
+    if(AuthService.getCurrentUser() !== null) {
         return (
             <Router baseName='/Leap'>
                 <div className={classes.root}>
@@ -165,6 +182,7 @@ export default function App() {
                                 <ChevronLeftIcon />
                             </IconButton>
                         </div>
+                        {displayAdminPage()}
                         <Divider />
                         <List>{mainListItems}</List>
                         <Divider />
@@ -172,24 +190,9 @@ export default function App() {
                     </Drawer>
                     <main className={classes.content}>
                         <div className={classes.appBarSpacer} />
-                        <Container maxWidth="lg" className={classes.container}>
+                        <Container maxWidth="xl" className={classes.container}>
                             <Grid container spacing={3}>
-                                {/* Chart */}
-                                <Grid item xs={12} md={12} lg={12}>
-                                    <Routes/>
-                                    {/* </Grid> */}
-                                    {/* Recent Deposits */}
-                                    {/* <Grid item xs={12} md={4} lg={3}> */}
-                                    {/* <Paper className={fixedHeightPaper}> */}
-                                    {/* <Deposits /> */}
-                                    {/* </Paper> */}
-                                    {/* </Grid> */}
-                                    {/* Recent Orders */}
-                                    {/* <Grid item xs={12}> */}
-                                    {/* <Paper className={classes.paper}> */}
-                                    {/* <Orders /> */}
-                                    {/* </Paper> */}
-                                </Grid>
+                                <Routes/>
                             </Grid>
                         </Container>
                     </main>
@@ -205,7 +208,7 @@ export default function App() {
             <Container className={clsx(classes.container && classes.centered)}>
                 <CssBaseline/>
                 <div>
-                    <SignIn/>
+                    <UserRoutes/>
                     <Box pt={4}>
                         <Copyright />
                     </Box>

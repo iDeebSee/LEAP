@@ -70,10 +70,11 @@ class CapabilitiesView extends Component {
         CapabilityService.getAll()
             .then(res => {
                 this.setState({capabilities: res.data});
-                console.log("incoming capabilities", res.data);
+                console.log("incoming capabilities: ")
+                console.table(res.data);
             })
             .catch(e => {
-                console.log(e);
+                console.error(e);
             });
     }
 

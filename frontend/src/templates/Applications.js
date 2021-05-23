@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, Paper, InteractiveList, Box } from '@material-ui/core';
-import SimpleDialog from '../components/PopUp';
 import clsx from 'clsx';
 import Copyright from '../components/Copyright';
 import SimpleTable from '../components/Table';
@@ -39,7 +38,6 @@ export default function Applications() {
                         <Grid item xs={12} md={12} lg={12}>
 
                             <Paper className={fixedHeightPaper}>
-                                <SimpleDialog title="Add a user" body="" name="user" message="user has been added!"></SimpleDialog>
                                 <SimpleTable></SimpleTable>
                             </Paper>
                         </Grid>

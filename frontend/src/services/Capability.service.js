@@ -1,4 +1,4 @@
-import http from "../https-common";
+import http from "./https-common";
 
 class CapabilityService {
     getAll() {

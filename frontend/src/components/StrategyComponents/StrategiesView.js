@@ -2,7 +2,6 @@ import {
     Container, 
     DialogContent, 
     TextField, 
-    MenuItem, 
     DialogActions, 
     ButtonGroup, 
     Button, 
@@ -11,8 +10,7 @@ import {
     DialogContentText, 
 } from "@material-ui/core";
 import React, { Component } from "react";
-import StrategyService from "../../services/StrategyService";
-import { nanoid } from 'nanoid';
+import StrategyService from "../../services/Strategy.service";
 import { withStyles } from '@material-ui/core/styles';
 import StrategyList from './StrategyList'
 

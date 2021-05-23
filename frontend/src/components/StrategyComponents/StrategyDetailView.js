@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import StrategyService from "../../services/StrategyService";
+import StrategyService from "../../services/Strategy.service";
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import clsx from 'clsx';

@@ -3,7 +3,7 @@ package ap.be.backend.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "roles")
+@Document(collection = "Roles")
 public class Role {
 
     @Id
@@ -12,6 +12,10 @@ public class Role {
     private RolesEnum name;
 
     public Role() {}
+
+    public Role(RolesEnum name) {
+        this.name = name;
+    }
 
     public String getId() {
         return id;

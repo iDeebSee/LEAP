@@ -1,4 +1,4 @@
-package ap.be.backend.payload.request;
+package ap.be.backend.dtos;
 
 import java.util.Set;
 
@@ -6,7 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class SignupRequest {
+public class UserCreateDto {
 
     @NotBlank
     @Size(min = 3)

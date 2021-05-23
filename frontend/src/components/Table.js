@@ -15,7 +15,6 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { Button, TextField } from '@material-ui/core';
-import SimpleDialog from '../components/PopUp';
 
 const useRowStyles = makeStyles({
     root: {

@@ -1,5 +1,4 @@
-import http from "../https-common";
-
+import http from "./https-common";
 class AuthService {
     login(email, password) {
         return http.post(`/signin`, {
@@ -12,26 +11,32 @@ class AuthService {
                 }
                 return res.data;
             })
-            .catch(e =>{
-                console.error(e);
-            })
-    }
+    };
 
     logout() {
         localStorage.removeItem("user");
         window.location.reload();
-    }
+    };
 
-    register(username, email, password) {
+    register(name, email, password, roles) {
         return http.post("/register", {
-        username,
+        name,
         email,
-        password
+        password,
+        roles
         });
-    }
+    };
 
     getCurrentUser() {
         return JSON.parse(localStorage.getItem('user'));;
+    };  
+
+    isAdmin() {
+        return this.getCurrentUser().roles.includes("ROLE_ADMIN");
+    }
+
+    getAll() {
+        return http.get("/users");
     }
 }
 

@@ -8,7 +8,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {FormControlLabel, Checkbox, Paper} from '@material-ui/core';
+import {/*FormControlLabel, Checkbox,*/ Paper} from '@material-ui/core';
 import { useState } from 'react';
 import AuthService from '../services/Auth.service';
 import { useHistory } from 'react-router';
@@ -32,28 +32,41 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  errorMessage: {
+    color: theme.palette.error.main
+  }
 }));
 
 export default function SignIn() {
   const classes = useStyles(),
   history = useHistory(),
   [email, setEmail] = useState(''),
-  [password, setPassword] = useState('');
+  [password, setPassword] = useState(''),
+  [error, setError] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
 
     AuthService.login(email, password)
       .then((data) => {
-        console.log(data)
-        console.log(localStorage)
-        history.push("/")
+        setError(false);
+        history.push("/home")
         window.location.reload();
-      })
-      .catch((e) => {
-        console.error(e)
-      })
+      }).catch(e => {
+        console.error(e.response)
+        setError(true);
+      });
   }
+
+  let errorMessage;
+  if(error) {
+    errorMessage = (
+      <Typography className={classes.errorMessage} component="p" display="block" gutterBottom >
+        We couldn't find a user with that email and password, please try again.
+      </Typography>
+    );
+  }
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -61,11 +74,13 @@ export default function SignIn() {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" gutterBottom>
           Sign in
         </Typography>
+        {errorMessage}
         <form className={classes.form} onSubmit={(e) => handleLogin(e)}>
           <TextField
+            error={error}
             variant="outlined"
             margin="normal"
             required
@@ -79,6 +94,7 @@ export default function SignIn() {
             onChange={(e) => {setEmail(e.target.value);}}
           />
           <TextField
+            error={error}
             variant="outlined"
             margin="normal"
             required
