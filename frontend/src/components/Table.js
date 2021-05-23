@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'date-fns';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,6 +21,7 @@ import {
     DialogContentText, DialogActions
 } from '@material-ui/core';
 import SimpleMenu from './Menu';
+import ApplicationsService from '../services/ApplicationsService';
 
 function AddDialog(props) {
     const classes = useStyles();
@@ -54,6 +55,8 @@ function AddDialog(props) {
     const [currentValueForMoney, setCurrentValueForMoney] = React.useState(0);
     const [importance, setImportance] = React.useState(0);
     const [efficiencySupport, setEfficiencySupport] = React.useState(0);
+
+    const [timeValues, setTimeValues] = React.useState()
 
     const values =
     {
@@ -116,6 +119,24 @@ function AddDialog(props) {
         }
     };
 
+    //TODO: MOET afgemaakt worden
+    const addApp = () => {
+        ApplicationsService.create();
+    }
+
+    const getTimeValues = () =>{
+        ApplicationsService.getTimeValues().then(res => {
+            setTimeValues(res.data);
+            console.log(res.data);
+        }).catch(e => {
+            console.log(e);
+        });
+    }
+
+    useEffect(() => {
+        getTimeValues()
+    }, []);
+
     return (
         <div>
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -138,7 +159,9 @@ function AddDialog(props) {
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="tolerated total cost per year" type="number" value={toleratedTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setToleratedTotalCostPerYear(0) : setToleratedTotalCostPerYear(e.target.value)} />
                         <DatePicker style={{ padding: '10px', }} id="standard-basic" label="acquisition date" date={handleDateChange} name="Acquisition date" value={acquisitionDate} />
                         <DatePicker style={{ padding: '10px', }} id="standard-basic" label="end of life" date={handleEndOfLife} name="End of life date" value={endOfLife} />
+                        
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="time value" value={timeValue} onChange={(e) => setTimeValue(e.target.value)} />
+                        
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="current scalability" type="number" value={currentScalability} onChange={(e) => (e.target.value > 5) ? setCurrentScalability(5) : (e.target.value < 0) ? setCurrentScalability(0) : setCurrentScalability(e.target.value)} />
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="expected scalability" type="number" value={expectedScalability} onChange={(e) => (e.target.value > 5) ? setExpectedScalability(5) : (e.target.value < 0) ? setExpectedScalability(0) : setExpectedScalability(e.target.value)} />
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="current performance" type="number" value={currentPerformance} onChange={(e) => (e.target.value > 5) ? setCurrentPerformance(5) : (e.target.value < 0) ? setCurrentPerformance(0) : setCurrentPerformance(e.target.value)} />
