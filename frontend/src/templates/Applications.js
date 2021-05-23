@@ -11,8 +11,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
     },
 
-
-
     paper: {
         padding: theme.spacing(2),
         display: 'flex',
@@ -20,8 +18,21 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
 
     },
+
     fixedHeight: {
         height: 'auto',
+    },
+    legendaWrapper: {
+        width: 'auto',
+        height: 'auto',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    legenda: {
+        width: '25px',
+        height: '25px',
+        display: 'inline-block',
     },
 }));
 
@@ -30,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Applications() {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
     return (
         <div clasName={classes.root}>
             <main className={classes.content}>
@@ -37,9 +49,26 @@ export default function Applications() {
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={12} lg={12}>
-
+                            <Paper style={{ flexDirection: 'row', justifyContent: 'space-evenly', }} className={fixedHeightPaper}>
+                                <div className={classes.legendaWrapper}>
+                                    <div style={{ backgroundColor: 'red' }} className={classes.legenda}></div>
+                                    <p> = Business Fit</p>
+                                </div>
+                                <div className={classes.legendaWrapper}>
+                                    <div style={{ backgroundColor: 'orange' }} className={classes.legenda}></div>
+                                    <p> = Information Quality</p>
+                                </div>
+                                <div className={classes.legendaWrapper}>
+                                    <div style={{ backgroundColor: 'blue' }} className={classes.legenda}></div>
+                                    <p> = Technical Quality</p>
+                                </div>
+                                <div className={classes.legendaWrapper}>
+                                    <div style={{ backgroundColor: 'green' }} className={classes.legenda}></div>
+                                    <p> = Cost Impact</p>
+                                </div>
+                            </Paper>
+                            <br></br>
                             <Paper className={fixedHeightPaper}>
-                                <SimpleDialog title="Add a user" body="" name="user" message="user has been added!"></SimpleDialog>
                                 <SimpleTable></SimpleTable>
                             </Paper>
                         </Grid>
