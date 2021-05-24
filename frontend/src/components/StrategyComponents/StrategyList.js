@@ -49,7 +49,6 @@ const StrategyList = (props) => {
     [openEdit, setOpenedit] = useState(false),
     [openDelete, setOpenDelete] = useState(false),
     [newName, setNewName] = useState(''),
-    [newParentId, setNewParentId] = useState(null),
     [id, setId] = useState(''),
     [currentStrat, setCurrentStrat] = useState(null);
 
@@ -87,9 +86,6 @@ const StrategyList = (props) => {
 
     const editStrategy = () => {
         let data = {"name": newName};
-        if(newParentId != null) {
-            data.parentId = newParentId;
-        }
         StrategyService.update(id, data)
         .then(res => {
             console.log(res.data);

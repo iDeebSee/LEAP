@@ -1,8 +1,7 @@
 import { 
     Container, 
     DialogContent, 
-    TextField, 
-    MenuItem, 
+    TextField,  
     DialogActions, 
     ButtonGroup, 
     Button, 
@@ -11,7 +10,6 @@ import {
     DialogContentText, 
 } from "@material-ui/core";
 import React, { Component } from "react";
-import { nanoid } from 'nanoid';
 import { withStyles } from '@material-ui/core/styles';
 import EnvironmentList from '../components/EnvironmentList';
 import EnvironmentService from "../services/Environment.Service";

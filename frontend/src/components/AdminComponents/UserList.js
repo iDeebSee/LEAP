@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Button, ButtonGroup, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
 
@@ -33,7 +33,42 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function UserList({users, setUser, onDelete}) {
-  const classes = useStyles();
+  const classes = useStyles(),
+  [id, setId] = useState(''),
+  [open, setOpen] = useState(false);
+
+  const DeleteDialog = () => {
+    return(
+      <Dialog open={open} onClose={() => closeDeleteDialog()}>
+        <DialogTitle>Are you sure you wish to delete this user?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            This action cannot be undone!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <ButtonGroup>
+            <Button variant="text" color="primary" onClick={() => deleteUser()}>Delete</Button>
+            <Button variant="text" color="primary" onClick={() => closeDeleteDialog()}>Cancel</Button>
+          </ButtonGroup>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+
+  const openDeleteDialog = (id) => {
+    setId(id);
+    setOpen(true);
+  }
+
+  const closeDeleteDialog = () => {
+    setOpen(false);
+  }
+
+  const deleteUser = () => {
+    onDelete(id);
+    closeDeleteDialog();
+  }
 
   return (
     <Paper className={clsx(classes.paper, classes.fixedHeight)}>
@@ -57,7 +92,7 @@ export default function UserList({users, setUser, onDelete}) {
                 <TableCell align="right">
                   <ButtonGroup>
                     <Button onClick={() => {setUser(user)}}>Edit</Button>
-                    <Button onClick={() => onDelete(user.id)}>Delete</Button>
+                    <Button onClick={() => openDeleteDialog(user.id)}>Delete</Button>
                   </ButtonGroup>
                 </TableCell>
               </StyledTableRow>
@@ -66,6 +101,7 @@ export default function UserList({users, setUser, onDelete}) {
           </TableBody>
         </Table>
       </TableContainer>
+      <DeleteDialog/>
     </Paper>
   );
 }

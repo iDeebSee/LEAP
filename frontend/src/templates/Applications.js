@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, Paper, InteractiveList, Box } from '@material-ui/core';
+import { Container, Grid, Paper,  Box } from '@material-ui/core';
 import clsx from 'clsx';
 import Copyright from '../components/Copyright';
 import SimpleTable from '../components/Table';
