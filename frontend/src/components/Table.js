@@ -18,7 +18,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import DatePicker from './DatePicker';
 import {
     Button, TextField, Dialog, DialogTitle, DialogContent,
-    DialogContentText, DialogActions
+    DialogContentText, DialogActions, InputLabel, Select, MenuItem
 } from '@material-ui/core';
 import SimpleMenu from './Menu';
 import ApplicationsService from '../services/ApplicationsService';
@@ -26,6 +26,8 @@ import ApplicationsService from '../services/ApplicationsService';
 function AddDialog(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+
+
 
     const [name, setName] = React.useState("");
     const [technology, setTechnology] = React.useState("");
@@ -44,7 +46,7 @@ function AddDialog(props) {
 
     const [acquisitionDate, setAcquisitionDate] = React.useState();
     const [endOfLife, setEndOfLife] = React.useState();
-    const [timeValue, setTimeValue] = React.useState();
+    const [timeValue, setTimeValue] = React.useState('');
     const [costCurrency, setCostCurrency] = React.useState('€');
 
     const [currentTotalCostPerYear, setCurrentTotalCostPerYear] = React.useState(0);
@@ -56,7 +58,8 @@ function AddDialog(props) {
     const [importance, setImportance] = React.useState(0);
     const [efficiencySupport, setEfficiencySupport] = React.useState(0);
 
-    const [timeValues, setTimeValues] = React.useState()
+    const [timeValues, setTimeValues] = React.useState([])
+
 
     const values =
     {
@@ -124,7 +127,7 @@ function AddDialog(props) {
         ApplicationsService.create();
     }
 
-    const getTimeValues = () =>{
+    const getTimeValues = () => {
         ApplicationsService.getTimeValues().then(res => {
             setTimeValues(res.data);
             console.log(res.data);
@@ -133,9 +136,15 @@ function AddDialog(props) {
         });
     }
 
+
     useEffect(() => {
-        getTimeValues()
+        getTimeValues();
+
     }, []);
+
+    const handleChange = (event) => {
+        setTimeValue(event.target.value);
+    };
 
     return (
         <div>
@@ -159,9 +168,19 @@ function AddDialog(props) {
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="tolerated total cost per year" type="number" value={toleratedTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setToleratedTotalCostPerYear(0) : setToleratedTotalCostPerYear(e.target.value)} />
                         <DatePicker style={{ padding: '10px', }} id="standard-basic" label="acquisition date" date={handleDateChange} name="Acquisition date" value={acquisitionDate} />
                         <DatePicker style={{ padding: '10px', }} id="standard-basic" label="end of life" date={handleEndOfLife} name="End of life date" value={endOfLife} />
-                        
-                        <TextField style={{ padding: '10px', }} id="standard-basic" label="time value" value={timeValue} onChange={(e) => setTimeValue(e.target.value)} />
-                        
+
+                        <InputLabel style={{ fontSize: '11px', }} id="demo-simple-select-label">TIME Value</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={timeValue}
+                            onChange={handleChange}
+                        >
+                            {timeValues.map((tv, index) => (
+                                <MenuItem key={index} value={tv}>{tv}</MenuItem>
+                            ))}
+                        </Select>
+
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="current scalability" type="number" value={currentScalability} onChange={(e) => (e.target.value > 5) ? setCurrentScalability(5) : (e.target.value < 0) ? setCurrentScalability(0) : setCurrentScalability(e.target.value)} />
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="expected scalability" type="number" value={expectedScalability} onChange={(e) => (e.target.value > 5) ? setExpectedScalability(5) : (e.target.value < 0) ? setExpectedScalability(0) : setExpectedScalability(e.target.value)} />
                         <TextField style={{ padding: '10px', }} id="standard-basic" label="current performance" type="number" value={currentPerformance} onChange={(e) => (e.target.value > 5) ? setCurrentPerformance(5) : (e.target.value < 0) ? setCurrentPerformance(0) : setCurrentPerformance(e.target.value)} />
@@ -238,6 +257,7 @@ function Row(props) {
     const { row } = props;
     const classes = useRowStyles();
 
+
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
@@ -252,9 +272,6 @@ function Row(props) {
                 <TableCell className={classes.border} align="center">{row.acquisitionDate}</TableCell>
                 <TableCell className={classes.border} align="center">{row.endOfLife}</TableCell>
                 <TableCell className={classes.border} align="center">{row.timeValue}</TableCell>
-
-
-
 
                 <TableCell className={classes.border} align="center">{row.currentScalability}</TableCell>
                 <TableCell className={classes.border} align="center">{row.expectedScalability}</TableCell>
@@ -332,6 +349,23 @@ const useStyles = makeStyles({
 export default function SimpleTable() {
     const classes = useStyles();
     const [map, setMap] = useState(new Map());
+    const [application, setApplication] = React.useState([]);
+
+    const getApplications = () => {
+        ApplicationsService.getAll().then(res => {
+            setApplication(res.data);
+            console.log("res data", res.data);
+            console.log("app state ", application);
+            application.map(item => (console.log(item)));
+
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    useEffect(() => {
+        getApplications();
+    }, [])
 
     const updateMap = (k, v) => {
         setMap(new Map(map.set(k, v)));
@@ -385,9 +419,12 @@ export default function SimpleTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {[...map.keys()].map(k => (
+                    {/* {[...map.keys()].map(k => (
 
                         <Row key={k.name} row={k} />
+                    ))} */}
+                    {[...application].map(app => (
+                        <Row key={app.id} row={app} />
                     ))}
                 </TableBody>
             </Table>

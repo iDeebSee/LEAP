@@ -1,8 +1,9 @@
 package ap.be.backend;
 
-import ap.be.backend.Repositories.ApplicationRepository;
 import ap.be.backend.models.Application;
 import ap.be.backend.models.TIMEValue;
+import ap.be.backend.repositories.ApplicationRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ public class ApplicationsController {
     @Autowired
     private ApplicationRepository applicationRepository;
 
-    @GetMapping
+    @GetMapping("/")
     public Iterable<Application> readApplication() {
         return applicationRepository.findAll();
     }
@@ -54,6 +55,15 @@ public class ApplicationsController {
         application.setCurrentTotalCostPerYear(newApplication.getCurrentTotalCostPerYear());
         application.setToleratedTotalCostPerYear(newApplication.getToleratedTotalCostPerYear());
         application.setCurrentValueForMoney(newApplication.getCurrentValueForMoney());
+        application.setCostCurrency(newApplication.getCostCurrency());
+        application.setImportance(newApplication.getImportance());
+        application.setEfficiencySupport(newApplication.getEfficiencySupport());
+        application.setFunctionalCoverage(newApplication.getFunctionalCoverage());
+        application.setBfCorrectness(newApplication.getBfCorrectness());
+        application.setFuturePotential(newApplication.getFuturePotential());
+        application.setCompleteness(newApplication.getCompleteness());
+        application.setIqCorrectness(newApplication.getIqCorrectness());
+        application.setAvailability(newApplication.getAvailability());
         return applicationRepository.save(application);
     }
 

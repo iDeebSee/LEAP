@@ -23,6 +23,8 @@ public class Application {
     private double toleratedTotalCostPerYear;
     private LocalDate acquisitionDate;
     private LocalDate endOfLife;
+    private String costCurrency;
+    private int importance, efficiencySupport, functionalCoverage, bfCorrectness, futurePotential,completeness,	iqCorrectness, availability;
 
     //private final int MAX_RATING = 5;
 
@@ -63,12 +65,23 @@ public class Application {
      * @param expectedStability
      * @param currentValueForMoney
      * @param timeValue
+     * @param costCurrency
+     * @param importance
+     * @param efficiencySupport
+     * @param availability
+     * @param bfCorrectness
+     * @param completeness
+     * @param functionalCoverage
+     * @param futurePotential
+     * @param iqCorrectness
      *
      */
     public Application(String name, String technology, String version, 
     double currentTotalCostPerYear, double toleratedTotalCostPerYear, LocalDate acquisitionDate, 
     LocalDate endOfLife, int currentScalability, int expectedScalability, int currentPerformance, int expectedPerformance,
-    int currentSecurityLevel, int expectedSecurityLevel,  int currentStability, int expectedStability, int currentValueForMoney, TIMEValue timeValue ) {
+    int currentSecurityLevel, int expectedSecurityLevel,  int currentStability, int expectedStability, int currentValueForMoney,
+    TIMEValue timeValue, String costCurrency, int importance, int efficiencySupport, int functionalCoverage, int bfCorrectness,
+                       int futurePotential, int completeness, int iqCorrectness, int availability ) {
         this.name = name;
         this.technology = technology;
         this.version = version;
@@ -86,6 +99,15 @@ public class Application {
         this.expectedStability = maxRatingControl(expectedStability);
         this.currentValueForMoney = maxRatingControl(currentValueForMoney);
         this.timeValue = timeValue;
+        this.costCurrency = costCurrency;
+        this.importance = importance;
+        this.efficiencySupport = efficiencySupport;
+        this.functionalCoverage = functionalCoverage;
+        this.bfCorrectness = bfCorrectness;
+        this.futurePotential = futurePotential;
+        this.completeness = completeness;
+        this.iqCorrectness = iqCorrectness;
+        this.availability = availability;
     }
 
     public int maxRatingControl(int rating){

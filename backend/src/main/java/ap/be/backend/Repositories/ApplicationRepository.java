@@ -1,4 +1,4 @@
-package ap.be.backend.Repositories;
+package ap.be.backend.repositories;
 
 import ap.be.backend.models.Application;
 import org.springframework.data.mongodb.repository.MongoRepository;

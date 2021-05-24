@@ -2,7 +2,7 @@ import http from "../https-common";
 
 class ApplicationsService {
     getAll() {
-        return http.get("/application");
+        return http.get("/application/");
     }
 
     getTimeValues(){
@@ -18,15 +18,15 @@ class ApplicationsService {
     }
 
     update(id, data) {
-        return http.put(`/application//${id}`, data);
+        return http.put(`/application/${id}`, data);
     }
 
     delete(id) {
-        return http.delete(`/application//${id}`);
+        return http.delete(`/application/${id}`);
     }
 
     deleteAll() {
-        return http.delete("/application")
+        return http.delete("/application/")
     }
 }
 

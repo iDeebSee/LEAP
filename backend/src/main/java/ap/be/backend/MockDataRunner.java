@@ -1,6 +1,5 @@
 package ap.be.backend;
 
-import ap.be.backend.Repositories.ApplicationRepository;
 import ap.be.backend.models.Application;
 import ap.be.backend.models.TIMEValue;
 import org.slf4j.Logger;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Component;
 import ap.be.backend.models.Capability;
 import ap.be.backend.models.Environment;
 import ap.be.backend.models.Strategy;
+import ap.be.backend.repositories.ApplicationRepository;
 import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.repositories.EnvirenmentRepository;
 import ap.be.backend.repositories.StrategyRepository;
@@ -44,6 +44,7 @@ public class MockDataRunner implements CommandLineRunner {
         capabilityRepository.deleteAll();
         envirenmentRepository.deleteAll();
         strategyRepository.deleteAll();
+        applicationRepository.deleteAll();
         Capability capability1 = new Capability("test 1", "this is the 1st test capability", null);
         Capability capability2 = new Capability("test 2", "this is the 2nd test capability", null);
         Capability capability3 = new Capability("test 3", "this is the 3rd test capability", null);
@@ -91,5 +92,22 @@ public class MockDataRunner implements CommandLineRunner {
 
 
         strategyRepository.findAll().forEach(strat ->{logger.info("{}", strat);});
+
+
+        Application application1 = new Application("App1", "technology", "version", 2.5, 5.0, LocalDate.now() , 
+        LocalDate.now().plusDays(10), 5, 4, 3, 5,
+        0,1, 2, 3, 5, TIMEValue.ELIMINATE,
+        "euro", 5, 5, 5, 5, 5, 5, 5, 5 );
+
+        Application application2 = new Application("App2", "java", "2.5", 2.5, 5.0, LocalDate.now() , 
+        LocalDate.now().plusDays(15), 5, 4, 5, 5,
+                5,1, 2, 2, 5, TIMEValue.INVEST,
+                "dollar", 5, 5, 5, 5, 5, 5,
+                5, 5 );
+
+        applicationRepository.save(application1);
+        applicationRepository.save(application2);
+
+        applicationRepository.findAll().forEach(app -> {logger.info("{}", app);});
     }
 }
