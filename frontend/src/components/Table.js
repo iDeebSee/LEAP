@@ -26,9 +26,6 @@ import ApplicationsService from '../services/ApplicationsService';
 function AddDialog(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-
-
-
     const [name, setName] = React.useState("");
     const [technology, setTechnology] = React.useState("");
     const [version, setVersion] = React.useState("");
