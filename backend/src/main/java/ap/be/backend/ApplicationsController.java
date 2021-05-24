@@ -1,6 +1,6 @@
 package ap.be.backend;
 
-import ap.be.backend.Repositories.ApplicationRepository;
+import ap.be.backend.repositories.ApplicationRepository;
 import ap.be.backend.models.Application;
 import ap.be.backend.models.TIMEValue;
 import org.springframework.beans.factory.annotation.Autowired;

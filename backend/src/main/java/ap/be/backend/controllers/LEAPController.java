@@ -1,4 +1,4 @@
-package ap.be.backend;
+package ap.be.backend.controllers;
 
 
 import java.util.LinkedHashMap;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import ap.be.backend.repositories.CapabilityRepository;
-import ap.be.backend.repositories.EnvirenmentRepository;
+import ap.be.backend.repositories.EnvironmentRepository;
 import ap.be.backend.models.Capability;
 import ap.be.backend.models.Environment;
 
@@ -24,7 +24,7 @@ public class LEAPController {
     private CapabilityRepository capabilityRepository;
 
     @Autowired
-    private EnvirenmentRepository envirenmentRepository;
+    private EnvironmentRepository envirenmentRepository;
 
     @GetMapping("/")
     public Iterable<Capability> readCapabilities() {
@@ -73,12 +73,8 @@ public class LEAPController {
         capabilityRepository.deleteById(id);
     }
 
-   
-
-
     @GetMapping("/environment")
     public Iterable<Environment> readEnvironment() {
-        System.out.println(envirenmentRepository.findAll());
         return envirenmentRepository.findAll();
     }
     @GetMapping("/environment/{id}")

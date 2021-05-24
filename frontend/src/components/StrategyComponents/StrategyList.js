@@ -12,15 +12,13 @@ import {
     DialogContent,
     DialogActions,
     TextField,
-    MenuItem,
     DialogContentText,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link } from 'react-router-dom'
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
-import StrategyService from "../../services/StrategyService";
-import _ from 'lodash';
+import StrategyService from "../../services/Strategy.service";
 
 const useStyles = (makeStyles((theme) => ({
     paper: {

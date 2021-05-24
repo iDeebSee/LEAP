@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems, secondaryListItems } from './components/AsideItems';
+import { mainListItems, secondaryListItems, adminListItems } from './components/AsideItems';
 import Copyright from './components/Copyright'
 
 import { 
@@ -20,14 +20,12 @@ import {
     Container,
     Grid,
 } from '@material-ui/core';
-import Routes from './components/Routes';
+import Routes, { UserRoutes } from './components/Routes';
 import {
     BrowserRouter as Router
 } from "react-router-dom";
-
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
+import AuthService from './services/Auth.service';
+import { ProtectedAdmin } from './services/ProtectRoute';
 
 const drawerWidth = 240;
 
@@ -108,6 +106,11 @@ const useStyles = makeStyles((theme) => ({
     fixedHeight: {
         height: 240,
     },
+    centered: {
+        display: 'flex',
+        justifyContent: 'center',
+        paddingTop: '10rem'
+    }
 }));
 
 export default function App() {
@@ -120,76 +123,99 @@ export default function App() {
         setOpen(false);
     };
 
-    return (
-    <Router baseName='/Leap'>
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-                <Toolbar className={classes.toolbar} >
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        Dashboard
-                    </Typography>
-                    <IconButton color="inherit">
-                        {/* <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge> */}
-                        <Avatar alt="Profile icon" src="" className={classes.large} />
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                variant="permanent"
-                classes={{
-                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                }}
-                open={open}
-            >
-                <div className={classes.toolbarIcon}>
-                    <IconButton onClick={handleDrawerClose}>
-                        <ChevronLeftIcon />
-                    </IconButton>
+    const displayAdminPage = () => {
+        let output;
+
+        if(AuthService.isAdmin()) {
+            ProtectedAdmin.authenticate();
+            output = (
+                <div>
+                    <Divider />
+                    <List>
+                        {adminListItems}
+                    </List>
                 </div>
-                <Divider />
-                <List>{mainListItems}</List>
-                <Divider />
-                <List>{secondaryListItems}</List>
-            </Drawer>
-            <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <Grid container spacing={3}>
-                        {/* Chart */}
-                        <Grid item xs={12} md={12} lg={12}>
-                            <Routes/>
-                            {/* </Grid> */}
-                            {/* Recent Deposits */}
-                            {/* <Grid item xs={12} md={4} lg={3}> */}
-                            {/* <Paper className={fixedHeightPaper}> */}
-                            {/* <Deposits /> */}
-                            {/* </Paper> */}
-                            {/* </Grid> */}
-                            {/* Recent Orders */}
-                            {/* <Grid item xs={12}> */}
-                            {/* <Paper className={classes.paper}> */}
-                            {/* <Orders /> */}
-                            {/* </Paper> */}
-                        </Grid>
-                    </Grid>
+            );
+        } else {
+            ProtectedAdmin.LogOut();
+        }
+        return output;
+        
+    }
+
+    if(AuthService.getCurrentUser() !== null) {
+        return (
+            <Router baseName='/Leap'>
+                <div className={classes.root}>
+                    <CssBaseline />
+                    <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+                        <Toolbar className={classes.toolbar} >
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                                Dashboard
+                            </Typography>
+                            <IconButton color="inherit">
+                                {/* <Badge badgeContent={4} color="secondary">
+                                    <NotificationsIcon />
+                                </Badge> */}
+                                <Avatar alt="Profile icon" src="" className={classes.large} />
+                            </IconButton>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        variant="permanent"
+                        classes={{
+                            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                        }}
+                        open={open}
+                    >
+                        <div className={classes.toolbarIcon}>
+                            <IconButton onClick={handleDrawerClose}>
+                                <ChevronLeftIcon />
+                            </IconButton>
+                        </div>
+                        {displayAdminPage()}
+                        <Divider />
+                        <List>{mainListItems}</List>
+                        <Divider />
+                        <List>{secondaryListItems}</List>
+                    </Drawer>
+                    <main className={classes.content}>
+                        <div className={classes.appBarSpacer} />
+                        <Container maxWidth="xl" className={classes.container}>
+                            <Grid container spacing={3}>
+                                <Routes/>
+                            </Grid>
+                        </Container>
+                    </main>
+                </div>
+                <Box pt={4}>
+                    <Copyright />
+                </Box>
+            </Router>
+            );
+    } else {
+        return(
+        <Router>
+            <Container className={clsx(classes.container && classes.centered)}>
+                <CssBaseline/>
+                <div>
+                    <UserRoutes/>
                     <Box pt={4}>
                         <Copyright />
                     </Box>
-                </Container>
-            </main>
-        </div>
-    </Router>
-    );
+                </div>
+            </Container>
+        </Router>
+        );
+    }
+    
 }

@@ -13,13 +13,12 @@ import {
     DialogContentText,
     DialogActions,
     TextField,
-    MenuItem
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link } from 'react-router-dom'
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
-import EnvironmentService from "../services/EnvironmentService";
+import EnvironmentService from "../services/Environment.Service";
 
 const useStyles = (makeStyles((theme) => ({
     paper: {
@@ -44,12 +43,11 @@ const useStyles = (makeStyles((theme) => ({
     }
 })));
 
-const EnvirementList = (props) => {
+const EnvironmentList = (props) => {
     const classes = useStyles(),
     Environments = props.data,
     [openEdit, setOpenedit] = useState(false),
     [openDelete, setOpenDelete] = useState(false),
-    [open, setOpen] = useState(false),
     [newName, setNewName] = useState(''),
     [currentEnv, setCurrentEnv] = useState(null),
     [newDesc, setNewDesc] = useState(''),
@@ -170,4 +168,4 @@ const EnvirementList = (props) => {
     );
 };
 
-export default EnvirementList;
+export default EnvironmentList;
