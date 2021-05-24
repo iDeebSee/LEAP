@@ -35,7 +35,7 @@ public class CapabilityService {
     }
 
     public void deleteAllCapabilities(){
-         capabilityRepository.deleteAll();
+        capabilityRepository.deleteAll();
     }
 
     public Capability addCapability(Capability capability) {

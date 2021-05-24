@@ -1,5 +1,8 @@
 package ap.be.backend.services;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,15 +105,16 @@ public class MockDataRunner implements CommandLineRunner {
             logger.info("{}", strat);
         });
 
-        Role adminRole = new Role(RolesEnum.ROLE_ADMIN);
-        Role userRole = new Role(RolesEnum.ROLE_USER);
+        Role adminRole = new Role(RolesEnum.ADMIN);
+        Role userRole = new Role(RolesEnum.USER);
         roleRepository.save(adminRole);
         roleRepository.save(userRole);
 
         User adminUser = new User("admin", "admin@email.com", passwordEncoder.encode(new StringBuffer("secret")));
-        adminUser.addRole(adminRole);
+        adminUser.setRoles(new HashSet<Role>(Arrays.asList(adminRole, userRole)));
 
         User normalUser = new User("user", "user@email.com", passwordEncoder.encode(new StringBuffer("secret")));
+        normalUser.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         
         userRepository.save(adminUser);
         userRepository.save(normalUser);

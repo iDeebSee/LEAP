@@ -32,11 +32,23 @@ class AuthService {
     };  
 
     isAdmin() {
-        return this.getCurrentUser().roles.includes("ROLE_ADMIN");
+        return this.getCurrentUser().roles.includes("ADMIN");
+    }
+
+    getRoles() {
+        return http.get("roles");
     }
 
     getAll() {
         return http.get("/users");
+    }
+
+    update(id, data) {
+        return http.put(`/user/${id}`, data)
+    }
+
+    delete(id) {
+        return http.delete(`/user/${id}`);
     }
 }
 

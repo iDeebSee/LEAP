@@ -1,6 +1,10 @@
 package ap.be.backend.models;
 
 public enum RolesEnum {
-    ROLE_USER,
-    ROLE_ADMIN
+    USER,
+    ADMIN;
+
+    public RolesEnum fromValue(String name) {
+        return RolesEnum.valueOf(name.toUpperCase());
+    }
 }

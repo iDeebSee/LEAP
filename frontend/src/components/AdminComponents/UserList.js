@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Button, ButtonGroup, List, ListItem, ListItemText, ListSubheader, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Button, ButtonGroup, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
 
@@ -32,9 +32,8 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function UserList(props) {
-  const classes = useStyles(),
-  users = props.data;
+export default function UserList({users, setUser, onDelete}) {
+  const classes = useStyles();
 
   return (
     <Paper className={clsx(classes.paper, classes.fixedHeight)}>
@@ -44,6 +43,7 @@ export default function UserList(props) {
             <TableRow>
               <StyledTableCell>Name</StyledTableCell>
               <StyledTableCell>Email</StyledTableCell>
+              <StyledTableCell>Roles</StyledTableCell>
               <StyledTableCell align="right">Actions</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -53,10 +53,11 @@ export default function UserList(props) {
               <StyledTableRow key={nanoid()}>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
+                <TableCell>{user.roles.toString()}</TableCell>
                 <TableCell align="right">
                   <ButtonGroup>
-                    <Button>Edit</Button>
-                    <Button>Delete</Button>
+                    <Button onClick={() => {setUser(user)}}>Edit</Button>
+                    <Button onClick={() => onDelete(user.id)}>Delete</Button>
                   </ButtonGroup>
                 </TableCell>
               </StyledTableRow>

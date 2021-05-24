@@ -2,12 +2,20 @@ package ap.be.backend.dtos;
 
 import java.util.Set;
 
-public class UserDto {
-    
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+public class UserEditDto {
+
     private String id;
 
+    @NotBlank
+    @Size(min = 3)
     private String name;
 
+    @NotBlank
+    @Email
     private String email;
 
     private Set<String> roles;
@@ -19,7 +27,7 @@ public class UserDto {
     public void setId(String id) {
         this.id = id;
     }
-
+    
     public String getName() {
         return name;
     }
