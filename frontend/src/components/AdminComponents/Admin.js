@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     hidden: {
         display: 'none',
     },
+    fixedWidth: {
+        minWidth: "36rem"
+    },
     grid: {
         '& *': {
             flexGrow: 1
@@ -41,8 +44,7 @@ export default function Index() {
     [email, setEmail] = useState(''),
     [password, setPassword] = useState(''),
     [nameFieldValid, setNameFieldValid] = useState(true),
-    [emailFieldValid, setEmailFieldValid] = useState(true),
-    [passwordFieldValid, setPasswordFieldValid] = useState(true);
+    [emailFieldValid, setEmailFieldValid] = useState(true);
 
     const getRoles = useCallback(() => {
         AuthService.getRoles()
@@ -76,14 +78,12 @@ export default function Index() {
     const resetFields = () => {
         setName("");
         setEmail("");
-        setPassword("");
         setChosenRoles([]);
     }
 
     const resetValidities = () => {
         setNameFieldValid(true);
         setEmailFieldValid(true);
-        setPasswordFieldValid(true);
     }
 
     const resetForm = () => {
@@ -102,8 +102,8 @@ export default function Index() {
     };
 
     const createUser = () => {
-        if(nameFieldValid && emailFieldValid && passwordFieldValid) {
-            AuthService.register(name, email, password, chosenRoles)
+        if(nameFieldValid && emailFieldValid) {
+            AuthService.register(name, email, chosenRoles)
             .then(res => {
                 console.log(res.data);
                 getUsers();
@@ -140,35 +140,33 @@ export default function Index() {
             })
     };
 
-    const createFormValid = (name && nameFieldValid) && (email && emailFieldValid) && (password && passwordFieldValid);
-    const editFormValid = (name && nameFieldValid) && (email && emailFieldValid);
+    const formValid = (name && nameFieldValid) && (email && emailFieldValid);
 
     return (
         <Grid container spacing={3}>
             <Grid item xs={7}>
                 <UserList users={users} onDelete={deleteUser} setUser={fillEditForm}/>
             </Grid>
-            <Grid item className={!hideEdit && classes.hidden} xs>
+            <Grid item className={!hideEdit && classes.hidden, classes.fixedWidth} xs={5}>
                 <Paper className={clsx(classes.paper, classes.fixedHeight)}>
                     <Grid container spacing={2}>
                         <Grid item>
                             <NameField value={name} setValue={setName} fieldValidity={nameFieldValid} setFieldValidity={setNameFieldValid}/>
                             <EmailField value={email} setValue={setEmail} fieldValidity={emailFieldValid} setFieldValidity={setEmailFieldValid}/>
-                            <PasswordField value={password} setValue={setPassword} fieldValidity={passwordFieldValid} setFieldValidity={setPasswordFieldValid}/>
                         </Grid>
                         <Grid item>
                             <Transferlist leftItems={roles} setLeft={setRoles} rightItems={chosenRoles} setRight={setChosenRoles}/>
                         </Grid>
                         <Grid item>
                             <ButtonGroup>
-                                <Button disabled={!createFormValid} onClick={() => {createUser()}}>Create</Button>
+                                <Button disabled={!formValid} onClick={() => {createUser()}}>Create</Button>
                                 <Button onClick={() => {resetForm()}}>Cancel</Button>
                             </ButtonGroup>
                         </Grid>
                     </Grid>
                 </Paper>
             </Grid>
-            <Grid item className={hideEdit && classes.hidden} xs>
+            <Grid item className={hideEdit && classes.hidden} xs={5}>
                 <Paper className={clsx(classes.paper, classes.fixedHeight)}>
                     <Grid container spacing={2}>
                         <Grid item>
@@ -180,7 +178,7 @@ export default function Index() {
                         </Grid>
                         <Grid item>
                             <ButtonGroup>
-                                <Button disabled={!editFormValid} onClick={() => {editUser()}}>Edit</Button>
+                                <Button disabled={!formValid} onClick={() => {editUser()}}>Edit</Button>
                                 <Button onClick={() => {resetForm()}}>Cancel</Button>
                             </ButtonGroup>
                         </Grid>
