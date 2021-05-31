@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import 'date-fns';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,6 +22,7 @@ import {
 } from '@material-ui/core';
 import SimpleMenu from './Menu';
 import ApplicationsService from '../services/ApplicationsService';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 function AddDialog(props) {
     const classes = useStyles();
@@ -142,7 +143,7 @@ function AddDialog(props) {
     const handleChange = (event) => {
         setTimeValue(event.target.value);
     };
-    
+
     return (
         <div>
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -153,7 +154,7 @@ function AddDialog(props) {
                 onClose={handleClose}
                 aria-labelledby="draggable-dialog-title"
             >
-                <DialogTitle style={{ cursor: 'default' }} id="draggable-dialog-title">
+                <DialogTitle style={{ cursor: 'default' }} >
                     Add Application
         </DialogTitle>
                 <DialogContent>
@@ -255,11 +256,21 @@ function Row(props) {
     const classes = useRowStyles();
 
 
+    const deleteRow = (row) => {
+        console.log("deleteRow", row.id);
+        props.delete(row.id);
+    }
+
+    const menuItem = (
+        <MenuItem onClick={() => deleteRow(row)}><DeleteIcon></DeleteIcon></MenuItem>
+    )
+
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell>
-                    <SimpleMenu />
+                    <SimpleMenu delete={menuItem} />
+                    {/* <MenuItem onClick={() => deleteRow(row)}><DeleteIcon></DeleteIcon></MenuItem> */}
                 </TableCell>
                 <TableCell component="th" scope="row">{row.name}</TableCell>
                 <TableCell className={classes.border} align="center">{row.technology}</TableCell>
@@ -348,7 +359,7 @@ export default function SimpleTable() {
     const [map, setMap] = useState(new Map());
     const [application, setApplication] = React.useState([]);
 
-    const getApplications = () => {
+    function getApplications() {
         ApplicationsService.getAll().then(res => {
             setApplication(res.data);
             console.log("res data", res.data);
@@ -360,8 +371,17 @@ export default function SimpleTable() {
         });
     }
 
+    function deleteApplication(id) {
+        ApplicationsService.delete(id).then(() => {
+            console.log("after delete", application);
+            console.log("after delete id", id);
+            getApplications();
+        });
+    }
+
     useEffect(() => {
         getApplications();
+        console.log("application after use effect", application);
     }, [])
 
     const updateMap = (k, v) => {
@@ -369,18 +389,29 @@ export default function SimpleTable() {
         console.log(k);
     }
 
-    function handleRow() {
-        updateMap(createData("App-" + teller++, 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5, 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5));
-    }
-
     function getValues(values) {
         //console.log("getvalues:" + name, technology, version,functionalCoverage,bfCorrectness,futurePotential,completeness,iqCorrectness,availability,currentScalability,expectedScalability,currentPerformance,expectedPerformance,currentTotalCostPerYear,toleratedTotalCostPerYear,currentSecurityLevel,expectedSecurityLevel,currentValueForMoney,importance,efficiencySupport);
 
-        updateMap(createData(values.name, values.technology, values.version, values.currentTotalCostPerYear, values.toleratedTotalCostPerYear,
-            values.acquisitionDate, values.endOfLife, values.timeValue, values.currentScalability, values.expectedScalability, values.currentPerformance,
-            values.expectedPerformance, values.currentSecurityLevel, values.expectedSecurityLevel, values.costCurrency, values.currentValueForMoney,
-            values.importance, values.efficiencySupport, values.functionalCoverage, values.bfCorrectness, values.futurePotential, values.completeness,
-            values.iqCorrectness, values.availability));
+        // updateMap(createData(values.name, values.technology, values.version, values.currentTotalCostPerYear, values.toleratedTotalCostPerYear,
+        //     values.acquisitionDate, values.endOfLife, values.timeValue, values.currentScalability, values.expectedScalability, values.currentPerformance,
+        //     values.expectedPerformance, values.currentSecurityLevel, values.expectedSecurityLevel, values.costCurrency, values.currentValueForMoney,
+        //     values.importance, values.efficiencySupport, values.functionalCoverage, values.bfCorrectness, values.futurePotential, values.completeness,
+        //     values.iqCorrectness, values.availability));
+
+        console.log("values", values);
+        ApplicationsService.create(values)
+            .then(res => {
+                console.log(res);
+                updateMap(createData(values.name, values.technology, values.version, values.currentTotalCostPerYear, values.toleratedTotalCostPerYear,
+                    values.acquisitionDate, values.endOfLife, values.timeValue, values.currentScalability, values.expectedScalability, values.currentPerformance,
+                    values.expectedPerformance, values.currentSecurityLevel, values.expectedSecurityLevel, values.costCurrency, values.currentValueForMoney,
+                    values.importance, values.efficiencySupport, values.functionalCoverage, values.bfCorrectness, values.futurePotential, values.completeness,
+                    values.iqCorrectness, values.availability))
+                getApplications();
+            })
+            .catch(e => {
+                console.log(e);
+            })
     }
 
     return (
@@ -421,12 +452,11 @@ export default function SimpleTable() {
                         <Row key={k.name} row={k} />
                     ))} */}
                     {[...application].map(app => (
-                        <Row key={app.id} row={app} />
+                        <Row key={app.id} row={app} delete={deleteApplication} />
                     ))}
                 </TableBody>
             </Table>
             <AddDialog values={getValues}></AddDialog>
-            <Button onClick={handleRow}>Add</Button>
         </TableContainer>
     );
 }

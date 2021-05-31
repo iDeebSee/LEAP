@@ -18,6 +18,10 @@ export default function SimpleMenu(props) {
         setAnchorEl(null);
     };
 
+    const afterUpdate = () => {
+
+    }
+//keeps rerendering... gotta fix it
     return (
         <div>
             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
@@ -31,7 +35,8 @@ export default function SimpleMenu(props) {
                 onClose={handleClose}
             >
                 <MenuItem onClick={handleClose}><Link to={props.edit}><EditIcon></EditIcon></Link></MenuItem>
-                <MenuItem onClick={handleClose}><Link to={props.delete}><DeleteIcon></DeleteIcon></Link></MenuItem>
+                {/* <MenuItem onClick={handleClose}><Link to={props.delete}><DeleteIcon></DeleteIcon></Link></MenuItem> */}
+                {props.delete}
             </Menu>
         </div>
     );

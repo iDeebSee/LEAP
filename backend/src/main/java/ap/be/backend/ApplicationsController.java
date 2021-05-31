@@ -7,7 +7,7 @@ import ap.be.backend.repositories.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("application")
+@RequestMapping("applications")
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class ApplicationsController {
@@ -29,7 +29,7 @@ public class ApplicationsController {
         return applicationRepository.findByName(name);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/")
     public Application createCapability(@RequestBody Application application) {
         return applicationRepository.save(application);
     }
@@ -67,9 +67,9 @@ public class ApplicationsController {
         return applicationRepository.save(application);
     }
 
-    @DeleteMapping("/{name}")
-    public void deleteCapability(@PathVariable("name") String name) {
-        applicationRepository.deleteByName(name);
+    @DeleteMapping("/{id}")
+    public void deleteCapability(@PathVariable("id") String id) {
+        applicationRepository.deleteById(id);
     }
 
     @DeleteMapping("/")

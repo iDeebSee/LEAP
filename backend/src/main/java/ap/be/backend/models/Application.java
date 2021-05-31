@@ -2,7 +2,10 @@ package ap.be.backend.models;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,21 +13,33 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.Setter;
 
+
+@ToString
 @Getter @Setter
 @Document(collection = "Applications")
 public class Application {
-    
+
     @Id
-    private String id; 
+    private String id;
     private String name;
     private String technology;
     private String version;
     private double currentTotalCostPerYear;
     private double toleratedTotalCostPerYear;
+    
     private LocalDate acquisitionDate;
+    
     private LocalDate endOfLife;
+
     private String costCurrency;
-    private int importance, efficiencySupport, functionalCoverage, bfCorrectness, futurePotential,completeness,	iqCorrectness, availability;
+    private int importance,
+            efficiencySupport,
+            functionalCoverage,
+            bfCorrectness,
+            futurePotential,
+            completeness,
+            iqCorrectness,
+            availability;
 
     //private final int MAX_RATING = 5;
 
@@ -45,7 +60,8 @@ public class Application {
     private TIMEValue timeValue;
 
 
-    public Application() {}
+    public Application() {
+    }
 
     /**
      * @param name
@@ -74,18 +90,17 @@ public class Application {
      * @param functionalCoverage
      * @param futurePotential
      * @param iqCorrectness
-     *
      */
-    public Application(String name, String technology, String version, 
-    double currentTotalCostPerYear, double toleratedTotalCostPerYear, LocalDate acquisitionDate, 
-    LocalDate endOfLife, int currentScalability, int expectedScalability, int currentPerformance, int expectedPerformance,
-    int currentSecurityLevel, int expectedSecurityLevel,  int currentStability, int expectedStability, int currentValueForMoney,
-    TIMEValue timeValue, String costCurrency, int importance, int efficiencySupport, int functionalCoverage, int bfCorrectness,
-                       int futurePotential, int completeness, int iqCorrectness, int availability ) {
+    public Application(String name, String technology, String version,
+                       double currentTotalCostPerYear, double toleratedTotalCostPerYear, LocalDate acquisitionDate,
+                       LocalDate endOfLife, int currentScalability, int expectedScalability, int currentPerformance, int expectedPerformance,
+                       int currentSecurityLevel, int expectedSecurityLevel, int currentStability, int expectedStability, int currentValueForMoney,
+                       TIMEValue timeValue, String costCurrency, int importance, int efficiencySupport, int functionalCoverage, int bfCorrectness,
+                       int futurePotential, int completeness, int iqCorrectness, int availability) {
         this.name = name;
         this.technology = technology;
         this.version = version;
-        this.currentTotalCostPerYear= currentTotalCostPerYear;
+        this.currentTotalCostPerYear = currentTotalCostPerYear;
         this.toleratedTotalCostPerYear = toleratedTotalCostPerYear;
         this.acquisitionDate = acquisitionDate;
         this.endOfLife = endOfLifeDateControl(endOfLife);
@@ -110,44 +125,19 @@ public class Application {
         this.availability = availability;
     }
 
-    public int maxRatingControl(int rating){
-        if (rating > 5){
+    public int maxRatingControl(int rating) {
+        if (rating > 5) {
             throw new IllegalArgumentException("Rating was higher than " + 5);
-        }else{
+        } else {
             return rating;
         }
     }
 
-    public LocalDate endOfLifeDateControl(LocalDate date){
-        if (date.isBefore(this.acquisitionDate)){
-            throw new IllegalArgumentException("End of life date is before acquisition date:\nAcquisition date:\t"+this.acquisitionDate+"\nEnd of life date:\t"+date);
-        }else{
+    public LocalDate endOfLifeDateControl(LocalDate date) {
+        if (date.isBefore(this.acquisitionDate)) {
+            throw new IllegalArgumentException("End of life date is before acquisition date:\nAcquisition date:\t" + this.acquisitionDate + "\nEnd of life date:\t" + date);
+        } else {
             return date;
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Application{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", technology='" + technology + '\'' +
-                ", version='" + version + '\'' +
-                ", currentTotalCostPerYear=" + currentTotalCostPerYear +
-                ", toleratedTotalCostPerYear=" + toleratedTotalCostPerYear +
-                ", acquisitionDate=" + acquisitionDate +
-                ", endOfLife=" + endOfLife +
-                ", MAX_RATING=" + 5 +
-                ", currentScalability=" + currentScalability +
-                ", expectedScalability=" + expectedScalability +
-                ", currentPerformance=" + currentPerformance +
-                ", expectedPerformance=" + expectedPerformance +
-                ", currentSecurityLevel=" + currentSecurityLevel +
-                ", expectedSecurityLevel=" + expectedSecurityLevel +
-                ", currentStability=" + currentStability +
-                ", expectedStability=" + expectedStability +
-                ", currentValueForMoney=" + currentValueForMoney +
-                ", timeValue=" + timeValue +
-                '}';
     }
 }

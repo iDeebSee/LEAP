@@ -18,7 +18,7 @@ export default function DatePicker(props) {
             let year = date.getFullYear();
             let month = date.getMonth();
             let day = date.getDate();
-            let fullDate = format(new Date(year, month, day), 'dd/MM/yyyy') //year + '-' + (month + 1) + '-' + day;
+            let fullDate = format(new Date(year, month, day), 'yyyy-MM-dd') //year + '-' + (month + 1) + '-' + day;
             return fullDate;
         } catch (error) {
             console.error(error);
@@ -40,7 +40,7 @@ export default function DatePicker(props) {
                 <KeyboardDatePicker
                     disableToolbar
                     variant="inline"
-                    format="dd/MM/yyyy"
+                    format="yyyy/MM/dd"
                     margin="normal"
                     id="date-picker-inline"
                     label={props.name}
