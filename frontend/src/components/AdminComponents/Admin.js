@@ -148,7 +148,7 @@ export default function Index() {
             <Grid item xs={7}>
                 <UserList users={users} onDelete={deleteUser} setUser={fillEditForm}/>
             </Grid>
-            <Grid item className={!hideEdit && classes.hidden} xs>
+            <Grid item className={!hideEdit && classes.hidden} xs={5}>
                 <Paper className={clsx(classes.paper, classes.fixedHeight)}>
                     <Grid container spacing={2}>
                         <Grid item>
@@ -168,7 +168,7 @@ export default function Index() {
                     </Grid>
                 </Paper>
             </Grid>
-            <Grid item className={hideEdit && classes.hidden} xs>
+            <Grid item className={hideEdit && classes.hidden} xs={5}>
                 <Paper className={clsx(classes.paper, classes.fixedHeight)}>
                     <Grid container spacing={2}>
                         <Grid item>
