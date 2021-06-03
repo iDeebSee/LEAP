@@ -1,26 +1,21 @@
 import React, { useState } from 'react';
+import 'date-fns';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { Button, TextField } from '@material-ui/core';
-import SimpleDialog from '../components/PopUp';
+import { Button } from '@material-ui/core';
+import SimpleMenu from './Menu'
 
 const useRowStyles = makeStyles({
     root: {
         '& > *': {
-            borderBottom: 'unset',
+
         },
     },
     border: {
@@ -28,84 +23,76 @@ const useRowStyles = makeStyles({
     }
 });
 
-function createData(name, calories, fat, carbs, protein, price, something, nothing, here) {
+function createData(name, technology, version, currentTotalCostPerYear, toleratedTotalCostPerYear, acquisitionDate, endOfLife, timeValue, currentScalability, expectedScalability, currentPerformance, expectedPerformance, currentSecurityLevel, expectedSecurityLevel, costCurrency, currentValueForMoney, importance, efficiencySupport, functionalCoverage, bfCorrectness, futurePotential, completeness, iqCorrectness, availability) {
     return {
         name,
-        calories,
-        fat,
-        carbs,
-        protein,
-        price,
-        something,
-        nothing,
-        here,
-        history: [
-            { date: '2020-01-05', customerId: '11091700', amount: 3 },
-            { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
-        ],
+        technology,
+        version,
+        currentTotalCostPerYear,
+        toleratedTotalCostPerYear,
+        acquisitionDate,
+        endOfLife,
+        timeValue,
+        currentScalability,
+        expectedScalability,
+        currentPerformance,
+        expectedPerformance,
+        currentSecurityLevel,
+        expectedSecurityLevel,
+        costCurrency,
+        currentValueForMoney,
+        importance,
+        efficiencySupport,
+        functionalCoverage,
+        bfCorrectness,
+        futurePotential,
+        completeness,
+        iqCorrectness,
+        availability,
     };
 }
 
+
 function Row(props) {
     const { row } = props;
-    const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell>
-                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
+                    <SimpleMenu />
                 </TableCell>
-                <TableCell component="th" scope="row">
-                    {row.name}
-                </TableCell>
-                <TableCell className={classes.border} align="right">{row.calories}</TableCell>
-                <TableCell className={classes.border} align="right">{row.fat}</TableCell>
-                <TableCell className={classes.border} align="right">{row.carbs}</TableCell>
-                <TableCell className={classes.border} align="right">{row.protein}</TableCell>
-                <TableCell className={classes.border} align="right">{row.price}</TableCell>
-                <TableCell className={classes.border} align="right">{row.something}</TableCell>
-                <TableCell className={classes.border} align="right">{row.nothing}</TableCell>
-                <TableCell className={classes.border} align="right">{row.here}</TableCell>
+                <TableCell component="th" scope="row">{row.name}</TableCell>
+                <TableCell className={classes.border} align="center">{row.technology}</TableCell>
+                <TableCell className={classes.border} align="center">{row.version}</TableCell>
+                <TableCell className={classes.border} align="center">{row.currentTotalCostPerYear}</TableCell>
+                <TableCell className={classes.border} align="center">{row.toleratedTotalCostPerYear}</TableCell>
+                <TableCell className={classes.border} align="center">{row.acquisitionDate}</TableCell>
+                <TableCell className={classes.border} align="center">{row.endOfLife}</TableCell>
+                <TableCell className={classes.border} align="center">{row.timeValue}</TableCell>
 
-            </TableRow>
-            <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box margin={1}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                History
-              </Typography>
-                            <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Date</TableCell>
-                                        <TableCell>Customer</TableCell>
-                                        <TableCell align="right">Amount</TableCell>
-                                        <TableCell align="right">Total price ($)</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {row.history.map((historyRow) => (
-                                        <TableRow key={historyRow.date}>
-                                            <TableCell component="th" scope="row">
-                                                {historyRow.date}
-                                            </TableCell>
-                                            <TableCell>{historyRow.customerId}</TableCell>
-                                            <TableCell align="right">{historyRow.amount}</TableCell>
-                                            <TableCell align="right">
-                                                {Math.round(historyRow.amount * row.price * 100) / 100}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
+
+
+
+                <TableCell className={classes.border} align="center">{row.currentScalability}</TableCell>
+                <TableCell className={classes.border} align="center">{row.expectedScalability}</TableCell>
+                <TableCell className={classes.border} align="center">{row.currentPerformance}</TableCell>
+                <TableCell className={classes.border} align="center">{row.expectedPerformance}</TableCell>
+                <TableCell className={classes.border} align="center">{row.currentSecurityLevel}</TableCell>
+                <TableCell className={classes.border} align="center">{row.expectedSecurityLevel}</TableCell>
+                <TableCell className={classes.border} align="center">{row.costCurrency}</TableCell>
+                <TableCell className={classes.border} align="center">{row.currentValueForMoney}</TableCell>
+
+                <TableCell className={classes.border} align="center" >{row.importance}</TableCell>
+                <TableCell className={classes.border} align="center" >{row.efficiencySupport}</TableCell>
+                <TableCell className={classes.border} align="center" >{row.functionalCoverage}</TableCell>
+                <TableCell className={classes.border} align="center" >{row.bfCorrectness}</TableCell>
+                <TableCell className={classes.border} align="center" >{row.futurePotential}</TableCell>
+                <TableCell className={classes.border} align="center" >{row.completeness}</TableCell>
+                <TableCell className={classes.border} align="center" >{row.iqCorrectness}</TableCell>
+                <TableCell className={classes.border} align="center" >{row.availability}</TableCell>
+
             </TableRow>
         </React.Fragment>
     );
@@ -113,82 +100,119 @@ function Row(props) {
 
 Row.propTypes = {
     row: PropTypes.shape({
-        calories: PropTypes.number.isRequired,
-        carbs: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        history: PropTypes.arrayOf(
-            PropTypes.shape({
-                amount: PropTypes.number.isRequired,
-                customerId: PropTypes.string.isRequired,
-                date: PropTypes.string.isRequired,
-            }),
-        ).isRequired,
         name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        protein: PropTypes.number.isRequired,
+        technology: PropTypes.string.isRequired,
+        version: PropTypes.string.isRequired,
+        currentTotalCostPerYear: PropTypes.number.isRequired,
+        toleratedTotalCostPerYear: PropTypes.number.isRequired,
+        acquisitionDate: PropTypes.string.isRequired,
+        endOfLife: PropTypes.string,
+        timeValue: PropTypes.string.isRequired,
+        currentScalability: PropTypes.number.isRequired,
+        expectedScalability: PropTypes.number.isRequired,
+        currentPerformance: PropTypes.number.isRequired,
+        expectedPerformance: PropTypes.number.isRequired,
+        currentSecurityLevel: PropTypes.number.isRequired,
+        expectedSecurityLevel: PropTypes.number.isRequired,
+        costCurrency: PropTypes.string,
+        currentValueForMoney: PropTypes.number.isRequired,
+        importance: PropTypes.number.isRequired,
+        efficiencySupport: PropTypes.number.isRequired,
+        functionalCoverage: PropTypes.number.isRequired,
+        bfCorrectness: PropTypes.number.isRequired,
+        futurePotential: PropTypes.number.isRequired,
+        completeness: PropTypes.number.isRequired,
+        iqCorrectness: PropTypes.number.isRequired,
+        availability: PropTypes.number.isRequired,
     }).isRequired,
 };
 
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99, 1.5, 1.5, 1.5),
-    createData('Eclair', 262, 16.0, 24, 6.0, 3.79, 1.5, 1.5, 1.5),
-    createData('Cupcake', 305, 3.7, 67, 4.3, 2.5, 1.5, 1.5, 1.5),
-    createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5, 1.5, 1.5, 1.5),
-];
 
 let teller = 0;
 
+const useStyles = makeStyles({
+    businessFit: {
+        color: 'red',
+    },
+    informationQuality: {
+        color: 'orange',
+    },
+    technicalQuality: {
+        color: 'blue',
+    },
+    costImpact: {
+        color: 'green',
+    },
+    inputPadding: {
+        padding: '10px',
+    }
+})
+
 export default function SimpleTable() {
-
-
-    const [data, setData] = useState();
+    const classes = useStyles();
     const [map, setMap] = useState(new Map());
 
     const updateMap = (k, v) => {
         setMap(new Map(map.set(k, v)));
+        console.log(k);
     }
 
-
-
-    async function handleRow() {
-        setData(teller++, 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5);
-        updateMap(createData(data));
+    function handleRow() {
+        updateMap(createData("App-" + teller++, 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5, 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5));
     }
 
+    /*
+    function getValues(values) {
+        //console.log("getvalues:" + name, technology, version,functionalCoverage,bfCorrectness,futurePotential,completeness,iqCorrectness,availability,currentScalability,expectedScalability,currentPerformance,expectedPerformance,currentTotalCostPerYear,toleratedTotalCostPerYear,currentSecurityLevel,expectedSecurityLevel,currentValueForMoney,importance,efficiencySupport);
 
+        updateMap(createData(values.name, values.technology, values.version, values.currentTotalCostPerYear, values.toleratedTotalCostPerYear,
+            values.acquisitionDate, values.endOfLife, values.timeValue, values.currentScalability, values.expectedScalability, values.currentPerformance,
+            values.expectedPerformance, values.currentSecurityLevel, values.expectedSecurityLevel, values.costCurrency, values.currentValueForMoney,
+            values.importance, values.efficiencySupport, values.functionalCoverage, values.bfCorrectness, values.futurePotential, values.completeness,
+            values.iqCorrectness, values.availability));
+    }
+    */
 
     return (
-
         <TableContainer component={Paper}>
             <Table aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
                         <TableCell />
-                        <TableCell>App</TableCell>
-                        <TableCell align="right">Capability</TableCell>
-                        <TableCell align="right">Productivity</TableCell>
-                        <TableCell align="right">Functional coverage</TableCell>
-                        <TableCell align="right">Correctness</TableCell>
-                        <TableCell align="right">Future potential</TableCell>
-                        <TableCell align="right">Completeness</TableCell>
-                        <TableCell align="right">Correctness</TableCell>
-                        <TableCell align="right">Availability</TableCell>
+                        <TableCell>Application</TableCell>
+                        <TableCell align="right">Technology</TableCell>
+                        <TableCell align="right">Version</TableCell>
+                        <TableCell align="right" className={classes.costImpact}>Current total cost per year</TableCell>
+                        <TableCell align="right" className={classes.costImpact}>Tolerated total cost per year</TableCell>
+                        <TableCell align="right">Acquisition date</TableCell>
+                        <TableCell align="right">End of life</TableCell>
+                        <TableCell align="right">TIME value</TableCell>
+                        <TableCell align="right" className={classes.technicalQuality}>Current scalability</TableCell>
+                        <TableCell align="right" className={classes.technicalQuality}>Expected scalability</TableCell>
+                        <TableCell align="right" className={classes.technicalQuality}>Current performance</TableCell>
+                        <TableCell align="right" className={classes.technicalQuality}>Expected performance</TableCell>
+                        <TableCell align="right" className={classes.technicalQuality}>Current security level</TableCell>
+                        <TableCell align="right" className={classes.technicalQuality}>Expected security level</TableCell>
+                        <TableCell align="right">Cost currency</TableCell>
+                        <TableCell align="right" className={classes.costImpact}>Current value for money</TableCell>
+                        <TableCell align="right" >importance</TableCell>
+                        <TableCell align="right" className={classes.businessFit}>efficiencySupport</TableCell>
+                        <TableCell align="right" className={classes.businessFit}>functionalCoverage</TableCell>
+                        <TableCell align="right" className={classes.businessFit}>Correctness</TableCell>
+                        <TableCell align="right">futurePotential</TableCell>
+                        <TableCell align="right">completeness</TableCell>
+                        <TableCell align="right" className={classes.informationQuality}>Correctness</TableCell>
+                        <TableCell align="right">availability</TableCell>
                     </TableRow>
-
                 </TableHead>
                 <TableBody>
-                    {/* {rows.map((row) => (
-                        <Row key={row.name} row={row} />
-
-                    ))} */}
                     {[...map.keys()].map(k => (
+
                         <Row key={k.name} row={k} />
                     ))}
                 </TableBody>
             </Table>
             <Button onClick={handleRow}>Add</Button>
         </TableContainer>
-
     );
 }

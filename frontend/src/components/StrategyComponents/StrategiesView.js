@@ -2,7 +2,6 @@ import {
     Container, 
     DialogContent, 
     TextField, 
-    MenuItem, 
     DialogActions, 
     ButtonGroup, 
     Button, 
@@ -11,8 +10,7 @@ import {
     DialogContentText, 
 } from "@material-ui/core";
 import React, { Component } from "react";
-import StrategyService from "../../services/StrategyService";
-import { nanoid } from 'nanoid';
+import StrategyService from "../../services/Strategy.service";
 import { withStyles } from '@material-ui/core/styles';
 import StrategyList from './StrategyList'
 
@@ -45,7 +43,13 @@ const styles = theme => ({
     }
 });
 
+
+
 class StrategiesView extends Component {
+    /**
+     * Constructor of StrategiesView
+     * @param props Used properties.
+     */
     constructor(props) {
         super(props);
 
@@ -61,11 +65,15 @@ class StrategiesView extends Component {
             open: false
         };
     }
-
+    /**
+    Shows all strategies when the page is loaded.
+    */
     componentDidMount() {
         this.getStrategies();
     }
-
+    /**
+    * Evokes all strategies from the repository and shows them in the strategylist.
+    */
     getStrategies() {
         StrategyService.getAll()
             .then(res => {
@@ -76,7 +84,10 @@ class StrategiesView extends Component {
                 console.log(e);
             });
     }
-
+    /**
+    * Removes a strategy based on the id. Once its removed the method gives back the remaining strategies.
+    * @param strategyId the id a strategy gets deleted by.
+    */
     onCardDelete(strategyId) {
         StrategyService.delete(strategyId)
         .then(() => {
@@ -84,8 +95,9 @@ class StrategiesView extends Component {
         });
     }
 
-
-
+    /** 
+    * Constructs a new strategy and adds it to the repository. 
+    */
     createStrategy() {
         let text = "";
         if(this.state.newStrategyName !== '') {
@@ -103,11 +115,15 @@ class StrategiesView extends Component {
         } 
         this.setState({open: false, dialogText: text});
     }
-
+    /**
+    * Opens an "add strategy" popup box when triggered.
+    */
     handleOpen() {
         this.setState({open: true});
     }
-
+    /**
+    * Closes an "add strategy" popup box when triggered.
+    */
     handleClose() {
         this.setState({open: false});
     }

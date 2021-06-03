@@ -3,15 +3,14 @@ import Index from "../templates/Index.js";
 import Applications from "../templates/Applications.js";
 import CapabilityDetailView from './CapabilityComponents/CapabilityDetailView';
 import CapabilitiesView from './CapabilityComponents/CapabilitiesView'
-import User from '../templates/User';
-import Admin from '../templates/Admin';
+import Admin from './AdminComponents/Admin';
 import SignUp from '../templates/SignUp';
 import SignIn from '../templates/SignIn';
-import TwoFactorAuthentication from '../templates/TwoFactorAuthentication';
 import ForgotPassword from '../templates/ForgotPassword';
 import StrategyDetailView from './StrategyComponents/StrategyDetailView';
 import StrategiesView from './StrategyComponents/StrategiesView';
 import EnvironmentDetailView from '../components/EnvironmentDetailView'
+import { ProtectedAdmin } from '../services/ProtectRoute';
 
 import {
     Switch,
@@ -26,18 +25,35 @@ export default function Routes() {
             <Route exact path="/capabilities" component={CapabilitiesView}/>
             <Route exact path="/capabilities/:id" component={CapabilityDetailView}/>
             <Route exact path="/Environment/:id" component={EnvironmentDetailView}/>
-
             <Route exact path="/applications" component={Applications}/>
             <Route exact path="/strategy" component={StrategiesView}/>
             <Route exact path="/strategy/:id" component={StrategyDetailView}/>
-            <Route exact path="/profile" component={User}/>
-            <Route exact path="/admin" component={Admin}/>
+            <AdminRoute path="/admin" component={Admin}/>
+            <Route exact path="*" render={() => <Redirect to={{pathname: "/home"}}/>}/>
+            <Route render={() => <Redirect to={{pathname: "/home"}} />} />
+        </Switch>
+    );
+}
+
+const AdminRoute = ({component: Component, ...rest}) => {
+    return(
+        <Route {...rest} render={props => {return (
+                    ProtectedAdmin.getAuth() ? 
+                    <Component {...props}/> : <Redirect to={{pathname: "/home"}}/>
+                )}
+            }
+        />
+    );
+}
+
+export function UserRoutes() {
+    return(
+        <Switch>
             <Route exact path="/signIn" component={SignIn}/>
             <Route exact path="/signUp" component={SignUp}/>
-            <Route exact path="/2FA" component={TwoFactorAuthentication}/>
             <Route exact path="/password" component={ForgotPassword}/>
-            <Route exact path="/" render={() => <Redirect to={{pathname: "/home"}}/>}/>
-            <Route render={() => <Redirect to={{pathname: "/home"}} />} />
+            <Route path="*" render={() => <Redirect to={{pathname: "/signIn"}}/>}/>
+            <Route render={() => <Redirect to={{pathname: "/signIn"}} />} />
         </Switch>
     );
 }

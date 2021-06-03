@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import EnvironmentService from "../services/EnvironmentService";
+import EnvironmentService from "../services/Environment.Service";
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import clsx from 'clsx';

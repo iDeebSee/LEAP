@@ -12,15 +12,13 @@ import {
     DialogContent,
     DialogActions,
     TextField,
-    MenuItem,
     DialogContentText,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link } from 'react-router-dom'
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
-import StrategyService from "../../services/StrategyService";
-import _ from 'lodash';
+import StrategyService from "../../services/Strategy.service";
 
 const useStyles = (makeStyles((theme) => ({
     paper: {
@@ -44,26 +42,37 @@ const useStyles = (makeStyles((theme) => ({
         width: "100%"
     }
 })));
-
+/**
+ * useState implementation.
+ * @param props Properties of StrategyList.
+ */
 const StrategyList = (props) => {
     const classes = useStyles(),
     strategies = props.data,
     [openEdit, setOpenedit] = useState(false),
     [openDelete, setOpenDelete] = useState(false),
     [newName, setNewName] = useState(''),
-    [newParentId, setNewParentId] = useState(null),
     [id, setId] = useState(''),
     [currentStrat, setCurrentStrat] = useState(null);
 
+/**
+ * Opens a popup box for the strategy you want to delete.
+ * @param id the id to delete by.
+ */
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
         setId(id);
     }
-
+/**
+ * Closes the popup box that's currently active.
+ */
     const closeDeleteDialog = () => {
         setOpenDelete(false);
     }
-
+/**
+ * Deletes the strategy after confirmation by the user. 
+ * The popup box closes once the strategy is deleted.
+ */
     const deleteStrategy = () => {
         props.onCardDelete(id);
         closeDeleteDialog();
@@ -86,12 +95,11 @@ const StrategyList = (props) => {
         </Dialog>
     );
     
-
+/**
+ * Changes the strategy parameters.
+ */
     const editStrategy = () => {
         let data = {"name": newName};
-        if(newParentId != null) {
-            data.parentId = newParentId;
-        }
         StrategyService.update(id, data)
         .then(res => {
             console.log(res.data);
@@ -103,14 +111,19 @@ const StrategyList = (props) => {
         });
     };
 
-
+/**
+ * Opens the edit popup box with the current values filled in the input fields.
+ * @param strategy 
+ */
     const openEditDialog = (strategy) => {
         setCurrentStrat(strategy);
         setId(strategy.id);
         setNewName(strategy.name);
         setOpenedit(true);
     };
-
+/**
+ * Closes the edit popup box without saving any changes.
+ */
     const closeEditDialog = () => {
         setOpenedit(false);
         setCurrentStrat(null);

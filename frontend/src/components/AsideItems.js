@@ -1,36 +1,54 @@
 import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import LayersIcon from '@material-ui/icons/Layers';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import TimelineIcon from '@material-ui/icons/Timeline';
 import {Link} from 'react-router-dom';
+import AuthService from '../services/Auth.service';
+import {
+    ListItem,
+    ListItemIcon,
+    ListItemText
+} from '@material-ui/core';
+import {
+    Dashboard,
+    Layers,
+    ExitToApp,
+    Timeline,
+    Assessment,
+    SupervisorAccount,
+} from '@material-ui/icons';
+
+export const adminListItems = (
+    <div>
+        <ListItem button component={Link} to="/admin">
+            <ListItemIcon>
+                <SupervisorAccount />
+            </ListItemIcon>
+            <ListItemText primary="User list" />
+        </ListItem>
+    </div>
+)
 
 export const mainListItems = (
     <div>
         <ListItem button component={Link} to="/home">
             <ListItemIcon>
-                <DashboardIcon />
+                <Dashboard />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
         </ListItem>
         <ListItem button component={Link} to="/capabilities"> 
             <ListItemIcon>
-                <LayersIcon />
+                <Layers />
             </ListItemIcon>
             <ListItemText primary="Capabilities" />
         </ListItem>
         <ListItem button component={Link} to="/strategy">
             <ListItemIcon>
-                <TimelineIcon />
+                <Timeline />
             </ListItemIcon>
             <ListItemText primary="Strategy"/>
         </ListItem>
         <ListItem button component={Link} to="/applications"> 
             <ListItemIcon>
-                <LayersIcon />
+                <Assessment />
             </ListItemIcon>
             <ListItemText primary="Applications" />
         </ListItem>
@@ -39,10 +57,9 @@ export const mainListItems = (
 
 export const secondaryListItems = (
     <div>
-        {/* <ListSubheader inset>Saved reports</ListSubheader> */}
-        <ListItem button component={Link} to="/SignIn">
+        <ListItem button component={Link} to="/signIn" onClick={() => {AuthService.logout();}}>
             <ListItemIcon>
-                <ExitToAppIcon />
+                <ExitToApp />
             </ListItemIcon>
             <ListItemText primary="Log out" />
         </ListItem>

@@ -11,7 +11,7 @@ import {
     DialogContentText, 
 } from "@material-ui/core";
 import React, { Component } from "react";
-import CapabilityService from "../../services/CapabilityService";
+import CapabilityService from "../../services/Capability.service";
 import { nanoid } from 'nanoid';
 import { withStyles } from '@material-ui/core/styles';
 import CapabilityList from './CapabilityList';
@@ -50,7 +50,7 @@ class CapabilitiesView extends Component {
         super(props);
 
         this.getCapabilities = this.getCapabilities.bind(this);
-        this.onCardDelete = this.onCardDelete.bind(this);
+        this.onCardDelete = this.deleteCapability.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.createCapability = this.createCapability.bind(this);
@@ -70,14 +70,15 @@ class CapabilitiesView extends Component {
         CapabilityService.getAll()
             .then(res => {
                 this.setState({capabilities: res.data});
-                console.log("incoming capabilities", res.data);
+                console.log("incoming capabilities: ")
+                console.table(res.data);
             })
             .catch(e => {
-                console.log(e);
+                console.error(e);
             });
     }
 
-    onCardDelete(capabilityId) {
+    deleteCapability(capabilityId) {
         CapabilityService.delete(capabilityId)
         .then(() => {
             this.getCapabilities();
@@ -119,7 +120,7 @@ class CapabilitiesView extends Component {
         const { classes } = this.props;
         return(
             <Container>
-                <CapabilityList data={this.state.capabilities} getCapabilities={this.getCapabilities} onCardDelete={this.onCardDelete}/>
+                <CapabilityList data={this.state.capabilities} getCapabilities={this.getCapabilities} onDelete={this.deleteCapability}/>
                 <ButtonGroup className={classes.buttonGroup}>
                     <Button variant="contained" color="primary" onClick={this.handleOpen}>Add Capability</Button>
                     

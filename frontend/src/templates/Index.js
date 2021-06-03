@@ -1,8 +1,7 @@
 import { 
     Container, 
     DialogContent, 
-    TextField, 
-    MenuItem, 
+    TextField,  
     DialogActions, 
     ButtonGroup, 
     Button, 
@@ -11,10 +10,9 @@ import {
     DialogContentText, 
 } from "@material-ui/core";
 import React, { Component } from "react";
-import { nanoid } from 'nanoid';
 import { withStyles } from '@material-ui/core/styles';
-import EnvirementList from '../components/EnvirementList';
-import EnvironmentService from "../services/EnvironmentService";
+import EnvironmentList from '../components/EnvironmentList';
+import EnvironmentService from "../services/Environment.Service";
 
 const styles = theme => ({
     root: {
@@ -117,7 +115,7 @@ class EnvirenmentView extends Component {
         const { classes } = this.props;
         return(
             <Container>
-                <EnvirementList data={this.state.environments} getenvironments={this.getenvironments} onCardDelete={this.onCardDelete}/>
+                <EnvironmentList data={this.state.environments} getenvironments={this.getenvironments} onCardDelete={this.onCardDelete}/>
                 <ButtonGroup className={classes.buttonGroup}>
                     <Button variant="contained" color="primary" onClick={this.handleOpen}>Add environment</Button>
                 </ButtonGroup>
