@@ -17,6 +17,10 @@ const styles = theme => ({
 });
 
 class StrategyDetailView extends Component {
+    /**
+     * Constructor for StrategyDetailView.
+     * @param props Used properties.
+     */
     constructor(props) {
         super(props);
 
@@ -26,11 +30,16 @@ class StrategyDetailView extends Component {
             strategy: {},
         };
     }
-
+    /**
+    * Gives the strategy name when loaded.
+    */
     componentDidMount() {
         this.getStrategy(this.props.match.params.id);
     }
-
+    /**
+    * Evokes a strategy based on id.
+    * @param  id 
+    */
     getStrategy(id) {
         StrategyService.get(id)
             .then(res => {
