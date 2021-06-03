@@ -12,6 +12,7 @@ import ForgotPassword from '../templates/ForgotPassword';
 import StrategyDetailView from './StrategyComponents/StrategyDetailView';
 import StrategiesView from './StrategyComponents/StrategiesView';
 import EnvironmentDetailView from '../components/EnvironmentDetailView'
+import ApplicationEdit from '../components/ApplicationEdit';
 
 import {
     Switch,
@@ -26,7 +27,7 @@ export default function Routes() {
             <Route exact path="/capabilities" component={CapabilitiesView}/>
             <Route exact path="/capabilities/:id" component={CapabilityDetailView}/>
             <Route exact path="/Environment/:id" component={EnvironmentDetailView}/>
-
+            <Route exact path="/applications/:id" component={ApplicationEdit}/>
             <Route exact path="/applications" component={Applications}/>
             <Route exact path="/strategy" component={StrategiesView}/>
             <Route exact path="/strategy/:id" component={StrategyDetailView}/>

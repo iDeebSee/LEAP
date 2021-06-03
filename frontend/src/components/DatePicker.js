@@ -2,8 +2,7 @@ import 'date-fns';
 import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
-import addDays from 'date-fns/addDays'
-import { format, compareAsc } from 'date-fns'
+import { format } from 'date-fns'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -11,19 +10,21 @@ import {
 
 export default function DatePicker(props) {
 
-    const [selectedDate, setSelectedDate] = React.useState(new Date());
+    const [selectedDate, setSelectedDate] = React.useState((props.addDate) ? new Date() : props.value);
+
 
     const formatDate = (date) => {
         try {
             let year = date.getFullYear();
             let month = date.getMonth();
             let day = date.getDate();
-            let fullDate = format(new Date(year, month, day), 'yyyy-MM-dd') //year + '-' + (month + 1) + '-' + day;
+            let fullDate = format(new Date(year, month, day), 'yyyy-MM-dd'); //year + '-' + (month + 1) + '-' + day;
             return fullDate;
         } catch (error) {
             console.error(error);
         }
     }
+
 
     const handleDateChange = (date) => {
 
@@ -40,7 +41,7 @@ export default function DatePicker(props) {
                 <KeyboardDatePicker
                     disableToolbar
                     variant="inline"
-                    format="yyyy/MM/dd"
+                    format="yyyy-MM-dd"
                     margin="normal"
                     id="date-picker-inline"
                     label={props.name}
