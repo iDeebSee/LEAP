@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ap.be.backend.BackendApplication;
 import ap.be.backend.models.Environment;
-import ap.be.backend.repositories.EnvirenmentRepository;
+import ap.be.backend.repositories.EnvironmentRepository;
 
 
 @RunWith(SpringRunner.class)
@@ -19,7 +19,7 @@ import ap.be.backend.repositories.EnvirenmentRepository;
 public class EnvironmentIntegrationTest {
     
     @Autowired
-    EnvirenmentRepository envirenmentRepository;
+    EnvironmentRepository envirenmentRepository;
 
     @Test
     public void EnvironmentTest() throws Exception{
