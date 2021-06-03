@@ -24,9 +24,9 @@ public class ApplicationsController {
         return TIMEValue.values();
     }
 
-    @GetMapping("/{name}")
-    public Application readApplication(@PathVariable("name") String name) {
-        return applicationRepository.findByName(name);
+    @GetMapping("/{id}")
+    public Application readApplication(@PathVariable("id") String id) {
+        return applicationRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     @PostMapping("/")
@@ -34,9 +34,9 @@ public class ApplicationsController {
         return applicationRepository.save(application);
     }
 
-    @PutMapping("/{name}")
-    public Application updateCapability(@PathVariable("name") String name, @RequestBody Application newApplication) {
-        Application application = applicationRepository.findByName(name);
+    @PutMapping("/{id}")
+    public Application updateCapability(@PathVariable("id") String id, @RequestBody Application newApplication) {
+        Application application = applicationRepository.findById(id).orElseThrow(RuntimeException::new);
         application.setName(newApplication.getName());
         application.setAcquisitionDate(newApplication.getAcquisitionDate());
         application.setVersion(newApplication.getVersion());
