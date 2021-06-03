@@ -1,13 +1,13 @@
-package ap.be.backend;
+package ap.be.backend.ControllerTests;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import ap.CapabilityService;
 import ap.be.backend.models.Capability;
 import ap.be.backend.repositories.CapabilityRepository;
+import ap.be.backend.services.CapabilityService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
-public class LeapcontrollerTest {
+public class CapabilityControllerTest {
     @Mock
     private CapabilityRepository capabilityRepository;
 
@@ -81,16 +81,6 @@ public class LeapcontrollerTest {
     }
 
     @Test
-    void deleteAll(){
-        List<Capability> capabilities = new ArrayList<>();
-        capabilities.add(new Capability("test1", "test capability 1", null));
-        capabilities.add(new Capability("test2", "test capability 2", null));
-
-        capabilityService.deleteAllCapabilities();
-        verify(capabilityRepository).deleteAll();
-    }
-
-    @Test
     void addCapability() {
         final Capability capability = new Capability("test1", "test capability 1", null);
 
@@ -104,7 +94,4 @@ public class LeapcontrollerTest {
         
 
     }
-
-
-
 }
