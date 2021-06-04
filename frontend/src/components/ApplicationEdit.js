@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import ApplicationsService from '../services/ApplicationsService';
 import 'date-fns';
-
+import { makeStyles } from '@material-ui/core/styles';
 import DatePicker from './DatePicker';
 import {
-    Button, TextField, InputLabel, Select, MenuItem
+    Button, TextField, InputLabel, Select, MenuItem, Grid
 } from '@material-ui/core';
 
 export default function ApplicationEdit(props) {
- 
+
     const [name, setName] = React.useState('');
     const [technology, setTechnology] = React.useState('');
     const [version, setVersion] = React.useState('');
@@ -41,6 +41,16 @@ export default function ApplicationEdit(props) {
     const [timeValues, setTimeValues] = React.useState([''])
 
 
+    const useStyles = makeStyles((theme) => ({
+        root: {
+            flexGrow: 1,
+        },
+        paper: {
+            padding: theme.spacing(2),
+            textAlign: 'center',
+            color: theme.palette.text.secondary,
+        },
+    }));
 
     const location = props.location.pathname;
     const urlArray = location.split('/');
@@ -115,9 +125,10 @@ export default function ApplicationEdit(props) {
     };
 
 
-    const update =() =>{
-        
-        ApplicationsService.update(id, {name,
+    const update = () => {
+
+        ApplicationsService.update(id, {
+            name,
             technology,
             version,
             currentTotalCostPerYear,
@@ -140,61 +151,80 @@ export default function ApplicationEdit(props) {
             futurePotential,
             completeness,
             iqCorrectness,
-            availability }).then(() =>{
+            availability
+        }).then(() => {
             ApplicationsService.get(id).then(res => {
                 console.log("response", res);
             })
         });
     }
 
-    const handleNameChange =(e) =>{
+    const handleNameChange = (e) => {
         setName(e.target.value);
         console.log(name);
     }
 
+    const classes = useStyles();
+
     return (
-        <div>
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="name" type="text" value={name} onChange={(e) => handleNameChange(e)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="technology" type="text" value={technology} onChange={(e) => setTechnology(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="version" type="text" value={version} onChange={(e) => setVersion(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="current total cost per year" type="number" value={currentTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setCurrentTotalCostPerYear(0) : setCurrentTotalCostPerYear(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="tolerated total cost per year" type="number" value={toleratedTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setToleratedTotalCostPerYear(0) : setToleratedTotalCostPerYear(e.target.value)} />
-            <DatePicker style={{ padding: '10px', }} id="standard-basic" label="acquisition date" date={handleDateChange} name="Acquisition date" value={acquisitionDate} />
-            <DatePicker style={{ padding: '10px', }} id="standard-basic" label="end of life" date={handleEndOfLife} name="End of life date" value={endOfLife} />
-
-            <InputLabel style={{ fontSize: '11px', }} id="demo-simple-select-label">TIME Value</InputLabel>
-            <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={timeValues[timeValues.indexOf(timeValue)]}
-                onChange={handleChange}
-            >
-                {timeValues.map((tv, index) => (
-                    <MenuItem key={index} value={tv}>{tv}</MenuItem>
-                ))}
-            </Select>
-
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="current scalability" type="number" value={currentScalability} onChange={(e) => (e.target.value > 5) ? setCurrentScalability(5) : (e.target.value < 0) ? setCurrentScalability(0) : setCurrentScalability(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="expected scalability" type="number" value={expectedScalability} onChange={(e) => (e.target.value > 5) ? setExpectedScalability(5) : (e.target.value < 0) ? setExpectedScalability(0) : setExpectedScalability(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="current performance" type="number" value={currentPerformance} onChange={(e) => (e.target.value > 5) ? setCurrentPerformance(5) : (e.target.value < 0) ? setCurrentPerformance(0) : setCurrentPerformance(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="expected performance" type="number" value={expectedPerformance} onChange={(e) => (e.target.value > 5) ? setExpectedPerformance(5) : (e.target.value < 0) ? setExpectedPerformance(0) : setExpectedPerformance(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="current security level" type="number" value={currentSecurityLevel} onChange={(e) => (e.target.value > 5) ? setCurrentSecurityLevel(5) : (e.target.value < 0) ? setCurrentSecurityLevel(0) : setCurrentSecurityLevel(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="expected security level" type="number" value={expectedSecurityLevel} onChange={(e) => (e.target.value > 5) ? setExpectedSecurityLevel(5) : (e.target.value < 0) ? setExpectedSecurityLevel(0) : setExpectedSecurityLevel(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="cost currency" type="text" value={costCurrency} onChange={(e) => setCostCurrency(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="current value for money" type="number" value={currentValueForMoney} onChange={(e) => (e.target.value > 5) ? setCurrentValueForMoney(5) : (e.target.value < 0) ? setCurrentValueForMoney(0) : setCurrentValueForMoney(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="importance %" type="number" value={importance} onChange={(e) => (e.target.value > 100) ? setImportance(100) : (e.target.value < 0) ? setImportance(0) : setImportance(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="efficiencySupport" type="number" value={efficiencySupport} onChange={(e) => (e.target.value > 5) ? setEfficiencySupport(5) : (e.target.value < 0) ? setEfficiencySupport(0) : setEfficiencySupport(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="functional coverage" type="number" value={functionalCoverage} onChange={(e) => (e.target.value > 5) ? setFunctionalCoverage(5) : (e.target.value < 0) ? setFunctionalCoverage(0) : setFunctionalCoverage(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="correctness" type="number" value={bfCorrectness} onChange={(e) => (e.target.value > 5) ? setBfCorrectness(5) : (e.target.value < 0) ? setBfCorrectness(0) : setBfCorrectness(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="future potential" type="number" value={futurePotential} onChange={(e) => (e.target.value > 5) ? setFuturePotential(5) : (e.target.value < 0) ? setFuturePotential(0) : setFuturePotential(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="completeness" type="number" value={completeness} onChange={(e) => (e.target.value > 5) ? setCompleteness(5) : (e.target.value < 0) ? setCompleteness(0) : setCompleteness(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="correctness" type="number" value={iqCorrectness} onChange={(e) => (e.target.value > 5) ? setIqCorrectness(5) : (e.target.value < 0) ? setIqCorrectness(0) : setIqCorrectness(e.target.value)} />
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="availability" type="number" value={availability} onChange={(e) => (e.target.value > 5) ? setAvailability(5) : (e.target.value < 0) ? setAvailability(0) : setAvailability(e.target.value)} />
-
-            <Button onClick={update} color="primary">
-                Update
+        <div className={classes.root}>
+            <Grid container spacing={3}>
+                <Grid item xs={3}>
+                    <TextField style={{ padding: '10px', }} label="name" type="text" value={name} onChange={(e) => handleNameChange(e)} />
+                </Grid>
+                <Grid item xs={3}>
+                    <TextField style={{ padding: '10px', }} label="technology" type="text" value={technology} onChange={(e) => setTechnology(e.target.value)} />
+                </Grid>
+                <Grid item xs={3}>
+                    <TextField style={{ padding: '10px', }} label="version" type="text" value={version} onChange={(e) => setVersion(e.target.value)} />
+                </Grid>
+                <Grid item xs={3}>
+                    <TextField style={{ padding: '10px', }} label="current total cost per year" type="number" value={currentTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setCurrentTotalCostPerYear(0) : setCurrentTotalCostPerYear(e.target.value)} />
+                </Grid>
+                <Grid item xs={3}>
+                    <TextField style={{ padding: '10px', }} label="tolerated total cost per year" type="number" value={toleratedTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setToleratedTotalCostPerYear(0) : setToleratedTotalCostPerYear(e.target.value)} />
+                </Grid>
+                <Grid item xs={3}>
+                    <DatePicker xs={3} style={{ padding: '10px', justifyContent: 'inherit', width: '80%', }} label="acquisition date" date={handleDateChange} name="Acquisition date" value={acquisitionDate} />
+                </Grid>
+                <Grid item xs={3}>
+                    <DatePicker xs={3} style={{ padding: '10px', justifyContent: 'inherit', width: '80%', }} label="end of life" date={handleEndOfLife} name="End of life date" value={endOfLife} />
+                </Grid>
+                <Grid item xs={3}>
+                    <InputLabel style={{ fontSize: '11px', position: 'relative', top: '20px', }} id="demo-simple-select-label">TIME Value</InputLabel>
+                    <Select
+                        style={{ position: 'relative', top: '20px', width: '80%', }}
+                        xs={3}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={timeValues[timeValues.indexOf(timeValue)]}
+                        onChange={handleChange}
+                    >
+                        {timeValues.map((tv, index) => (
+                            <MenuItem key={index} value={tv}>{tv}</MenuItem>
+                        ))}
+                    </Select>
+                </Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="current scalability" type="number" value={currentScalability} onChange={(e) => (e.target.value > 5) ? setCurrentScalability(5) : (e.target.value < 0) ? setCurrentScalability(0) : setCurrentScalability(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="expected scalability" type="number" value={expectedScalability} onChange={(e) => (e.target.value > 5) ? setExpectedScalability(5) : (e.target.value < 0) ? setExpectedScalability(0) : setExpectedScalability(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="current performance" type="number" value={currentPerformance} onChange={(e) => (e.target.value > 5) ? setCurrentPerformance(5) : (e.target.value < 0) ? setCurrentPerformance(0) : setCurrentPerformance(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="expected performance" type="number" value={expectedPerformance} onChange={(e) => (e.target.value > 5) ? setExpectedPerformance(5) : (e.target.value < 0) ? setExpectedPerformance(0) : setExpectedPerformance(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="current security level" type="number" value={currentSecurityLevel} onChange={(e) => (e.target.value > 5) ? setCurrentSecurityLevel(5) : (e.target.value < 0) ? setCurrentSecurityLevel(0) : setCurrentSecurityLevel(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="expected security level" type="number" value={expectedSecurityLevel} onChange={(e) => (e.target.value > 5) ? setExpectedSecurityLevel(5) : (e.target.value < 0) ? setExpectedSecurityLevel(0) : setExpectedSecurityLevel(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="cost currency" type="text" value={costCurrency} onChange={(e) => setCostCurrency(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="current value for money" type="number" value={currentValueForMoney} onChange={(e) => (e.target.value > 5) ? setCurrentValueForMoney(5) : (e.target.value < 0) ? setCurrentValueForMoney(0) : setCurrentValueForMoney(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="importance %" type="number" value={importance} onChange={(e) => (e.target.value > 100) ? setImportance(100) : (e.target.value < 0) ? setImportance(0) : setImportance(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="efficiencySupport" type="number" value={efficiencySupport} onChange={(e) => (e.target.value > 5) ? setEfficiencySupport(5) : (e.target.value < 0) ? setEfficiencySupport(0) : setEfficiencySupport(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="functional coverage" type="number" value={functionalCoverage} onChange={(e) => (e.target.value > 5) ? setFunctionalCoverage(5) : (e.target.value < 0) ? setFunctionalCoverage(0) : setFunctionalCoverage(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="correctness" type="number" value={bfCorrectness} onChange={(e) => (e.target.value > 5) ? setBfCorrectness(5) : (e.target.value < 0) ? setBfCorrectness(0) : setBfCorrectness(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="future potential" type="number" value={futurePotential} onChange={(e) => (e.target.value > 5) ? setFuturePotential(5) : (e.target.value < 0) ? setFuturePotential(0) : setFuturePotential(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="completeness" type="number" value={completeness} onChange={(e) => (e.target.value > 5) ? setCompleteness(5) : (e.target.value < 0) ? setCompleteness(0) : setCompleteness(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="correctness" type="number" value={iqCorrectness} onChange={(e) => (e.target.value > 5) ? setIqCorrectness(5) : (e.target.value < 0) ? setIqCorrectness(0) : setIqCorrectness(e.target.value)} /></Grid>
+                <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="availability" type="number" value={availability} onChange={(e) => (e.target.value > 5) ? setAvailability(5) : (e.target.value < 0) ? setAvailability(0) : setAvailability(e.target.value)} /></Grid>
+                <Button style={{ margin: 'auto' }} onClick={update} color="primary">
+                    Update
             </Button>
-
+            </Grid>
         </div>
     )
 }
