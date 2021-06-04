@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 
 export default function ApplicationEdit(props) {
-    const [app, setApp] = useState({})
+ 
     const [name, setName] = React.useState('');
     const [technology, setTechnology] = React.useState('');
     const [version, setVersion] = React.useState('');
@@ -45,15 +45,13 @@ export default function ApplicationEdit(props) {
     const location = props.location.pathname;
     const urlArray = location.split('/');
     const id = urlArray[2];
-    
+
 
     useEffect(() => {
         ApplicationsService.get(id).then(res => {
             console.log("id in useEffect", id);
             console.log("data", res);
 
-            setApp(res.data);
-            console.log("time value", app.timeValue);
             setName(res.data.name);
             setTechnology(res.data.technology);
             setVersion(res.data.version);
@@ -81,6 +79,7 @@ export default function ApplicationEdit(props) {
             console.log(res.data.endOfLife);
         });
         getTimeValues();
+        update();
     }, [])
 
 
@@ -110,24 +109,58 @@ export default function ApplicationEdit(props) {
         });
     }
 
-
     const handleChange = (event) => {
         setTimeValue(event.target.value);
         console.log(event.target.value);
     };
 
 
+    const update =() =>{
+        
+        ApplicationsService.update(id, {name,
+            technology,
+            version,
+            currentTotalCostPerYear,
+            toleratedTotalCostPerYear,
+            acquisitionDate,
+            endOfLife,
+            timeValue,
+            currentScalability,
+            expectedScalability,
+            currentPerformance,
+            expectedPerformance,
+            currentSecurityLevel,
+            expectedSecurityLevel,
+            costCurrency,
+            currentValueForMoney,
+            importance,
+            efficiencySupport,
+            functionalCoverage,
+            bfCorrectness,
+            futurePotential,
+            completeness,
+            iqCorrectness,
+            availability }).then(() =>{
+            ApplicationsService.get(id).then(res => {
+                console.log("response", res);
+            })
+        });
+    }
+
+    const handleNameChange =(e) =>{
+        setName(e.target.value);
+        console.log(name);
+    }
 
     return (
         <div>
-
-            <TextField style={{ padding: '10px', }} id="standard-basic" label="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+            <TextField style={{ padding: '10px', }} id="standard-basic" label="name" type="text" value={name} onChange={(e) => handleNameChange(e)} />
             <TextField style={{ padding: '10px', }} id="standard-basic" label="technology" type="text" value={technology} onChange={(e) => setTechnology(e.target.value)} />
             <TextField style={{ padding: '10px', }} id="standard-basic" label="version" type="text" value={version} onChange={(e) => setVersion(e.target.value)} />
             <TextField style={{ padding: '10px', }} id="standard-basic" label="current total cost per year" type="number" value={currentTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setCurrentTotalCostPerYear(0) : setCurrentTotalCostPerYear(e.target.value)} />
             <TextField style={{ padding: '10px', }} id="standard-basic" label="tolerated total cost per year" type="number" value={toleratedTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setToleratedTotalCostPerYear(0) : setToleratedTotalCostPerYear(e.target.value)} />
-            <DatePicker style={{ padding: '10px', }} id="standard-basic"label="acquisition date" date={handleDateChange} name="Acquisition date" value={acquisitionDate} />
-            <DatePicker style={{ padding: '10px', }} id="standard-basic"label="end of life" date={handleEndOfLife} name="End of life date" value={endOfLife} />
+            <DatePicker style={{ padding: '10px', }} id="standard-basic" label="acquisition date" date={handleDateChange} name="Acquisition date" value={acquisitionDate} />
+            <DatePicker style={{ padding: '10px', }} id="standard-basic" label="end of life" date={handleEndOfLife} name="End of life date" value={endOfLife} />
 
             <InputLabel style={{ fontSize: '11px', }} id="demo-simple-select-label">TIME Value</InputLabel>
             <Select
@@ -158,7 +191,7 @@ export default function ApplicationEdit(props) {
             <TextField style={{ padding: '10px', }} id="standard-basic" label="correctness" type="number" value={iqCorrectness} onChange={(e) => (e.target.value > 5) ? setIqCorrectness(5) : (e.target.value < 0) ? setIqCorrectness(0) : setIqCorrectness(e.target.value)} />
             <TextField style={{ padding: '10px', }} id="standard-basic" label="availability" type="number" value={availability} onChange={(e) => (e.target.value > 5) ? setAvailability(5) : (e.target.value < 0) ? setAvailability(0) : setAvailability(e.target.value)} />
 
-            <Button onClick="" color="primary">
+            <Button onClick={update} color="primary">
                 Update
             </Button>
 
