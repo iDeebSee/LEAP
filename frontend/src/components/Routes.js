@@ -4,7 +4,6 @@ import Applications from "../templates/Applications.js";
 import CapabilityDetailView from './CapabilityComponents/CapabilityDetailView';
 import CapabilitiesView from './CapabilityComponents/CapabilitiesView'
 import Admin from './AdminComponents/Admin';
-import SignUp from '../templates/SignUp';
 import SignIn from '../templates/SignIn';
 import ForgotPassword from '../templates/ForgotPassword';
 import StrategyDetailView from './StrategyComponents/StrategyDetailView';
@@ -17,6 +16,7 @@ import {
     Route,
     Redirect
 } from "react-router-dom";
+import ResetPassword from '../templates/ResetPassword.js';
 
 export default function Routes() {
     return (
@@ -29,7 +29,7 @@ export default function Routes() {
             <Route exact path="/strategy" component={StrategiesView}/>
             <Route exact path="/strategy/:id" component={StrategyDetailView}/>
             <AdminRoute path="/admin" component={Admin}/>
-            <Route exact path="*" render={() => <Redirect to={{pathname: "/home"}}/>}/>
+            <Route path="*" render={() => <Redirect to={{pathname: "/home"}}/>}/>
             <Route render={() => <Redirect to={{pathname: "/home"}} />} />
         </Switch>
     );
@@ -49,11 +49,11 @@ const AdminRoute = ({component: Component, ...rest}) => {
 export function UserRoutes() {
     return(
         <Switch>
-            <Route exact path="/signIn" component={SignIn}/>
-            <Route exact path="/signUp" component={SignUp}/>
-            <Route exact path="/password" component={ForgotPassword}/>
-            <Route path="*" render={() => <Redirect to={{pathname: "/signIn"}}/>}/>
-            <Route render={() => <Redirect to={{pathname: "/signIn"}} />} />
+            <Route exact path="/sign_in" component={SignIn}/>
+            <Route exact path="/request_reset" component={ForgotPassword}/>
+            <Route exact path="/reset_password/:token" component={ResetPassword}/>
+            <Route path="*" render={() => <Redirect to={{pathname: "/sign_in"}}/>}/>
+            <Route render={() => <Redirect to={{pathname: "/sign_in"}} />} />
         </Switch>
     );
 }

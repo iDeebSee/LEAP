@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import ap.be.backend.models.Capability;
 import ap.be.backend.models.Environment;
 import ap.be.backend.models.Role;
-import ap.be.backend.models.RolesEnum;
 import ap.be.backend.models.Strategy;
 import ap.be.backend.models.User;
 import ap.be.backend.repositories.CapabilityRepository;
@@ -105,8 +104,8 @@ public class MockDataRunner implements CommandLineRunner {
             logger.info("{}", strat);
         });
 
-        Role adminRole = new Role(RolesEnum.ADMIN);
-        Role userRole = new Role(RolesEnum.USER);
+        Role adminRole = new Role("ADMIN");
+        Role userRole = new Role("USER");
         roleRepository.save(adminRole);
         roleRepository.save(userRole);
 
@@ -115,11 +114,13 @@ public class MockDataRunner implements CommandLineRunner {
 
         User normalUser = new User("user", "user@email.com", passwordEncoder.encode(new StringBuffer("secret")));
         normalUser.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+
+        User jonas = new User("Jonas", "s108159@ap.be", passwordEncoder.encode(new StringBuffer("Mj/1Ud%E")));
+        jonas.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         
         userRepository.save(adminUser);
         userRepository.save(normalUser);
-
-        
+        userRepository.save(jonas);
     }
     
 }

@@ -57,7 +57,7 @@ export const mainListItems = (
 
 export const secondaryListItems = (
     <div>
-        <ListItem button component={Link} to="/signIn" onClick={() => {AuthService.logout();}}>
+        <ListItem button component={Link} to="/sign_in" onClick={() => {AuthService.logout();}}>
             <ListItemIcon>
                 <ExitToApp />
             </ListItemIcon>

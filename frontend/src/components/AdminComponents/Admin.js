@@ -39,10 +39,8 @@ export default function Index() {
     [id, setId] = useState(null),
     [name, setName] = useState(null),
     [email, setEmail] = useState(null),
-    [password, setPassword] = useState(null),
     [nameFieldValid, setNameFieldValid] = useState(true),
-    [emailFieldValid, setEmailFieldValid] = useState(true),
-    [passwordFieldValid, setPasswordFieldValid] = useState(true);
+    [emailFieldValid, setEmailFieldValid] = useState(true);
 
     const getRoles = useCallback(() => {
         AuthService.getRoles()
@@ -76,14 +74,12 @@ export default function Index() {
     const resetFields = () => {
         setName("");
         setEmail("");
-        setPassword("");
         setChosenRoles([]);
     }
 
     const resetValidities = () => {
         setNameFieldValid(true);
         setEmailFieldValid(true);
-        setPasswordFieldValid(true);
     }
 
     const resetForm = () => {
@@ -101,9 +97,11 @@ export default function Index() {
         setHideEdit(false);
     };
 
+    const formValid = (name && nameFieldValid) && (email && emailFieldValid);
+
     const createUser = () => {
-        if(nameFieldValid && emailFieldValid && passwordFieldValid) {
-            AuthService.register(name, email, password, chosenRoles)
+        if(formValid) {
+            AuthService.register(name, email, chosenRoles)
             .then(res => {
                 console.log(res.data);
                 getUsers();
@@ -116,7 +114,7 @@ export default function Index() {
     };
 
     const editUser = () => {
-        if(nameFieldValid && emailFieldValid) {
+        if(formValid) {
             AuthService.update(id, {name: name, email: email, roles: chosenRoles})
             .then(res => {
                 console.log(res.data);
@@ -140,9 +138,6 @@ export default function Index() {
             })
     };
 
-    const createFormValid = (name && nameFieldValid) && (email && emailFieldValid) && (password && passwordFieldValid);
-    const editFormValid = (name && nameFieldValid) && (email && emailFieldValid);
-
     return (
         <Grid container spacing={3}>
             <Grid item xs={7}>
@@ -154,14 +149,13 @@ export default function Index() {
                         <Grid item>
                             <NameField value={name} setValue={setName} fieldValidity={nameFieldValid} setFieldValidity={setNameFieldValid}/>
                             <EmailField value={email} setValue={setEmail} fieldValidity={emailFieldValid} setFieldValidity={setEmailFieldValid}/>
-                            <PasswordField value={password} setValue={setPassword} fieldValidity={passwordFieldValid} setFieldValidity={setPasswordFieldValid}/>
                         </Grid>
                         <Grid item>
                             <Transferlist leftItems={roles} setLeft={setRoles} rightItems={chosenRoles} setRight={setChosenRoles}/>
                         </Grid>
                         <Grid item>
                             <ButtonGroup>
-                                <Button disabled={!createFormValid} onClick={() => {createUser()}}>Create</Button>
+                                <Button disabled={!formValid} onClick={() => {createUser()}}>Create</Button>
                                 <Button onClick={() => {resetForm()}}>Cancel</Button>
                             </ButtonGroup>
                         </Grid>
@@ -180,7 +174,7 @@ export default function Index() {
                         </Grid>
                         <Grid item>
                             <ButtonGroup>
-                                <Button disabled={!editFormValid} onClick={() => {editUser()}}>Edit</Button>
+                                <Button disabled={!formValid} onClick={() => {editUser()}}>Edit</Button>
                                 <Button onClick={() => {resetForm()}}>Cancel</Button>
                             </ButtonGroup>
                         </Grid>
