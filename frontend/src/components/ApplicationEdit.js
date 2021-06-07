@@ -155,6 +155,7 @@ export default function ApplicationEdit(props) {
         }).then(() => {
             ApplicationsService.get(id).then(res => {
                 console.log("response", res);
+                props.history.push('/applications/');
             })
         });
     }
