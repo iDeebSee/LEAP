@@ -113,8 +113,8 @@ export default function SignIn() {
           />
           */}
           <Button
-              type="submit" 
               fullWidth
+              type="submit"
               variant="contained"
               color="primary"
               className={classes.submit}
@@ -123,12 +123,12 @@ export default function SignIn() {
           </Button>
         </form>
         <Grid container>
-            <Grid item xs>
-              <Link href="/password" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
+          <Grid item xs>
+            <Link href="/request_reset" variant="body2">
+              Forgot password?
+            </Link>
           </Grid>
+        </Grid>
       </Paper>
     </Container>
   );

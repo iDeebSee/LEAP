@@ -6,6 +6,7 @@ import AuthService from '../../services/Auth.service';
 import UserList from './UserList';
 import { EmailField, NameField, PasswordField } from './TextFields'
 import Transferlist from './Transferlist'
+import PasswordService from '../../services/Password.service';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -101,13 +102,22 @@ export default function Index() {
         setHideEdit(false);
     };
 
+    const formValid = (name && nameFieldValid) && (email && emailFieldValid);
+
     const createUser = () => {
-        if(nameFieldValid && emailFieldValid) {
+        if(formValid) {
             AuthService.register(name, email, chosenRoles)
             .then(res => {
                 console.log(res.data);
                 getUsers();
                 resetForm();
+                PasswordService.requestCreation(name, email)
+                    .then(res => {
+                        console.log(res);
+                    })
+                    .catch(e => {
+                        console.error(e);
+                    })
             })
             .catch(e => {
                 console.error(e);
@@ -116,7 +126,7 @@ export default function Index() {
     };
 
     const editUser = () => {
-        if(nameFieldValid && emailFieldValid) {
+        if(formValid) {
             AuthService.update(id, {name: name, email: email, roles: chosenRoles})
             .then(res => {
                 console.log(res.data);
@@ -139,8 +149,6 @@ export default function Index() {
                 console.error(e);
             })
     };
-
-    const formValid = (name && nameFieldValid) && (email && emailFieldValid);
 
     return (
         <Grid container spacing={3}>

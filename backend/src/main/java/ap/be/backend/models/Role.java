@@ -3,6 +3,16 @@ package ap.be.backend.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@ToString
+@EqualsAndHashCode
+@NoArgsConstructor
+@Getter @Setter
 @Document(collection = "Roles")
 public class Role {
 
@@ -11,26 +21,7 @@ public class Role {
 
     private RolesEnum name;
 
-    public Role() {}
-
-    public Role(RolesEnum name) {
-        this.name = name;
+    public Role(String name) {
+        this.name = RolesEnum.valueOf(name.toUpperCase());
     }
-
-    public String getId() {
-        return id;
-    }
-    
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public RolesEnum getName() {
-        return name;
-    }
-
-    public void setName(RolesEnum name) {
-        this.name = name;
-    }
-    
 }

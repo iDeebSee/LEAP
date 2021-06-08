@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -98,7 +99,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email already in use!"));
         }
 
-        User user = new User(newUser.getName(), newUser.getEmail(), newUser.getPassword());
+        User user = new User(newUser.getName(), newUser.getEmail(), null);
 
         Set<String> strRoles = newUser.getRoles();
         Set<Role> roles = new HashSet<Role>();

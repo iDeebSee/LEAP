@@ -36,7 +36,7 @@ class AuthService {
     }
 
     getRoles() {
-        return http.get("roles");
+        return http.get("/roles");
     }
 
     getAll() {

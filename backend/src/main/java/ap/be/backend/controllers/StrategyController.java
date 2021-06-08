@@ -1,4 +1,4 @@
-package ap.be.backend;
+package ap.be.backend.controllers;
 
 import java.util.LinkedHashMap;
 
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ap.be.backend.models.Strategy;
 import ap.be.backend.repositories.StrategyRepository;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class StrategyController {
 
