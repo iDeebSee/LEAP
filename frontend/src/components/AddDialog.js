@@ -59,7 +59,8 @@ export default function AddDialog(props) {
     const [efficiencySupport, setEfficiencySupport] = React.useState(0);
 
     const [timeValues, setTimeValues] = React.useState([])
-
+    const [error, setError] = React.useState("");
+    const [disabled, setDisabled] = React.useState(true);
 
     const values =
     {
@@ -107,19 +108,37 @@ export default function AddDialog(props) {
     }
 
     const handleDateChange = (date) => {
-        if (date !== null || date !== undefined) {
+        setDisabled(false);
+        setError("");
+        if ((date !== null || date !== undefined) && date < endOfLife) {
             console.log(date);
             setAcquisitionDate(date)
             console.log("acq date " + date);
 
+        }else if (date > endOfLife) {
+            setDisabled(true);
+            setError("acquisition date should come before end of life date");
+        }else if (date === null || date === undefined || date === "") {
+            setDisabled(true);
+            setError("fill in the required fields! (*)");
         }
     };
 
     const handleEndOfLife = (date) => {
-        if (date !== null || date !== undefined) {
+        setDisabled(false);
+        setError("");
+        if ((date !== null || date !== undefined) && date > acquisitionDate) {
+
             console.log(date);
             setEndOfLife(date);
             console.log("eol date " + date);
+        } else if (acquisitionDate > date) {
+            setDisabled(true);
+            setError("end of life date should come after acquisition date");
+        } else if (date === null || date === undefined || date === "") {
+            setDisabled(true);
+            setError("fill in the required fields! (*)");
+
         }
     };
 
@@ -164,9 +183,9 @@ export default function AddDialog(props) {
                             <Grid item xs={6}><TextField style={{ padding: '10px', }} id="standard-basic" label="version" type="text" value={version} onChange={(e) => setVersion(e.target.value)} /></Grid>
                             <Grid item xs={6}><TextField style={{ padding: '10px', }} id="standard-basic" label="current total cost per year" type="number" value={currentTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setCurrentTotalCostPerYear(0) : setCurrentTotalCostPerYear(e.target.value)} /></Grid>
                             <Grid item xs={6}><TextField style={{ padding: '10px', }} id="standard-basic" label="tolerated total cost per year" type="number" value={toleratedTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setToleratedTotalCostPerYear(0) : setToleratedTotalCostPerYear(e.target.value)} /></Grid>
-                            <Grid item xs={6}><DatePicker style={{ padding: '10px', width: '80%', justifyContent: 'inherit', }} id="standard-basic" addDate={true} label="acquisition date" date={handleDateChange} name="Acquisition date" value={acquisitionDate} /></Grid>
-                            <Grid item xs={6}><DatePicker style={{ padding: '10px', width: '80%', justifyContent: 'inherit', }} id="standard-basic" addDate={true} label="end of life" date={handleEndOfLife} name="End of life date" value={endOfLife} /></Grid>
-                            <Grid item xs={6}><InputLabel style={{ fontSize: '11px', position: 'relative', top: '20px', }} id="demo-simple-select-label">TIME Value</InputLabel>
+                            <Grid item xs={6}><DatePicker style={{ padding: '10px', width: '80%', justifyContent: 'inherit', }} id="standard-basic" label="acquisition date" date={handleDateChange} name="Acquisition date*" value={acquisitionDate} /></Grid>
+                            <Grid item xs={6}><DatePicker style={{ padding: '10px', width: '80%', justifyContent: 'inherit', }} id="standard-basic" label="end of life" date={handleEndOfLife} name="End of life date*" value={endOfLife} /></Grid>
+                            <Grid item xs={6}><InputLabel style={{ fontSize: '11px', position: 'relative', top: '20px', }} id="demo-simple-select-label">TIME Value*</InputLabel>
                                 <Select
                                     style={{ position: 'relative', top: '20px', width: '80%', }}
                                     labelId="demo-simple-select-label"
@@ -202,10 +221,12 @@ export default function AddDialog(props) {
                     <Button autoFocus onClick={handleClose} color="secondary">
                         Cancel
           </Button>
-                    <Button onClick={() => props.values(handleRow())} color="primary">
+                    <Button disabled={disabled} onClick={() => props.values(handleRow())} color="primary">
                         Add
           </Button>
+
                 </DialogActions>
+                <h3 style={{ width: '80%', marginLeft: '10%', marginRight: '10%', }}>{error}</h3>
             </Dialog>
         </div>
     )

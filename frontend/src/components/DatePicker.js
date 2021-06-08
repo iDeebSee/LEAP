@@ -10,7 +10,7 @@ import {
 
 export default function DatePicker(props) {
 
-    const [selectedDate, setSelectedDate] = React.useState((props.addDate) ? new Date() : props.value);
+    const [selectedDate, setSelectedDate] = React.useState(null);//(props.addDate) ? new Date() : props.value
 
 
     const formatDate = (date) => {

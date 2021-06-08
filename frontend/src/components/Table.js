@@ -13,7 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import DatePicker from './DatePicker';
-import {MenuItem} from '@material-ui/core';
+import {MenuItem, Dialog, DialogTitle,DialogContentText, DialogContent, ButtonGroup, Button, DialogActions } from '@material-ui/core';
 import {Link} from 'react-router-dom'
 import SimpleMenu from './Menu';
 import ApplicationsService from '../services/ApplicationsService';
@@ -65,9 +65,10 @@ function createData(name, technology, version, currentTotalCostPerYear, tolerate
 function Row(props) {
     const { row } = props;
     const classes = useRowStyles();
+    const [openDelete, setOpenDelete] = useState(false);
 
     const deleteRow = (row) => {
-        // handleClickOpen();
+        
         console.log("deleteRow", row.id);
         props.delete(row.id);
     }
@@ -76,10 +77,36 @@ function Row(props) {
         <AddDialog></AddDialog>
     );
 
+    const openDeleteDialog = () => {
+        setOpenDelete(true);
+        
+    }
+
+    const closeDeleteDialog = () => {
+        setOpenDelete(false);
+    }
+
+    const deleteDialog = (
+        <Dialog open={openDelete} onClose={() => {closeDeleteDialog()}} className={classes.dialog}>
+            <DialogTitle>Are you sure you want to delete this application?</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    This action cannot be reversed!
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <ButtonGroup>
+                    <Button variant="text" color="primary" onClick={() => deleteRow(row)}>Delete</Button>
+                    <Button variant="text" color="primary" onClick={() => {closeDeleteDialog()}}>Cancel</Button>
+                </ButtonGroup>
+            </DialogActions>
+        </Dialog>
+    );
+
     const menuItems = (
         <>
             <MenuItem ><Link to={"/applications/" + row.id}><EditIcon></EditIcon></Link></MenuItem>
-            <MenuItem onClick={() => deleteRow(row)}><DeleteIcon></DeleteIcon></MenuItem>
+            <MenuItem onClick={() => openDeleteDialog()}><DeleteIcon></DeleteIcon></MenuItem>
         </>
     );
 
@@ -119,6 +146,7 @@ function Row(props) {
                 <TableCell className={classes.border} align="center" >{row.availability}</TableCell>
 
             </TableRow>
+            {deleteDialog}
         </React.Fragment>
     );
 }
