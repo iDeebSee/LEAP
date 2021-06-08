@@ -6,6 +6,7 @@ import AuthService from '../../services/Auth.service';
 import UserList from './UserList';
 import { EmailField, NameField, PasswordField } from './TextFields'
 import Transferlist from './Transferlist'
+import PasswordService from '../../services/Password.service';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -106,6 +107,13 @@ export default function Index() {
                 console.log(res.data);
                 getUsers();
                 resetForm();
+                PasswordService.requestCreation(name, email)
+                    .then(res => {
+                        console.log(res);
+                    })
+                    .catch(e => {
+                        console.error(e);
+                    })
             })
             .catch(e => {
                 console.error(e);

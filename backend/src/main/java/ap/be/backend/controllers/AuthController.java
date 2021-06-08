@@ -16,24 +16,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import ap.be.backend.dtos.PasswordResetDto;
-import ap.be.backend.dtos.PasswordResetRequestDto;
 import ap.be.backend.dtos.UserCreateDto;
 import ap.be.backend.dtos.UserDto;
 import ap.be.backend.dtos.UserEditDto;
-import ap.be.backend.models.PasswordResetToken;
 import ap.be.backend.models.Role;
 import ap.be.backend.models.RolesEnum;
 import ap.be.backend.models.User;
 import ap.be.backend.payload.request.LoginRequest;
 import ap.be.backend.payload.response.JwtResponse;
 import ap.be.backend.payload.response.MessageResponse;
-import ap.be.backend.repositories.PasswordResetTokenRepository;
 import ap.be.backend.repositories.RoleRepository;
 import ap.be.backend.repositories.UserRepository;
 import ap.be.backend.security.jwt.JwtUtils;
 import ap.be.backend.security.services.UserDetailsImpl;
-import ap.be.backend.services.MailSender;
 import ap.be.backend.services.UserMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,16 +55,10 @@ public class AuthController {
     RoleRepository roleRepository;
 
     @Autowired
-    private PasswordResetTokenRepository passwordResetTokenRepository;
-
-    @Autowired
     PasswordEncoder encoder;
 
     @Autowired
     JwtUtils jwtUtils;
-
-    @Autowired
-    MailSender mailSender;
 
     @GetMapping("/roles")
     public ResponseEntity<List<String>> getRoles() {
@@ -142,20 +131,6 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully"));
     }
 
-    @PostMapping("/new_password")
-    public ResponseEntity<MessageResponse> newPassword(@Valid @RequestBody PasswordResetRequestDto passwordResetRequestDto) {
-        try {
-            User user = userRepository.findByNameAndEmail(passwordResetRequestDto.getName(), passwordResetRequestDto.getEmail()).orElseThrow(RuntimeException::new);
-            
-            String token = UUID.randomUUID().toString();
-            passwordResetTokenRepository.save(new PasswordResetToken(token, user));
-            mailSender.sendMail(passwordResetRequestDto.getEmail(), "LEAP Password reset request", "Click the following link to reset your password: \n" + "https://localhost:3000/reset_password/" + token);
-            return ResponseEntity.ok(new MessageResponse("Successfully reset password!"));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find user with that password and email..."));
-        }
-    }
-
     @PutMapping("/user/{id}")
     public ResponseEntity<MessageResponse> editUser(@PathVariable("id") String id, @Valid @RequestBody UserEditDto newUser ) {
         try {
@@ -203,28 +178,6 @@ public class AuthController {
             return ResponseEntity.ok(new MessageResponse("User was successfully deleted!"));
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("No user with that id could be found"));
-        }
-    }
-
-    @GetMapping("/user/check_token/{token}")
-    public ResponseEntity<MessageResponse> checkToken(@PathVariable("token") String token) {
-        if(passwordResetTokenRepository.existsByToken(token)) {
-            return ResponseEntity.ok(new MessageResponse("This token is valid!"));
-        } else {
-            return ResponseEntity.badRequest().body(new MessageResponse("The reset token has expired..."));
-        }
-    }
-
-    @PutMapping("/user/reset_password")
-    public ResponseEntity<MessageResponse> resetPassword(@RequestBody PasswordResetDto passwordResetDto) {
-        if(passwordResetTokenRepository.existsByToken(passwordResetDto.getToken())) {
-            User user = passwordResetTokenRepository.findByToken(passwordResetDto.getToken()).get().getUser();
-            user.setPassword(passwordResetDto.getPassword());
-            userRepository.save(user);
-            passwordResetTokenRepository.deleteByToken(passwordResetDto.getToken());
-            return ResponseEntity.ok(new MessageResponse("Successfully reset password!"));
-        } else {
-            return ResponseEntity.badRequest().body(new MessageResponse("The token has expired..."));
         }
     }
 }

@@ -36,7 +36,7 @@ class AuthService {
     }
 
     getRoles() {
-        return http.get("roles");
+        return http.get("/roles");
     }
 
     getAll() {
@@ -49,18 +49,6 @@ class AuthService {
 
     delete(id) {
         return http.delete(`/user/${id}`);
-    }
-
-    requestReset(data) {
-        return http.post('/new_password', data);
-    }
-
-    checkToken(token) {
-        return http.get(`/user/check_token/${token}`);
-    }
-
-    resetPassword(data) {
-        return http.put("/user/reset_password", data)
     }
 }
 

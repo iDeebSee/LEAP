@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));  
 
-export default function ResetPassword() {
+export default function CreatePassword() {
     const classes = useStyles(),
     { token } = useParams(),
     history = useHistory(),
@@ -30,24 +30,24 @@ export default function ResetPassword() {
     const formValid = password && passwordValid;
 
     useEffect(() => {
-        PasswordService.checkEditToken(token)
+        PasswordService.checkCreateToken(token)
             .catch(e => {
                 console.error(e);
                 history.push("/sign_in");
             })
     }, [token, history]);
 
-    const resetPassword = () => {
-        PasswordService.editPassword({token: token, password: password})
+    const createPassword = () => {
+        PasswordService.createPassword({token: token, password: password})
             .then(res => {
-                console.log(res.data.message);
+                console.log(res.data);
                 history.push("/sign_in");
             })
             .catch(e => {
                 console.error(e);
             })
-    };
-    
+    }
+
     return(
         <Paper className={classes.paper}>
             <PasswordField value={password} setValue={setPassword} fieldValidity={passwordValid} setFieldValidity={setPasswordValid}/>
@@ -57,7 +57,7 @@ export default function ResetPassword() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={() => resetPassword()}
+                onClick={() => createPassword()}
             >
                 Reset password
             </Button>

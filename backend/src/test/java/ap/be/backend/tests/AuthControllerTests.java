@@ -21,8 +21,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import ap.be.backend.dtos.UserCreateDto;
 import ap.be.backend.dtos.UserDto;
-import ap.be.backend.models.Role;
-import ap.be.backend.models.RolesEnum;
 import ap.be.backend.models.User;
 import ap.be.backend.payload.response.MessageResponse;
 import ap.be.backend.repositories.RoleRepository;
@@ -50,6 +48,7 @@ public class AuthControllerTests {
 
     @BeforeAll
     public static void init() {
+        passwordEncoder = new BCryptPasswordEncoder();
         user = new User("testuser", "test@user.com", passwordEncoder.encode(new StringBuffer("password")));
     }
 
@@ -91,7 +90,7 @@ public class AuthControllerTests {
             roles.add(role.getName().name().toLowerCase());
         });
         dto.setRoles(roles);
-        final ResponseEntity<MessageResponse> forEntity = restTemplate.getForEntity("/register", MessageResponse.class, dto);
+        final ResponseEntity<MessageResponse> forEntity = restTemplate.postForEntity("/register", dto, MessageResponse.class);
         assertEquals(HttpStatus.OK, forEntity.getStatusCode());
     }
 

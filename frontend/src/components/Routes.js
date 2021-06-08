@@ -17,6 +17,7 @@ import {
     Redirect
 } from "react-router-dom";
 import ResetPassword from '../templates/ResetPassword.js';
+import CreatePassword from '../templates/CreatePassword.js';
 
 export default function Routes() {
     return (
@@ -52,6 +53,7 @@ export function UserRoutes() {
             <Route exact path="/sign_in" component={SignIn}/>
             <Route exact path="/request_reset" component={ForgotPassword}/>
             <Route exact path="/reset_password/:token" component={ResetPassword}/>
+            <Route exact path="/create_password/:token" component={CreatePassword}/>
             <Route path="*" render={() => <Redirect to={{pathname: "/sign_in"}}/>}/>
             <Route render={() => <Redirect to={{pathname: "/sign_in"}} />} />
         </Switch>

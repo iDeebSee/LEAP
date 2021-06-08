@@ -8,8 +8,8 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Getter @Setter
-public class PasswordResetRequestDto {
-    private String email;
+public class PasswordChangeDto {
+    private String token;
 
-    private String name;
+    private String password;
 }
