@@ -19,12 +19,15 @@ import ap.be.backend.models.Environment;
 import ap.be.backend.models.Role;
 import ap.be.backend.models.RolesEnum;
 import ap.be.backend.models.Strategy;
+import ap.be.backend.models.StrategyItem;
 import ap.be.backend.models.User;
 import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.repositories.EnvironmentRepository;
 import ap.be.backend.repositories.RoleRepository;
+import ap.be.backend.repositories.StrategyItemRepository;
 import ap.be.backend.repositories.StrategyRepository;
 import ap.be.backend.repositories.UserRepository;
+import ap.be.backend.repositories.StrategyItemRepository;
 
 import java.time.LocalDate;
 
@@ -50,6 +53,8 @@ public class MockDataRunner implements CommandLineRunner {
     private RoleRepository roleRepository;
     @Autowired 
     private UserRepository userRepository;
+    @Autowired
+    private StrategyItemRepository strategyItemRepository;
 
     @Autowired
     private ApplicationRepository applicationRepository;
@@ -62,6 +67,7 @@ public class MockDataRunner implements CommandLineRunner {
         strategyRepository.deleteAll();
         roleRepository.deleteAll();
         userRepository.deleteAll();
+        strategyItemRepository.deleteAll();
 
         Capability capability1 = new Capability("test 1", "this is the 1st test capability", null);
         Capability capability2 = new Capability("test 2", "this is the 2nd test capability", null);
@@ -85,6 +91,7 @@ public class MockDataRunner implements CommandLineRunner {
         capabilityRepository.findAll().forEach(cap -> {
             logger.info("{}",cap);
         });
+        
 
         Environment env1= new Environment("test 1", "this is the 1st test envirement");
         Environment env2= new Environment("test 2", "this is the 2st test envirement");
@@ -128,6 +135,16 @@ public class MockDataRunner implements CommandLineRunner {
         userRepository.save(adminUser);
         userRepository.save(normalUser);
 
+        StrategyItem testitem1= new StrategyItem("test1");
+        StrategyItem testitem2= new StrategyItem("test2");
+        StrategyItem testitem3= new StrategyItem("test3");
+
+        strategyItemRepository.save(testitem1);
+        strategyItemRepository.save(testitem2);
+        strategyItemRepository.save(testitem3);
+        strategyItemRepository.findAll().forEach(stratitem -> {
+            logger.info("{}", stratitem);
+        });
         
     }
 }
