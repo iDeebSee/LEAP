@@ -1,82 +1,68 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Copyright from "../components/Copyright";
-
+import { NameField, EmailField } from '../components/AdminComponents/TextFields'
+import AuthService from '../services/Auth.service';
+import { Paper } from '@material-ui/core';
+import PasswordService from '../services/Password.service';
 const useStyles = makeStyles((theme) => ({
+  container: {
+    minWidth: '24rem'
+  },
   paper: {
+    padding: theme.spacing(2),
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
+    width: '100%'
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    width: '100%'
   },
 }));
 
 export default function ForgotPassword() {
-  const classes = useStyles();
+  const classes = useStyles(),
+  [name, setName] = useState(''),
+  [email, setEmail] = useState(''),
+  [nameFieldValid, setNameFieldValid] = useState(true),
+  [emailFieldValid, setEmailFieldValid] = useState(true);
+
+  const formValid = (name && nameFieldValid) && (email && emailFieldValid);
+
+  const ValidateResetRequest = () => {
+    if(formValid) {
+      PasswordService.requestEdit({email: email, name: name})
+        .then(res => {
+          console.log(res.data.message)
+        })
+        .catch(e => {
+          console.error(e);
+        })
+    }
+  };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Forgot Password
-        </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="2FA"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            
-          </Grid>
-         
-          <Link href="/signIn">
-          <Button
-            //type="submit" 
+    <Container component="main" maxWidth="xs" className={classes.container}>
+      <Paper className={classes.paper}>
+        <Typography>Request password reset</Typography>
+        <NameField value={name} setValue={setName} fieldValidity={nameFieldValid} setFieldValidity={setNameFieldValid}/>
+        <EmailField value={email} setValue={setEmail} fieldValidity={emailFieldValid} setFieldValidity={setEmailFieldValid}/>
+        <Button
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={!formValid}
+            onClick={() => ValidateResetRequest()}
           >
-            Get New Password
-          </Button>
-          </Link>
-        </form>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
+            Request reset
+        </Button>
+      </Paper>
     </Container>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'date-fns';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,8 +9,16 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Button } from '@material-ui/core';
-import SimpleMenu from './Menu'
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import DatePicker from './DatePicker';
+import {MenuItem, Dialog, DialogTitle,DialogContentText, DialogContent, ButtonGroup, Button, DialogActions } from '@material-ui/core';
+import {Link} from 'react-router-dom'
+import SimpleMenu from './Menu';
+import ApplicationsService from '../services/ApplicationsService';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import AddDialog from './AddDialog';
 
 const useRowStyles = makeStyles({
     root: {
@@ -56,12 +64,58 @@ function createData(name, technology, version, currentTotalCostPerYear, tolerate
 function Row(props) {
     const { row } = props;
     const classes = useRowStyles();
+    const [openDelete, setOpenDelete] = useState(false);
+
+    const deleteRow = (row) => {
+        
+        console.log("deleteRow", row.id);
+        props.delete(row.id);
+    }
+
+    const dialog = (
+        <AddDialog></AddDialog>
+    );
+
+    const openDeleteDialog = () => {
+        setOpenDelete(true);
+        
+    }
+
+    const closeDeleteDialog = () => {
+        setOpenDelete(false);
+    }
+
+    const deleteDialog = (
+        <Dialog open={openDelete} onClose={() => {closeDeleteDialog()}} className={classes.dialog}>
+            <DialogTitle>Are you sure you want to delete this application?</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    This action cannot be reversed!
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <ButtonGroup>
+                    <Button variant="text" color="primary" onClick={() => deleteRow(row)}>Delete</Button>
+                    <Button variant="text" color="primary" onClick={() => {closeDeleteDialog()}}>Cancel</Button>
+                </ButtonGroup>
+            </DialogActions>
+        </Dialog>
+    );
+
+    const menuItems = (
+        <>
+            <MenuItem ><Link to={"/applications/" + row.id}><EditIcon></EditIcon></Link></MenuItem>
+            <MenuItem onClick={() => openDeleteDialog()}><DeleteIcon></DeleteIcon></MenuItem>
+        </>
+    );
+
 
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell>
-                    <SimpleMenu />
+                    <SimpleMenu dialog={dialog} menu={menuItems} />
+                    {/* <MenuItem onClick={() => deleteRow(row)}><DeleteIcon></DeleteIcon></MenuItem> */}
                 </TableCell>
                 <TableCell component="th" scope="row">{row.name}</TableCell>
                 <TableCell className={classes.border} align="center">{row.technology}</TableCell>
@@ -71,9 +125,6 @@ function Row(props) {
                 <TableCell className={classes.border} align="center">{row.acquisitionDate}</TableCell>
                 <TableCell className={classes.border} align="center">{row.endOfLife}</TableCell>
                 <TableCell className={classes.border} align="center">{row.timeValue}</TableCell>
-
-
-
 
                 <TableCell className={classes.border} align="center">{row.currentScalability}</TableCell>
                 <TableCell className={classes.border} align="center">{row.expectedScalability}</TableCell>
@@ -94,6 +145,7 @@ function Row(props) {
                 <TableCell className={classes.border} align="center" >{row.availability}</TableCell>
 
             </TableRow>
+            {deleteDialog}
         </React.Fragment>
     );
 }
@@ -127,9 +179,6 @@ Row.propTypes = {
     }).isRequired,
 };
 
-
-let teller = 0;
-
 const useStyles = makeStyles({
     businessFit: {
         color: 'red',
@@ -151,27 +200,55 @@ const useStyles = makeStyles({
 export default function SimpleTable() {
     const classes = useStyles();
     const [map, setMap] = useState(new Map());
+    const [application, setApplication] = React.useState([]);
+
+    function getApplications() {
+        ApplicationsService.getAll().then(res => {
+            setApplication(res.data);
+            console.log("res data", res.data);
+            console.log("app state ", application);
+            application.map(item => (console.log(item)));
+
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    function deleteApplication(id) {
+        ApplicationsService.delete(id).then(() => {
+            console.log("after delete", application);
+            console.log("after delete id", id);
+            getApplications();
+        });
+    }
+
+    useEffect(() => {
+        getApplications();
+        console.log("application after use effect", application);
+    }, [])
 
     const updateMap = (k, v) => {
         setMap(new Map(map.set(k, v)));
         console.log(k);
     }
 
-    function handleRow() {
-        updateMap(createData("App-" + teller++, 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5, 159, 6.0, 24, 4.0, 3.99, 1.5, 1.5, 1.5));
-    }
-
-    /*
     function getValues(values) {
-        //console.log("getvalues:" + name, technology, version,functionalCoverage,bfCorrectness,futurePotential,completeness,iqCorrectness,availability,currentScalability,expectedScalability,currentPerformance,expectedPerformance,currentTotalCostPerYear,toleratedTotalCostPerYear,currentSecurityLevel,expectedSecurityLevel,currentValueForMoney,importance,efficiencySupport);
 
-        updateMap(createData(values.name, values.technology, values.version, values.currentTotalCostPerYear, values.toleratedTotalCostPerYear,
-            values.acquisitionDate, values.endOfLife, values.timeValue, values.currentScalability, values.expectedScalability, values.currentPerformance,
-            values.expectedPerformance, values.currentSecurityLevel, values.expectedSecurityLevel, values.costCurrency, values.currentValueForMoney,
-            values.importance, values.efficiencySupport, values.functionalCoverage, values.bfCorrectness, values.futurePotential, values.completeness,
-            values.iqCorrectness, values.availability));
+        console.log("values", values);
+        ApplicationsService.create(values)
+            .then(res => {
+                console.log(res);
+                updateMap(createData(values.name, values.technology, values.version, values.currentTotalCostPerYear, values.toleratedTotalCostPerYear,
+                    values.acquisitionDate, values.endOfLife, values.timeValue, values.currentScalability, values.expectedScalability, values.currentPerformance,
+                    values.expectedPerformance, values.currentSecurityLevel, values.expectedSecurityLevel, values.costCurrency, values.currentValueForMoney,
+                    values.importance, values.efficiencySupport, values.functionalCoverage, values.bfCorrectness, values.futurePotential, values.completeness,
+                    values.iqCorrectness, values.availability))
+                getApplications();
+            })
+            .catch(e => {
+                console.log(e);
+            })
     }
-    */
 
     return (
         <TableContainer component={Paper}>
@@ -206,13 +283,16 @@ export default function SimpleTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {[...map.keys()].map(k => (
+                    {/* {[...map.keys()].map(k => (
 
                         <Row key={k.name} row={k} />
+                    ))} */}
+                    {[...application].map(app => (
+                        <Row key={app.id} row={app} delete={deleteApplication} />
                     ))}
                 </TableBody>
             </Table>
-            <Button onClick={handleRow}>Add</Button>
+            <AddDialog values={getValues}></AddDialog>
         </TableContainer>
     );
 }

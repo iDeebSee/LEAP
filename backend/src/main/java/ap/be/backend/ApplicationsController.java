@@ -3,39 +3,39 @@ package ap.be.backend;
 import ap.be.backend.repositories.ApplicationRepository;
 import ap.be.backend.models.Application;
 import ap.be.backend.models.TIMEValue;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("application")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("applications")
 @RestController
 public class ApplicationsController {
     @Autowired
     private ApplicationRepository applicationRepository;
 
-    @GetMapping
+    @GetMapping("/")
     public Iterable<Application> readApplication() {
         return applicationRepository.findAll();
     }
 
     @GetMapping("/timevalue")
-    public TIMEValue[] getTimeValue(){
+    public TIMEValue[] getTimeValue() {
         return TIMEValue.values();
     }
 
-    @GetMapping("/{name}")
-    public Application readApplication(@PathVariable("name") String name) {
-        return applicationRepository.findByName(name);
+    @GetMapping("/{id}")
+    public Application readApplication(@PathVariable("id") String id) {
+        return applicationRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/")
     public Application createCapability(@RequestBody Application application) {
         return applicationRepository.save(application);
     }
 
-    @PutMapping("/{name}")
-    public Application updateCapability(@PathVariable("name") String name, @RequestBody Application newApplication) {
-        Application application = applicationRepository.findByName(name);
+    @PutMapping("/{id}")
+    public Application updateCapability(@PathVariable("id") String id, @RequestBody Application newApplication) {
+        Application application = applicationRepository.findById(id).orElseThrow(RuntimeException::new);
         application.setName(newApplication.getName());
         application.setAcquisitionDate(newApplication.getAcquisitionDate());
         application.setVersion(newApplication.getVersion());
@@ -54,12 +54,21 @@ public class ApplicationsController {
         application.setCurrentTotalCostPerYear(newApplication.getCurrentTotalCostPerYear());
         application.setToleratedTotalCostPerYear(newApplication.getToleratedTotalCostPerYear());
         application.setCurrentValueForMoney(newApplication.getCurrentValueForMoney());
+        application.setCostCurrency(newApplication.getCostCurrency());
+        application.setImportance(newApplication.getImportance());
+        application.setEfficiencySupport(newApplication.getEfficiencySupport());
+        application.setFunctionalCoverage(newApplication.getFunctionalCoverage());
+        application.setBfCorrectness(newApplication.getBfCorrectness());
+        application.setFuturePotential(newApplication.getFuturePotential());
+        application.setCompleteness(newApplication.getCompleteness());
+        application.setIqCorrectness(newApplication.getIqCorrectness());
+        application.setAvailability(newApplication.getAvailability());
         return applicationRepository.save(application);
     }
 
-    @DeleteMapping("/{name}")
-    public void deleteCapability(@PathVariable("name") String name) {
-        applicationRepository.deleteByName(name);
+    @DeleteMapping("/{id}")
+    public void deleteCapability(@PathVariable("id") String id) {
+        applicationRepository.deleteById(id);
     }
 
     @DeleteMapping("/")
@@ -68,4 +77,3 @@ public class ApplicationsController {
     }
 
 }
-

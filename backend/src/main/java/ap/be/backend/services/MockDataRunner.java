@@ -17,10 +17,10 @@ import org.springframework.stereotype.Component;
 import ap.be.backend.models.Capability;
 import ap.be.backend.models.Environment;
 import ap.be.backend.models.Role;
-import ap.be.backend.models.RolesEnum;
 import ap.be.backend.models.Strategy;
 import ap.be.backend.models.StrategyItem;
 import ap.be.backend.models.User;
+import ap.be.backend.repositories.ApplicationRepository;
 import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.repositories.EnvironmentRepository;
 import ap.be.backend.repositories.RoleRepository;
@@ -29,6 +29,7 @@ import ap.be.backend.repositories.StrategyRepository;
 import ap.be.backend.repositories.UserRepository;
 import ap.be.backend.repositories.StrategyItemRepository;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 
@@ -69,6 +70,7 @@ public class MockDataRunner implements CommandLineRunner {
         userRepository.deleteAll();
         strategyItemRepository.deleteAll();
 
+        applicationRepository.deleteAll();
         Capability capability1 = new Capability("test 1", "this is the 1st test capability", null);
         Capability capability2 = new Capability("test 2", "this is the 2nd test capability", null);
         Capability capability3 = new Capability("test 3", "this is the 3rd test capability", null);
@@ -121,8 +123,8 @@ public class MockDataRunner implements CommandLineRunner {
             logger.info("{}", strat);
         });
 
-        Role adminRole = new Role(RolesEnum.ADMIN);
-        Role userRole = new Role(RolesEnum.USER);
+        Role adminRole = new Role("ADMIN");
+        Role userRole = new Role("USER");
         roleRepository.save(adminRole);
         roleRepository.save(userRole);
 
@@ -131,9 +133,15 @@ public class MockDataRunner implements CommandLineRunner {
 
         User normalUser = new User("user", "user@email.com", passwordEncoder.encode(new StringBuffer("secret")));
         normalUser.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+
+        User jonas = new User("Jonas", "s108159@ap.be", passwordEncoder.encode(new StringBuffer("Mj/1Ud%E")));
+        jonas.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         
         userRepository.save(adminUser);
         userRepository.save(normalUser);
+        userRepository.save(jonas);
+        strategyRepository.findAll().forEach(strat ->{logger.info("{}", strat);});
+
 
         StrategyItem testitem1= new StrategyItem("test1");
         StrategyItem testitem2= new StrategyItem("test2");
@@ -145,6 +153,27 @@ public class MockDataRunner implements CommandLineRunner {
         strategyItemRepository.findAll().forEach(stratitem -> {
             logger.info("{}", stratitem);
         });
+        Application application1 = new Application("App1", "technology", "version", 2.5, 5.0, LocalDate.now() ,
+                LocalDate.now().plusDays(10), 5, 4, 3, 5,
+        0,1, 2, 3, 5, TIMEValue.ELIMINATE,
+        "euro", 5, 5, 5, 5, 5, 5, 5, 5 );
+
+        Application application2 = new Application("App2", "java", "2.5", 2.5, 5.0, LocalDate.now() ,
+                LocalDate.now().plusDays(15), 5, 4, 5, 5,
+                5,1, 2, 2, 5, TIMEValue.INVEST,
+                "dollar", 5, 5, 5, 5, 5, 5,
+                5, 5 );
         
+        Application application3 = new Application("App2", "javascript", "2.5", 2.5, 5.0, LocalDate.now() ,
+                LocalDate.now().plusDays(15), 5, 4, 5, 5,
+                5,1, 2, 2, 5, TIMEValue.INVEST,
+                "dollar", 5, 5, 5, 5, 5, 5,
+                5, 5 );
+
+        applicationRepository.save(application1);
+        applicationRepository.save(application2);
+        applicationRepository.save(application3);
+
+        applicationRepository.findAll().forEach(app -> {logger.info("{}", app);});
     }
 }

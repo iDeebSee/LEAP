@@ -1,4 +1,4 @@
-package ap;
+package ap.be.backend.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,10 +32,6 @@ public class CapabilityService {
     }
     public void deleteCapabilityById(String id) {
         capabilityRepository.deleteById(id);
-    }
-
-    public void deleteAllCapabilities(){
-        capabilityRepository.deleteAll();
     }
 
     public Capability addCapability(Capability capability) {

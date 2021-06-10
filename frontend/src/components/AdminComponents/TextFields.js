@@ -20,9 +20,11 @@ export function NameField({value, setValue, fieldValidity, setFieldValidity}) {
         <TextField
             label="Name"
             type="text"
-            variant="filled"
+            variant="outlined"
+            margin="normal"
             color="primary"
             required
+            fullWidth
             error={!fieldValidity}
             helperText={!fieldValidity ? "Name is too short!" : null}
             minLength={3}
@@ -57,9 +59,11 @@ export function EmailField({value, setValue, fieldValidity, setFieldValidity}) {
         <TextField
             label="Email"
             type="email"
-            variant="filled"
+            variant="outlined"
+            margin="normal"
             color="primary"
             required
+            fullWidth
             error={!fieldValidity}
             helperText={!fieldValidity ? "Invalid email!" : null}
             value={value}
@@ -94,9 +98,11 @@ export function PasswordField({value, setValue, fieldValidity, setFieldValidity}
         <TextField
             label="Password"
             type="text"
-            variant="filled"
+            variant="outlined"
+            margin="normal"
             color="primary"
             required
+            fullWidth
             error={!fieldValidity}
             helperText={!fieldValidity ? "Password too short!" : null}
             minLength={8}

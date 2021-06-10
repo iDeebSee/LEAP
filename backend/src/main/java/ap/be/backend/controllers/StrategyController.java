@@ -1,4 +1,4 @@
-package ap.be.backend;
+package ap.be.backend.controllers;
 
 import java.util.LinkedHashMap;
 
@@ -15,23 +15,37 @@ import org.springframework.web.bind.annotation.RestController;
 import ap.be.backend.models.Strategy;
 import ap.be.backend.repositories.StrategyRepository;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class StrategyController {
 
     @Autowired
     private StrategyRepository strategyRepository;
 
+    
+    /** 
+     * Iterates over each strategy in the strategyRepository.
+     * @return All strategies in strategyRepository
+     */
     @GetMapping("/strategy")
     public Iterable<Strategy> readStrategies() {
         return strategyRepository.findAll();
     }
 
+    
+    /** 
+     * @param id Given as input to find a specific strategy.
+     * @return Strategy based on the given id.
+     */
     @GetMapping("/strategy/{id}")
     public Strategy readStrategy(@PathVariable("id") String id) {
         return strategyRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
+    
+    /** 
+     * @param data Strategy parameters given as input.
+     * @return Saves the new strategy in the repository.
+     */
     @PostMapping("/strategy")
     public Strategy createStrategy(@RequestBody LinkedHashMap<Object, Object> data) {
         Strategy newStrategy = new Strategy();
@@ -40,6 +54,12 @@ public class StrategyController {
         return strategyRepository.save(newStrategy);
     }
 
+    
+    /** 
+     * Updates a specific strategy based on id.
+     * @param newStrategy New strategy input.
+     * @return Saves the new strategy, replacing the existing one.
+     */
     @PutMapping("/strategy/{id}")
     public Strategy updStrategy(@PathVariable("id") String id, @RequestBody Strategy newStrategy) {
         Strategy strategy = strategyRepository.findById(id).orElseThrow(RuntimeException::new);
@@ -48,6 +68,10 @@ public class StrategyController {
         return strategyRepository.save(strategy);
     }
 
+    
+    /** 
+     * Deletes a specific strategy based on id.
+     */
     @DeleteMapping("/strategy/{id}")
     public void deleteStrategy(@PathVariable("id") String id) {
 
