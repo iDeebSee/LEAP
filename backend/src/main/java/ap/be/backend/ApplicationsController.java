@@ -3,13 +3,11 @@ package ap.be.backend;
 import ap.be.backend.repositories.ApplicationRepository;
 import ap.be.backend.models.Application;
 import ap.be.backend.models.TIMEValue;
-import ap.be.backend.repositories.ApplicationRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("applications")
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class ApplicationsController {
     @Autowired
@@ -21,7 +19,7 @@ public class ApplicationsController {
     }
 
     @GetMapping("/timevalue")
-    public TIMEValue[] getTimeValue(){
+    public TIMEValue[] getTimeValue() {
         return TIMEValue.values();
     }
 
@@ -79,5 +77,3 @@ public class ApplicationsController {
     }
 
 }
-
-
