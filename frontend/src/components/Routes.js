@@ -10,7 +10,7 @@ import StrategyDetailView from './StrategyComponents/StrategyDetailView';
 import StrategiesView from './StrategyComponents/StrategiesView';
 import EnvironmentDetailView from '../components/EnvironmentDetailView'
 import { ProtectedAdmin } from '../services/ProtectRoute';
-import ApplicationEdit from '../components/ApplicationEdit';
+import ApplicationEdit from '../components/applicationComponents/ApplicationEdit';
 
 import {
     Switch,

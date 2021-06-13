@@ -9,13 +9,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import DatePicker from './DatePicker';
 import {MenuItem, Dialog, DialogTitle,DialogContentText, DialogContent, ButtonGroup, Button, DialogActions } from '@material-ui/core';
 import {Link} from 'react-router-dom'
 import SimpleMenu from './Menu';
-import ApplicationsService from '../services/ApplicationsService';
+import ApplicationsService from '../../services/ApplicationsService';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddDialog from './AddDialog';
@@ -251,7 +248,7 @@ export default function SimpleTable() {
     }
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{width:'100%', maxWidth: 'none',}}>
             <Table aria-label="collapsible table">
                 <TableHead>
                     <TableRow>

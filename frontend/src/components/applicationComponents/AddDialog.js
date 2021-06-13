@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import 'date-fns';
 import { makeStyles } from '@material-ui/core/styles';
-import DatePicker from './DatePicker';
+import DatePicker from '../DatePicker';
 import {
     Button, TextField, Dialog, DialogTitle, DialogContent,
     DialogContentText, DialogActions, InputLabel, Select, MenuItem, Grid
 } from '@material-ui/core';
-import ApplicationsService from '../services/ApplicationsService';
+import ApplicationsService from '../../services/ApplicationsService';
 
 const useStyles = makeStyles({
     businessFit: {
