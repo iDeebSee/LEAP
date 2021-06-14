@@ -11,6 +11,10 @@ import StrategiesView from './StrategyComponents/StrategiesView';
 import EnvironmentDetailView from '../components/EnvironmentDetailView'
 import { ProtectedAdmin } from '../services/ProtectRoute';
 import ApplicationEdit from '../components/ApplicationEdit';
+import BussinesProcesList from '../components/BussinesProcesList'
+import BussinesProces from '../templates/BussinesProces'
+
+
 
 import {
     Switch,
@@ -31,6 +35,7 @@ export default function Routes() {
             <Route exact path="/applications" component={Applications}/>
             <Route exact path="/strategy" component={StrategiesView}/>
             <Route exact path="/strategy/:id" component={StrategyDetailView}/>
+            <Route exact path="/bussinesProces/" component={BussinesProces}/>
             <AdminRoute path="/admin" component={Admin}/>
             <Route path="*" render={() => <Redirect to={{pathname: "/home"}}/>}/>
             <Route render={() => <Redirect to={{pathname: "/home"}} />} />

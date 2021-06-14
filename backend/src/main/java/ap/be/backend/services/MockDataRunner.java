@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import ap.be.backend.repositories.ApplicationRepository;
+import ap.be.backend.repositories.BussinesProcesRepository;
 import ap.be.backend.models.Application;
+import ap.be.backend.models.BussinesProces;
 import ap.be.backend.models.TIMEValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,8 @@ import ap.be.backend.models.Role;
 import ap.be.backend.models.Strategy;
 import ap.be.backend.models.StrategyItem;
 import ap.be.backend.models.User;
+import ap.be.backend.models.BussinesProces;
+
 import ap.be.backend.repositories.ApplicationRepository;
 import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.repositories.EnvironmentRepository;
@@ -28,6 +32,7 @@ import ap.be.backend.repositories.StrategyItemRepository;
 import ap.be.backend.repositories.StrategyRepository;
 import ap.be.backend.repositories.UserRepository;
 import ap.be.backend.repositories.StrategyItemRepository;
+import ap.be.backend.repositories.BussinesProcesRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -60,6 +65,9 @@ public class MockDataRunner implements CommandLineRunner {
     @Autowired
     private ApplicationRepository applicationRepository;
 
+    @Autowired
+    private BussinesProcesRepository bussinesProcesRepository;
+
     @Override
     public void run(String... args) throws Exception {
        //verwijder alles uit de database voor nieuwe test data toe te voegen.g
@@ -69,6 +77,7 @@ public class MockDataRunner implements CommandLineRunner {
         roleRepository.deleteAll();
         userRepository.deleteAll();
         strategyItemRepository.deleteAll();
+        bussinesProcesRepository.deleteAll();
 
         applicationRepository.deleteAll();
         Capability capability1 = new Capability("test 1", "this is the 1st test capability", null);
@@ -175,5 +184,17 @@ public class MockDataRunner implements CommandLineRunner {
         applicationRepository.save(application3);
 
         applicationRepository.findAll().forEach(app -> {logger.info("{}", app);});
+        
+        
+        BussinesProces bp1= new BussinesProces("zt","u mama abdel");
+        BussinesProces bp2= new BussinesProces("test2","abdel is een zemmer");
+        BussinesProces bp3= new BussinesProces("test3","abdel pokemonhoofd");
+
+       bussinesProcesRepository.save(bp1);
+        bussinesProcesRepository.save(bp2);
+        bussinesProcesRepository.save(bp3);
+        bussinesProcesRepository.findAll().forEach(BpItem -> {
+            logger.info("{}", BpItem);
+        });
     }
 }
