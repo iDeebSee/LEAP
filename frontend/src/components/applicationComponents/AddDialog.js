@@ -174,7 +174,7 @@ export default function AddDialog(props) {
             >
                 <DialogTitle style={{ cursor: 'default' }} >
                     Add Application
-        </DialogTitle>
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         <Grid container spacing={3}>

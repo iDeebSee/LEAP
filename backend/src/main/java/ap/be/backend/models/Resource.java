@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -21,8 +20,10 @@ public class Resource{
     @Id
     private String id;
     private String name;
+    private String description;
 
-    public Resource(@NonNull String name){
+    public Resource(@NonNull String name, @NonNull String description){
         this.name = name;
+        this.description = description;
     }
 }
