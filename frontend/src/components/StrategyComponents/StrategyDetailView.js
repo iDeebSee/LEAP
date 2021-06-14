@@ -302,5 +302,5 @@ function StrategyDetailView (props) {
         
     }
 
-
+ 
 export default withStyles(styles)(StrategyDetailView);
