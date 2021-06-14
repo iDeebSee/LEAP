@@ -34,8 +34,9 @@ class CapabilityDetailView extends Component {
     getCapability(id) {
         CapabilityService.get(id)
             .then(res => {
-                this.setState({capability: res.data});
-                console.log(res.data);
+                this.setState({capability: res.data.data});
+                console.log(res.data.message);
+                console.log(res.data.data);
             })
             .catch(e => {
                 console.log(e);

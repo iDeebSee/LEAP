@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 public class LEAPController {
     
+    /*
     @Autowired
     private CapabilityRepository capabilityRepository;
 
@@ -109,5 +110,5 @@ public class LEAPController {
         envirenmentRepository.deleteById(id);
     }
     
-
+    */
 }

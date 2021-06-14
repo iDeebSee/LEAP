@@ -1,28 +1,25 @@
 import http from "./https-common";
 
+const urlBase = '/capability';
 class CapabilityService {
     getAll() {
-        return http.get("/");
+        return http.get(`${urlBase}/all`);
     }
 
     get(id) {
-        return http.get(`/${id}`);
+        return http.get(`${urlBase}/${id}`);
     }
 
-    create(data) {
-        return http.post("/", data);
+    create(name, description, parent) {
+        return http.post(`${urlBase}/`, {name, description, parent});
     }
 
     update(id, data) {
-        return http.put(`/${id}`, data);
+        return http.put(`${urlBase}/${id}`, data);
     }
 
     delete(id) {
-        return http.delete(`/${id}`);
-    }
-
-    deleteAll() {
-        return http.delete("/")
+        return http.delete(`${urlBase}/${id}`);
     }
 }
 
