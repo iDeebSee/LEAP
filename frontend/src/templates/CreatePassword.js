@@ -33,7 +33,7 @@ export default function CreatePassword() {
         PasswordService.checkCreateToken(token)
             .catch(e => {
                 console.error(e);
-                history.push("/sign_in");
+                
             })
     }, [token, history]);
 
@@ -41,7 +41,7 @@ export default function CreatePassword() {
         PasswordService.createPassword({token: token, password: password})
             .then(res => {
                 console.log(res.data);
-                history.push("/sign_in");
+                
             })
             .catch(e => {
                 console.error(e);

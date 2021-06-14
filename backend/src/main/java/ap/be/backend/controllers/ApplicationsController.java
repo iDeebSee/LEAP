@@ -1,4 +1,4 @@
-package ap.be.backend;
+package ap.be.backend.controllers;
 
 import ap.be.backend.repositories.ApplicationRepository;
 import ap.be.backend.models.Application;

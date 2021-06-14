@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,9 @@ public class PasswordController {
 
     @Autowired
     MailSender mailSender;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
     
     @PostMapping("/edit/request_edit")
     public ResponseEntity<MessageResponse> newPassword(@Valid @RequestBody PasswordChangeRequestDto passwordChangeRequestDto) {
@@ -68,7 +72,7 @@ public class PasswordController {
     public ResponseEntity<MessageResponse> resetPassword(@RequestBody PasswordChangeDto passwordChangeDto) {
         if(passwordResetTokenRepository.existsByToken(passwordChangeDto.getToken())) {
             User user = passwordResetTokenRepository.findByToken(passwordChangeDto.getToken()).get().getUser();
-            user.setPassword(passwordChangeDto.getPassword());
+            user.setPassword(passwordEncoder.encode(new StringBuffer(passwordChangeDto.getPassword())));
             userRepository.save(user);
             passwordResetTokenRepository.deleteByToken(passwordChangeDto.getToken());
             return ResponseEntity.ok(new MessageResponse("Successfully reset password!"));
