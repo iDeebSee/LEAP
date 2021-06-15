@@ -89,6 +89,7 @@ export default function Resources() {
         setResourceID(id)
         setName(_name);
         setDescription(_description);
+        console.log("open edit dialog: ", _description);
         setOpenEdit(true);
     }
 
@@ -122,13 +123,16 @@ export default function Resources() {
     }
 
     const editResource = () => {
-        let data = {"name": name, "description": description};
+        let data = { "name": name, "description": description };
         ResourcesService.update(resourceID, data).then(() => {
+
             getAllResources();
             closeEditDialog();
         });
-        
+        console.log("data in edit resource", data);
     }
+
+    console.log("name and desc in class", name, description);
 
     const deleteDialog = (
         <Dialog open={openDelete} onClose={() => { closeDeleteDialog() }} className={useStyles.dialog} style={{ overflow: 'unset', }}>
@@ -200,6 +204,7 @@ export default function Resources() {
         <Container maxWidth="lg" className={classes.container} style={{ width: '80%', maxWidth: 'none', }}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
+                    <Button variant="outlined" color="primary" onClick={() => openCreateDialog()}>Add</Button>
                     <Paper >
                         <TableContainer component={Paper}>
                             <Table className={classes.table} aria-label="customized table">
@@ -225,7 +230,7 @@ export default function Resources() {
                             </Table>
                         </TableContainer>
                     </Paper>
-                    <Button onClick={() => openCreateDialog()}>Add</Button>
+
                 </Grid>
             </Grid>
             {deleteDialog}

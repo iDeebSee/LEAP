@@ -30,6 +30,7 @@ public class ResourcesController {
     public Resource updateCapability(@PathVariable("id") String id, @RequestBody Resource newResources) {
         Resource resources = resourcesRepository.findById(id).orElseThrow(RuntimeException::new);
         resources.setName(newResources.getName());
+        resources.setDescription(newResources.getDescription());
         return resourcesRepository.save(resources);
     }
 
