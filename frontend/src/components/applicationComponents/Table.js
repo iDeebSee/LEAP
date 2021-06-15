@@ -9,13 +9,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import DatePicker from './DatePicker';
-import {MenuItem, Dialog, DialogTitle,DialogContentText, DialogContent, ButtonGroup, Button, DialogActions } from '@material-ui/core';
-import {Link} from 'react-router-dom'
-import SimpleMenu from './Menu';
-import ApplicationsService from '../services/ApplicationsService';
+import { MenuItem, Dialog, DialogTitle, DialogContentText, DialogContent, ButtonGroup, Button, DialogActions } from '@material-ui/core';
+import { Link } from 'react-router-dom'
+import SimpleMenu from '../Menu';
+import ApplicationsService from '../../services/ApplicationsService';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddDialog from './AddDialog';
@@ -67,7 +64,7 @@ function Row(props) {
     const [openDelete, setOpenDelete] = useState(false);
 
     const deleteRow = (row) => {
-        
+
         console.log("deleteRow", row.id);
         props.delete(row.id);
     }
@@ -78,7 +75,7 @@ function Row(props) {
 
     const openDeleteDialog = () => {
         setOpenDelete(true);
-        
+
     }
 
     const closeDeleteDialog = () => {
@@ -86,7 +83,7 @@ function Row(props) {
     }
 
     const deleteDialog = (
-        <Dialog open={openDelete} onClose={() => {closeDeleteDialog()}} className={classes.dialog}>
+        <Dialog open={openDelete} onClose={() => { closeDeleteDialog() }} className={classes.dialog}>
             <DialogTitle>Are you sure you want to delete this application?</DialogTitle>
             <DialogContent>
                 <DialogContentText>
@@ -96,7 +93,7 @@ function Row(props) {
             <DialogActions>
                 <ButtonGroup>
                     <Button variant="text" color="primary" onClick={() => deleteRow(row)}>Delete</Button>
-                    <Button variant="text" color="primary" onClick={() => {closeDeleteDialog()}}>Cancel</Button>
+                    <Button variant="text" color="primary" onClick={() => { closeDeleteDialog() }}>Cancel</Button>
                 </ButtonGroup>
             </DialogActions>
         </Dialog>
@@ -251,7 +248,8 @@ export default function SimpleTable() {
     }
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{ width: '100%', maxWidth: 'none', }}>
+            <AddDialog values={getValues}></AddDialog>
             <Table aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
@@ -292,7 +290,7 @@ export default function SimpleTable() {
                     ))}
                 </TableBody>
             </Table>
-            <AddDialog values={getValues}></AddDialog>
+
         </TableContainer>
     );
 }

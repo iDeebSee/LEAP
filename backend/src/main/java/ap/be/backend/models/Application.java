@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
 
+import com.mongodb.lang.NonNull;
+
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
@@ -11,11 +13,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @ToString
 @Getter @Setter
+@NoArgsConstructor
 @Document(collection = "Applications")
 public class Application {
 
@@ -26,9 +30,7 @@ public class Application {
     private String version;
     private double currentTotalCostPerYear;
     private double toleratedTotalCostPerYear;
-    
     private LocalDate acquisitionDate;
-    
     private LocalDate endOfLife;
 
     private String costCurrency;
@@ -59,10 +61,6 @@ public class Application {
     private int currentValueForMoney;
     private TIMEValue timeValue;
 
-
-    public Application() {
-    }
-
     /**
      * @param name
      * @param technology
@@ -92,10 +90,10 @@ public class Application {
      * @param iqCorrectness
      */
     public Application(String name, String technology, String version,
-                       double currentTotalCostPerYear, double toleratedTotalCostPerYear, LocalDate acquisitionDate,
-                       LocalDate endOfLife, int currentScalability, int expectedScalability, int currentPerformance, int expectedPerformance,
+                       double currentTotalCostPerYear, double toleratedTotalCostPerYear,@NonNull LocalDate acquisitionDate,
+                       @NonNull LocalDate endOfLife, int currentScalability, int expectedScalability, int currentPerformance, int expectedPerformance,
                        int currentSecurityLevel, int expectedSecurityLevel, int currentStability, int expectedStability, int currentValueForMoney,
-                       TIMEValue timeValue, String costCurrency, int importance, int efficiencySupport, int functionalCoverage, int bfCorrectness,
+                       @NonNull TIMEValue timeValue, String costCurrency, int importance, int efficiencySupport, int functionalCoverage, int bfCorrectness,
                        int futurePotential, int completeness, int iqCorrectness, int availability) {
         this.name = name;
         this.technology = technology;

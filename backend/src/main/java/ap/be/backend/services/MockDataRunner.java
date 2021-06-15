@@ -1,11 +1,16 @@
 package ap.be.backend.services;
 
+
 import java.util.Arrays;
 import java.util.HashSet;
+import java.time.LocalDate;
+
 
 import ap.be.backend.repositories.ApplicationRepository;
 import ap.be.backend.config.Profiles;
+import ap.be.backend.repositories.BussinesProcesRepository;
 import ap.be.backend.models.Application;
+import ap.be.backend.models.BussinesProces;
 import ap.be.backend.models.TIMEValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,21 +22,22 @@ import org.springframework.stereotype.Component;
 
 import ap.be.backend.models.Capability;
 import ap.be.backend.models.Environment;
+import ap.be.backend.models.Resource;
 import ap.be.backend.models.Role;
 import ap.be.backend.models.Strategy;
 import ap.be.backend.models.StrategyItem;
 import ap.be.backend.models.User;
+import ap.be.backend.models.BussinesProces;
 
 import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.repositories.EnvironmentRepository;
+import ap.be.backend.repositories.ResourceRepository;
 import ap.be.backend.repositories.RoleRepository;
 import ap.be.backend.repositories.StrategyItemRepository;
 import ap.be.backend.repositories.StrategyRepository;
 import ap.be.backend.repositories.UserRepository;
 
 
-
-import java.time.LocalDate;
 
 
 /*
@@ -46,15 +52,15 @@ public class MockDataRunner implements CommandLineRunner {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired 
+    @Autowired
     private CapabilityRepository capabilityRepository;
     @Autowired
     private EnvironmentRepository envirenmentRepository;
-    @Autowired 
+    @Autowired
     private StrategyRepository strategyRepository;
     @Autowired
     private RoleRepository roleRepository;
-    @Autowired 
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private StrategyItemRepository strategyItemRepository;
@@ -62,26 +68,39 @@ public class MockDataRunner implements CommandLineRunner {
     @Autowired
     private ApplicationRepository applicationRepository;
 
+    @Autowired
+    private ResourceRepository resourceRepository;
+
+    @Autowired
+    private BussinesProcesRepository bussinesProcesRepository;
+
     @Override
     public void run(String... args) throws Exception {
-       //verwijder alles uit de database voor nieuwe test data toe te voegen.g
+        // verwijder alles uit de database voor nieuwe test data toe te voegen.g
         capabilityRepository.deleteAll();
         envirenmentRepository.deleteAll();
         strategyRepository.deleteAll();
         roleRepository.deleteAll();
         userRepository.deleteAll();
         strategyItemRepository.deleteAll();
+        bussinesProcesRepository.deleteAll();
 
         applicationRepository.deleteAll();
+        resourceRepository.deleteAll();
+
         Capability capability1 = new Capability("test 1", "this is the 1st test capability", null);
         Capability capability2 = new Capability("test 2", "this is the 2nd test capability", null);
         Capability capability3 = new Capability("test 3", "this is the 3rd test capability", null);
-        Capability capability11 = new Capability("test 1.1", "this is the 1st child of the 1st test capability", capability1);
-        Capability capability12 = new Capability("test 1.2", "this is the 2nd child of the 1st test capability", capability1);
-        Capability capability111 = new Capability("test 1.1.1", "this is the 1st child of the 1st child of the 1st test capability", capability11);
-        Capability capability112 = new Capability("test 1.1.2", "this is the 2nd child of the 1st child of the 1st test capability", capability11);
-        Capability capability113 = new Capability("test 1.1.3", "this is the 3rd child of the 1st child of the 1st test capability", capability11);
-
+        Capability capability11 = new Capability("test 1.1", "this is the 1st child of the 1st test capability",
+                capability1);
+        Capability capability12 = new Capability("test 1.2", "this is the 2nd child of the 1st test capability",
+                capability1);
+        Capability capability111 = new Capability("test 1.1.1",
+                "this is the 1st child of the 1st child of the 1st test capability", capability11);
+        Capability capability112 = new Capability("test 1.1.2",
+                "this is the 2nd child of the 1st child of the 1st test capability", capability11);
+        Capability capability113 = new Capability("test 1.1.3",
+                "this is the 3rd child of the 1st child of the 1st test capability", capability11);
 
         capabilityRepository.save(capability1);
         capabilityRepository.save(capability2);
@@ -93,15 +112,15 @@ public class MockDataRunner implements CommandLineRunner {
         capabilityRepository.save(capability113);
 
         capabilityRepository.findAll().forEach(cap -> {
-            logger.info("{}",cap);
+            logger.info("{}", cap);
         });
         
 
-        Environment env1= new Environment("test 1", "this is the 1st test envirement");
-        Environment env2= new Environment("test 2", "this is the 2st test envirement");
-        Environment env3= new Environment("test 3", "this is the 3st test envirement");
-        Environment env4= new Environment("test 4", "this is the 4st test envirement");
-        Environment env5= new Environment("test 5", "this is the 5st test envirement");
+        Environment env1 = new Environment("test 1", "this is the 1st test envirement");
+        Environment env2 = new Environment("test 2", "this is the 2st test envirement");
+        Environment env3 = new Environment("test 3", "this is the 3st test envirement");
+        Environment env4 = new Environment("test 4", "this is the 4st test envirement");
+        Environment env5 = new Environment("test 5", "this is the 5st test envirement");
 
         envirenmentRepository.save(env1);
         envirenmentRepository.save(env2);
@@ -110,9 +129,9 @@ public class MockDataRunner implements CommandLineRunner {
         envirenmentRepository.save(env5);
 
         envirenmentRepository.findAll().forEach(env -> {
-            logger.info("{}",env);
+            logger.info("{}", env);
         });
-        
+
         Strategy strategy1 = new Strategy("strategy1");
         Strategy strategy2 = new Strategy("strategy2");
         Strategy strategy3 = new Strategy("strategy3");
@@ -138,7 +157,7 @@ public class MockDataRunner implements CommandLineRunner {
 
         User jonas = new User("Jonas", "s108159@ap.be", passwordEncoder.encode(new StringBuffer("Mj/1Ud%E")));
         jonas.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
-        
+
         userRepository.save(adminUser);
         userRepository.save(normalUser);
         userRepository.save(jonas);
@@ -175,7 +194,34 @@ public class MockDataRunner implements CommandLineRunner {
         applicationRepository.save(application1);
         applicationRepository.save(application2);
         applicationRepository.save(application3);
+        applicationRepository.findAll().forEach(app -> {
+            logger.info("{}", app);
+        });
 
-        applicationRepository.findAll().forEach(app -> {logger.info("{}", app);});
+        Resource resource1 = new Resource("Resource 1", "eerste resource");
+        Resource resource2 = new Resource("Resource 2", "tweede resource");
+        Resource resource3 = new Resource("Resource 3", "derde resource");
+
+        resourceRepository.save(resource1);
+        resourceRepository.save(resource2);
+        resourceRepository.save(resource3);
+
+        resourceRepository.findAll().forEach(app -> {
+            logger.info("{}", app);
+        });
+
+        
+        
+        
+        BussinesProces bp1= new BussinesProces("zt","u mama zakaria");
+        BussinesProces bp2= new BussinesProces("test2","zakaria is een zemmer");
+        BussinesProces bp3= new BussinesProces("test3","zakaria pokemonhoofd");
+
+       bussinesProcesRepository.save(bp1);
+        bussinesProcesRepository.save(bp2);
+        bussinesProcesRepository.save(bp3);
+        bussinesProcesRepository.findAll().forEach(BpItem -> {
+            logger.info("{}", BpItem);
+        });
     }
 }
