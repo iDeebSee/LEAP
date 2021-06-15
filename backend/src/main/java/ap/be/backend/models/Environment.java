@@ -31,14 +31,20 @@ public class Environment {
     /**
      * @param name the name of the capability.
      * @param description describes what the capability does within the business.
+     */
+    public Environment(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    /**
+     * @param name the name of the capability.
+     * @param description describes what the capability does within the business.
      * @param capabiltyList is een lijst van capabilties binnen die environment
      */
     public Environment(String name, String description, List<String> capLIst ) throws IllegalArgumentException {
-        //this(name, description);
-        this.name = name;
-        this.description = description;
+        this(name, description);
         this.capabityList=capLIst;
-        
-        }
+    }
 }
 
