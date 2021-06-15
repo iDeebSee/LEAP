@@ -1,17 +1,19 @@
-package ap.be.backend.dtos;
+package ap.be.backend.dtos.readdtos;
 
 import java.util.Set;
 
+import javax.validation.constraints.NotBlank;
+
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
+@Data
 @ToString
 @EqualsAndHashCode
-@Getter @Setter
-public class UserDto {
+public class UserReadDto {
     
+    @NotBlank
     private String id;
 
     private String name;

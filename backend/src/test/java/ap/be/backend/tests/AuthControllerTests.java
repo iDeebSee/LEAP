@@ -18,15 +18,18 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
-import ap.be.backend.dtos.UserCreateDto;
-import ap.be.backend.dtos.UserDto;
+import ap.be.backend.config.Profiles;
+import ap.be.backend.dtos.createdtos.UserCreateDto;
+import ap.be.backend.dtos.readdtos.UserReadDto;
 import ap.be.backend.models.User;
 import ap.be.backend.payload.response.MessageResponse;
 import ap.be.backend.repositories.RoleRepository;
 import ap.be.backend.repositories.UserRepository;
-import ap.be.backend.services.UserMapper;
+import ap.be.backend.services.mappers.UserMapper;
 
+@ActiveProfiles(Profiles.TEST)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class AuthControllerTests {
     
@@ -54,15 +57,15 @@ public class AuthControllerTests {
 
     @Test
     public void getAllUsersTest() {
-        final ResponseEntity<UserDto[]> forEntity = restTemplate.getForEntity("/users", UserDto[].class);
+        final ResponseEntity<UserReadDto[]> forEntity = restTemplate.getForEntity("/users", UserReadDto[].class);
         assertEquals(HttpStatus.OK, forEntity.getStatusCode());
 
-        List<UserDto> expectedList = new ArrayList<UserDto>();
+        List<UserReadDto> expectedList = new ArrayList<UserReadDto>();
         userRepository.findAll().forEach(user -> 
         {
             expectedList.add(userMapper.convertToDTO(user.getId()));
         });
-        List<UserDto> actualList = Arrays.asList(forEntity.getBody());
+        List<UserReadDto> actualList = Arrays.asList(forEntity.getBody());
         assertIterableEquals(expectedList, actualList);
     }
 
@@ -82,6 +85,7 @@ public class AuthControllerTests {
 
     @Test
     public void createNewUserTest() {
+        //create dto
         UserCreateDto dto = new UserCreateDto();
         dto.setName(user.getName());
         dto.setEmail(user.getEmail());
@@ -90,8 +94,19 @@ public class AuthControllerTests {
             roles.add(role.getName().name().toLowerCase());
         });
         dto.setRoles(roles);
+
+        //get actual result
         final ResponseEntity<MessageResponse> forEntity = restTemplate.postForEntity("/register", dto, MessageResponse.class);
+
+        //assert status code is OK
         assertEquals(HttpStatus.OK, forEntity.getStatusCode());
+
+        //assert that all PASSED fields are the same
+        //dto does not contain password, test user is not saved in repo so does not contain ID
+        User actualUser = userRepository.findByName(user.getName()).get();
+        assertEquals(user.getName(), actualUser.getName());
+        assertEquals(user.getEmail(), actualUser.getEmail());
+        assertEquals(user.getRoles(), actualUser.getRoles());
     }
 
     @Test

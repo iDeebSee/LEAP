@@ -110,22 +110,7 @@ public class LEAPController {
             
         envirenmentRepository.deleteById(id);
     }
-  //ophalen CapList
-    
-    @GetMapping("/environment/{id}/caplist/")
-    public ArrayList<String> readCapList(@PathVariable("id") String id) {
-        return envirenmentRepository.findCapList(envirenmentRepository.findById(id));
-    }
-    
-    @PutMapping("/environment/{id}/caplist/")
-    public Environment updateCapList(@PathVariable("id") String id, @RequestBody Capability data) {
-        Environment environment = envirenmentRepository.findById(id).orElseThrow(RuntimeException::new);
-        ArrayList<String> dataList= new ArrayList<>();
-        dataList.add(data.getId());
-        environment.setCapabityList(dataList);
-        
-        return envirenmentRepository.save(environment);
-    }
+
     
     
 

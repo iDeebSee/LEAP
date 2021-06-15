@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 
 import ap.be.backend.repositories.ApplicationRepository;
+import ap.be.backend.config.Profiles;
 import ap.be.backend.repositories.BussinesProcesRepository;
 import ap.be.backend.models.Application;
 import ap.be.backend.models.BussinesProces;
@@ -15,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -43,6 +44,7 @@ import ap.be.backend.repositories.UserRepository;
 Custom commandlinerunner om mock data in de repository te saven.
 */
 @Component
+@Profile(Profiles.DEMO)
 public class MockDataRunner implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(MockDataRunner.class);

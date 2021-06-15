@@ -4,22 +4,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import ap.be.backend.dtos.UserCreateDto;
-import ap.be.backend.dtos.UserDto;
-import ap.be.backend.dtos.UserEditDto;
+import ap.be.backend.dtos.createdtos.UserCreateDto;
+import ap.be.backend.dtos.editdtos.UserEditDto;
+import ap.be.backend.dtos.readdtos.UserReadDto;
 import ap.be.backend.models.Role;
 import ap.be.backend.models.RolesEnum;
 import ap.be.backend.models.User;
@@ -30,7 +28,7 @@ import ap.be.backend.repositories.RoleRepository;
 import ap.be.backend.repositories.UserRepository;
 import ap.be.backend.security.jwt.JwtUtils;
 import ap.be.backend.security.services.UserDetailsImpl;
-import ap.be.backend.services.UserMapper;
+import ap.be.backend.services.mappers.UserMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,8 +67,8 @@ public class AuthController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getUsers() {
-        List<UserDto> users = new ArrayList<UserDto>();
+    public ResponseEntity<List<UserReadDto>> getUsers() {
+        List<UserReadDto> users = new ArrayList<UserReadDto>();
         userRepository.findAll().forEach(user -> users.add(userMapper.convertToDTO(user.getId())));
         return ResponseEntity.ok(users);
     }

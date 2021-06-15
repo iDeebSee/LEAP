@@ -1,4 +1,4 @@
-package ap.be.backend.dtos;
+package ap.be.backend.dtos.editdtos;
 
 import java.util.Set;
 
@@ -6,11 +6,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-@Getter @Setter
-public class UserCreateDto {
+@Data
+@ToString
+@EqualsAndHashCode
+public class UserEditDto {
 
     @NotBlank
     @Size(min = 3)

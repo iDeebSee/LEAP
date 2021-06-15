@@ -6,6 +6,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Data
+@ToString
+@NoArgsConstructor
+@EqualsAndHashCode
 @Document(collection = "Capabilities")
 public class Capability {
     
@@ -16,14 +27,14 @@ public class Capability {
 
     private String description;
 
+    @Setter(AccessLevel.NONE)
     private int level = 1;
 
     
 
     @DBRef
+    @Setter(AccessLevel.NONE)
     private Capability parent = null;
-
-    public Capability() {}
 
     /**
      * @param name the name of the capability.
@@ -40,51 +51,12 @@ public class Capability {
         }
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public Capability getParent() {
-        return parent;
-    }
-
     public void setParent(Capability parent) {
         this.parent = parent;
-        this.level = parent.getLevel() + 1;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append("\n\nCapability:{ \nname=").append(this.name)
-        .append(", \ndescription=").append(this.description)
-        .append(", \nlevel=").append(this.level)
-        .append(", \nparent=").append(this.parent)
-        .append("}\n");
-        return builder.toString();
+        if(parent != null) {
+            this.level = parent.getLevel() + 1;
+        } else {
+            this.level = 1;
+        }
     }
 }

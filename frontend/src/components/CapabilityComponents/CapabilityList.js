@@ -91,7 +91,7 @@ const CapabilityList = (props) => {
     const editCapability = () => {
         let data = {"name": newName, "description": newDesc};
         if(newParentId != null) {
-            data.parentId = newParentId;
+            data.parent = newParentId;
         }
         CapabilityService.update(id, data)
         .then(res => {

@@ -86,7 +86,6 @@ const EnvironmentList = (props) => {
 
     const editEnvironment = () => {
         let data = {"name": newName, "description": newDesc};
-       
         
         EnvironmentService.update(id, data)
         .then(res => {

@@ -1,28 +1,26 @@
 import http from "./https-common";
 
+const baseUrl = '/environment';
+
 class EnvironmentService {
     getAll() {
-        return http.get("/environment");
+        return http.get(`${baseUrl}/all`);
     }
     
     get(id) {
-        return http.get(`/environment/${id}`);
+        return http.get(`${baseUrl}/${id}`);
     }
 
     create(data) {
-        return http.post("/environment", data);
+        return http.post(`${baseUrl}/`, data);
     }
 
     update(id, data) {
-        return http.put(`/environment/${id}`, data);
+        return http.put(`${baseUrl}/${id}`, data);
     }
 
     delete(id) {
-        return http.delete(`/environment/${id}`);
-    }
-
-    deleteAll() {
-        return http.delete("/environment")
+        return http.delete(`${baseUrl}/${id}`);
     }
 }
 
