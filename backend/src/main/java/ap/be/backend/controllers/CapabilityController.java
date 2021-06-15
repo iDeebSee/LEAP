@@ -81,7 +81,7 @@ public class CapabilityController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<MessageResponse> updateCapability(@PathVariable("id") String id, @RequestBody CapabilityEditDto capabilityUpdate) {
+    public ResponseEntity<MessageResponse> updateCapability(@PathVariable("id") String id, @Valid @RequestBody CapabilityEditDto capabilityUpdate) {
         if(capabilityRepository.existsById(id)) {
             Capability updatedCapability = capabilityMapper.convertFromEditDto(capabilityUpdate);
             updatedCapability.setId(id);
@@ -93,16 +93,21 @@ public class CapabilityController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCapability(@PathVariable("id") String id) {
-        capabilityRepository.findAllByParent(capabilityRepository.findById(id).orElseThrow(RuntimeException::new)).forEach(capX -> {
-            if(capX.getLevel() < 3) {
-                capabilityRepository.findAllByParent(capX).forEach(capY -> {
-                    capabilityRepository.deleteById(capY.getId());
-                });
-            }
-            capabilityRepository.deleteById(capX.getId());
-        });
-        capabilityRepository.deleteById(id);
+    public ResponseEntity<MessageResponse> deleteCapability(@PathVariable("id") String id) {
+        if(capabilityRepository.existsById(id)) {
+            capabilityRepository.findAllByParent(capabilityRepository.findById(id).get()).forEach(capX -> {
+                if(capX.getLevel() < 3) {
+                    capabilityRepository.findAllByParent(capX).forEach(capY -> {
+                        capabilityRepository.deleteById(capY.getId());
+                    });
+                }
+                capabilityRepository.deleteById(capX.getId());
+            });
+            capabilityRepository.deleteById(id);
+            return ResponseEntity.ok(new MessageResponse("Successfully deleted capability and all its children!"));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find capability with that ID"));
+        }
     }
 }
 

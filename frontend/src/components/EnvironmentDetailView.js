@@ -35,8 +35,10 @@ class EnvironmentDetailView extends Component {
     getEnvironments(id) {
         EnvironmentService.get(id)
             .then(res => {
-                this.setState({Environment: res.data});
-                console.log(res.data);
+                console.log(res.data.message);
+                console.log(res.data.data)
+                this.setState({Environment: res.data.data});
+                
             })
             .catch(e => {
                 console.log(e);
@@ -56,7 +58,6 @@ class EnvironmentDetailView extends Component {
                     </Grid>
                     
                 </Grid>
-                
             </Paper>
         )
     }
