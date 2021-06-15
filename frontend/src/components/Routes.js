@@ -10,8 +10,11 @@ import StrategyDetailView from './StrategyComponents/StrategyDetailView';
 import StrategiesView from './StrategyComponents/StrategiesView';
 import EnvironmentDetailView from '../components/EnvironmentDetailView'
 import { ProtectedAdmin } from '../services/ProtectRoute';
-import ApplicationEdit from '../components/applicationComponents/ApplicationEdit';
-import Resources from '../templates/Resources';
+import ApplicationEdit from '../components/ApplicationEdit';
+import BussinesProcesList from '../components/BussinesProcesList'
+import BussinesProces from '../templates/BussinesProces'
+
+
 
 import {
     Switch,

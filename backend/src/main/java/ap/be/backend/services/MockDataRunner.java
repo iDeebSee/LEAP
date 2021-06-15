@@ -6,12 +6,16 @@ import java.util.HashSet;
 import java.time.LocalDate;
 
 
+import ap.be.backend.repositories.ApplicationRepository;
+import ap.be.backend.repositories.BussinesProcesRepository;
 import ap.be.backend.models.Application;
+import ap.be.backend.models.BussinesProces;
 import ap.be.backend.models.TIMEValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -20,11 +24,16 @@ import ap.be.backend.models.Environment;
 import ap.be.backend.models.Resource;
 import ap.be.backend.models.Role;
 import ap.be.backend.models.Strategy;
+import ap.be.backend.models.StrategyItem;
 import ap.be.backend.models.User;
+import ap.be.backend.models.BussinesProces;
+
+import ap.be.backend.repositories.ApplicationRepository;
 import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.repositories.EnvironmentRepository;
 import ap.be.backend.repositories.ResourceRepository;
 import ap.be.backend.repositories.RoleRepository;
+import ap.be.backend.repositories.StrategyItemRepository;
 import ap.be.backend.repositories.StrategyRepository;
 import ap.be.backend.repositories.UserRepository;
 import ap.be.backend.repositories.ApplicationRepository;
@@ -53,10 +62,13 @@ public class MockDataRunner implements CommandLineRunner {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private ResourceRepository resourceRepository;
+    private StrategyItemRepository strategyItemRepository;
 
     @Autowired
     private ApplicationRepository applicationRepository;
+
+    @Autowired
+    private BussinesProcesRepository bussinesProcesRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -66,6 +78,9 @@ public class MockDataRunner implements CommandLineRunner {
         strategyRepository.deleteAll();
         roleRepository.deleteAll();
         userRepository.deleteAll();
+        strategyItemRepository.deleteAll();
+        bussinesProcesRepository.deleteAll();
+
         applicationRepository.deleteAll();
         resourceRepository.deleteAll();
 
@@ -95,6 +110,7 @@ public class MockDataRunner implements CommandLineRunner {
         capabilityRepository.findAll().forEach(cap -> {
             logger.info("{}", cap);
         });
+        
 
         Environment env1 = new Environment("test 1", "this is the 1st test envirement");
         Environment env2 = new Environment("test 2", "this is the 2st test envirement");
@@ -141,21 +157,35 @@ public class MockDataRunner implements CommandLineRunner {
         userRepository.save(adminUser);
         userRepository.save(normalUser);
         userRepository.save(jonas);
-        strategyRepository.findAll().forEach(strat -> {
-            logger.info("{}", strat);
+        strategyRepository.findAll().forEach(strat ->{logger.info("{}", strat);});
+
+
+        StrategyItem testitem1= new StrategyItem("test1");
+        StrategyItem testitem2= new StrategyItem("test2");
+        StrategyItem testitem3= new StrategyItem("test3");
+
+        strategyItemRepository.save(testitem1);
+        strategyItemRepository.save(testitem2);
+        strategyItemRepository.save(testitem3);
+        strategyItemRepository.findAll().forEach(stratitem -> {
+            logger.info("{}", stratitem);
         });
+        Application application1 = new Application("App1", "technology", "version", 2.5, 5.0, LocalDate.now() ,
+                LocalDate.now().plusDays(10), 5, 4, 3, 5,
+        0,1, 2, 3, 5, TIMEValue.ELIMINATE,
+        "euro", 5, 5, 5, 5, 5, 5, 5, 5 );
 
-        Application application1 = new Application("App1", "technology", "version", 2.5, 5.0, LocalDate.now(),
-                LocalDate.now().plusDays(10), 5, 4, 3, 5, 0, 1, 2, 3, 5, TIMEValue.ELIMINATE, "euro", 5, 5, 5, 5, 5, 5,
-                5, 5);
-
-        Application application2 = new Application("App2", "java", "2.5", 2.5, 5.0, LocalDate.now(),
-                LocalDate.now().plusDays(15), 5, 4, 5, 5, 5, 1, 2, 2, 5, TIMEValue.INVEST, "dollar", 5, 5, 5, 5, 5, 5,
-                5, 5);
-
-        Application application3 = new Application("App2", "javascript", "2.5", 2.5, 5.0, LocalDate.now(),
-                LocalDate.now().plusDays(15), 5, 4, 5, 5, 5, 1, 2, 2, 5, TIMEValue.INVEST, "dollar", 5, 5, 5, 5, 5, 5,
-                5, 5);
+        Application application2 = new Application("App2", "java", "2.5", 2.5, 5.0, LocalDate.now() ,
+                LocalDate.now().plusDays(15), 5, 4, 5, 5,
+                5,1, 2, 2, 5, TIMEValue.INVEST,
+                "dollar", 5, 5, 5, 5, 5, 5,
+                5, 5 );
+        
+        Application application3 = new Application("App2", "javascript", "2.5", 2.5, 5.0, LocalDate.now() ,
+                LocalDate.now().plusDays(15), 5, 4, 5, 5,
+                5,1, 2, 2, 5, TIMEValue.INVEST,
+                "dollar", 5, 5, 5, 5, 5, 5,
+                5, 5 );
 
         applicationRepository.save(application1);
         applicationRepository.save(application2);
@@ -176,5 +206,18 @@ public class MockDataRunner implements CommandLineRunner {
             logger.info("{}", app);
         });
 
+        applicationRepository.findAll().forEach(app -> {logger.info("{}", app);});
+        
+        
+        BussinesProces bp1= new BussinesProces("zt","u mama abdel");
+        BussinesProces bp2= new BussinesProces("test2","abdel is een zemmer");
+        BussinesProces bp3= new BussinesProces("test3","abdel pokemonhoofd");
+
+       bussinesProcesRepository.save(bp1);
+        bussinesProcesRepository.save(bp2);
+        bussinesProcesRepository.save(bp3);
+        bussinesProcesRepository.findAll().forEach(BpItem -> {
+            logger.info("{}", BpItem);
+        });
     }
 }
