@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, Paper,  Box } from '@material-ui/core';
 import clsx from 'clsx';
 import Copyright from '../components/Copyright';
-import SimpleTable from '../components/Table';
+import SimpleTable from '../components/applicationComponents/Table';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,7 +45,7 @@ export default function Applications() {
         <div clasName={classes.root}>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
+                <Container maxWidth="lg" className={classes.container} style={{width: '100%', maxWidth:'none',}}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={12} lg={12}>
                             <Paper style={{ flexDirection: 'row', justifyContent: 'space-evenly', }} className={fixedHeightPaper}>

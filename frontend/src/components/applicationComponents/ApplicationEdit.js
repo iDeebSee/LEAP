@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import ApplicationsService from '../services/ApplicationsService';
+import ApplicationsService from '../../services/ApplicationsService';
 import 'date-fns';
 import { makeStyles } from '@material-ui/core/styles';
-import DatePicker from './DatePicker';
+import DatePicker from '../DatePicker';
 import {
     Button, TextField, InputLabel, Select, MenuItem, Grid
 } from '@material-ui/core';
