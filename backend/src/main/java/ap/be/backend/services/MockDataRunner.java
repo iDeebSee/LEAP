@@ -28,7 +28,6 @@ import ap.be.backend.models.StrategyItem;
 import ap.be.backend.models.User;
 import ap.be.backend.models.BussinesProces;
 
-import ap.be.backend.repositories.ApplicationRepository;
 import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.repositories.EnvironmentRepository;
 import ap.be.backend.repositories.ResourceRepository;
@@ -36,7 +35,7 @@ import ap.be.backend.repositories.RoleRepository;
 import ap.be.backend.repositories.StrategyItemRepository;
 import ap.be.backend.repositories.StrategyRepository;
 import ap.be.backend.repositories.UserRepository;
-import ap.be.backend.repositories.ApplicationRepository;
+
 
 
 
@@ -66,6 +65,9 @@ public class MockDataRunner implements CommandLineRunner {
 
     @Autowired
     private ApplicationRepository applicationRepository;
+
+    @Autowired
+    private ResourceRepository resourceRepository;
 
     @Autowired
     private BussinesProcesRepository bussinesProcesRepository;
@@ -206,12 +208,12 @@ public class MockDataRunner implements CommandLineRunner {
             logger.info("{}", app);
         });
 
-        applicationRepository.findAll().forEach(app -> {logger.info("{}", app);});
         
         
-        BussinesProces bp1= new BussinesProces("zt","u mama abdel");
-        BussinesProces bp2= new BussinesProces("test2","abdel is een zemmer");
-        BussinesProces bp3= new BussinesProces("test3","abdel pokemonhoofd");
+        
+        BussinesProces bp1= new BussinesProces("zt","u mama zakaria");
+        BussinesProces bp2= new BussinesProces("test2","zakaria is een zemmer");
+        BussinesProces bp3= new BussinesProces("test3","zakaria pokemonhoofd");
 
        bussinesProcesRepository.save(bp1);
         bussinesProcesRepository.save(bp2);

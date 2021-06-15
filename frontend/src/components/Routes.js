@@ -10,8 +10,8 @@ import StrategyDetailView from './StrategyComponents/StrategyDetailView';
 import StrategiesView from './StrategyComponents/StrategiesView';
 import EnvironmentDetailView from '../components/EnvironmentDetailView'
 import { ProtectedAdmin } from '../services/ProtectRoute';
-import ApplicationEdit from '../components/ApplicationEdit';
-import BussinesProcesList from '../components/BussinesProcesList'
+import ApplicationEdit from '../components/applicationComponents/ApplicationEdit';
+import Resources from '../templates/Resources';
 import BussinesProces from '../templates/BussinesProces'
 
 
@@ -36,6 +36,7 @@ export default function Routes() {
             <Route exact path="/strategy" component={StrategiesView} />
             <Route exact path="/strategy/:id" component={StrategyDetailView} />
             <Route exact path="/resources/" component={Resources} />
+            <Route exact path="/bussinesproces/" component={BussinesProces} />
             <AdminRoute path="/admin" component={Admin} />
             <Route path="*" render={() => <Redirect to={{ pathname: "/home" }} />} />
             <Route render={() => <Redirect to={{ pathname: "/home" }} />} />
