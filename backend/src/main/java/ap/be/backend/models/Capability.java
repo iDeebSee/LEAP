@@ -1,5 +1,7 @@
 package ap.be.backend.models;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,6 +17,8 @@ public class Capability {
     private String description;
 
     private int level = 1;
+
+    
 
     @DBRef
     private Capability parent = null;
