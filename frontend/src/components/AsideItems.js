@@ -15,7 +15,7 @@ import {
     SupervisorAccount,
 } from '@material-ui/icons';
 import SettingsIcon from '@material-ui/icons/Settings';
-
+import PermDataSettingIcon from '@material-ui/icons/PermDataSetting';
 export const adminListItems = (
     <div>
         <ListItem button component={Link} to="/admin">
@@ -58,6 +58,12 @@ export const mainListItems = (
                 <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary="Resources" />
+        </ListItem>
+        <ListItem button component={Link} to="/bussinesproces">
+            <ListItemIcon>
+                <PermDataSettingIcon />
+            </ListItemIcon>
+            <ListItemText primary="Bussines Processes" />
         </ListItem>
     </div>
 );
