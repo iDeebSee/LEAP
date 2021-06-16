@@ -32,12 +32,15 @@ public class Capability {
     @Setter(AccessLevel.NONE)
     private Capability parent = null;
 
+    @DBRef
+    private Environment environment;
+
     /**
      * @param name the name of the capability.
      * @param description describes what the capability does within the business.
      * @param parent the parent of this capability, has to be an existing capability and cannot be level 3 or lower.
      */
-    public Capability(String name, String description, Capability parent) throws IllegalArgumentException {
+    public Capability(String name, String description, Capability parent, Environment environment) throws IllegalArgumentException {
         //this(name, description);
         this.name = name;
         this.description = description;
@@ -45,6 +48,7 @@ public class Capability {
             this.level = parent.getLevel() + 1;
             this.parent = parent;
         }
+        this.environment = environment;
     }
 
     public void setParent(Capability parent) {

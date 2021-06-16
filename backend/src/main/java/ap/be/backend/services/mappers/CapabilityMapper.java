@@ -11,7 +11,9 @@ import ap.be.backend.dtos.createdtos.CapabilityCreateDto;
 import ap.be.backend.dtos.editdtos.CapabilityEditDto;
 import ap.be.backend.dtos.readdtos.CapabilityReadDto;
 import ap.be.backend.models.Capability;
+import ap.be.backend.models.Environment;
 import ap.be.backend.repositories.CapabilityRepository;
+import ap.be.backend.repositories.EnvironmentRepository;
 
 @Service
 public class CapabilityMapper {
@@ -21,6 +23,9 @@ public class CapabilityMapper {
 
     @Autowired
     private CapabilityRepository capabilityRepository;
+
+    @Autowired
+    private EnvironmentRepository environmentRepository;
 
     private Converter<String, Capability> idToParentConverter() {
         return new Converter<String, Capability>() {
@@ -35,19 +40,45 @@ public class CapabilityMapper {
         };
     }
 
+    private Converter<String, Environment> idtoEnvironmentConverter() {
+        return new Converter<String, Environment>() {
+            @Override
+            public Environment convert(MappingContext<String, Environment> ctx) {
+                if(environmentRepository.existsById(ctx.getSource())) {
+                    return environmentRepository.findById(ctx.getSource()).get();
+                } else {
+                    return null;
+                }
+            }
+        };
+    }
+
+    private Converter<Capability, String> parentToIdConverter() {
+        return new Converter<Capability, String>() {
+            @Override
+            public String convert(MappingContext<Capability, String> ctx) {
+                if(ctx.getSource() != null) {
+                    return ctx.getSource().getId();
+                } else {
+                    return null;
+                }
+            }
+        };
+    }
+
     public Capability convertFromCreateDto(CapabilityCreateDto newCapability) {
-        modelMapper.addConverter(idToParentConverter());
+        modelMapper.addConverter(idtoEnvironmentConverter());
         return modelMapper.map(newCapability, Capability.class);
     }
 
     public Capability convertFromEditDto(CapabilityEditDto capabilityEditDto) {
         modelMapper.addConverter(idToParentConverter());
+        modelMapper.addConverter(idtoEnvironmentConverter());
         return modelMapper.map(capabilityEditDto, Capability.class);
     }
 
     public CapabilityReadDto convertToReadDto(Capability capability) {
-        Condition<Capability, CapabilityReadDto> notNull = ctx -> ctx.getSource() != null;
-        modelMapper.typeMap(Capability.class, CapabilityReadDto.class).addMappings(mapper -> mapper.when(notNull).map(src -> src.getParent().getId(), CapabilityReadDto::setParent));
+        modelMapper.addConverter(parentToIdConverter());
         return modelMapper.map(capability, CapabilityReadDto.class);
     }
 }

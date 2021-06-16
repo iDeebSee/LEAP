@@ -26,7 +26,6 @@ import {
 } from "react-router-dom";
 import AuthService from './services/Auth.service';
 import { ProtectedAdmin } from './services/ProtectRoute';
-import Index from './templates/Index';
 
 const drawerWidth = 240;
 

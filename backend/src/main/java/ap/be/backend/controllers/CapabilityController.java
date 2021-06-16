@@ -48,18 +48,16 @@ public class CapabilityController {
     @Autowired
     private EnvironmentRepository environmentRepository;
 
-    @GetMapping("/caplist/{envId}")
+    @GetMapping("/capabilities/{envId}")
     public ResponseEntity<MessageResponse> readCapabilities(@PathVariable("envId") String envId) {
         if (environmentRepository.existsById(envId)) {
             List<CapabilityReadDto> capabilities = new ArrayList<CapabilityReadDto>();
             Environment environment = environmentRepository.findById(envId).get();
-            if(environment.getCapabilityList().size() > 0) {
-                environment.getCapabilityList().forEach(capability -> {
-                    if(capabilityRepository.existsById(capability.getId())) {
-                        capabilities.add(capabilityMapper.convertToReadDto(capabilityRepository.findById(capability.getId()).get()));
-                    }
+            if(capabilityRepository.existsByEnvironment(environment)) {
+                capabilityRepository.findAllByEnvironment(environment).get().forEach(capability -> {
+                    capabilities.add(capabilityMapper.convertToReadDto(capability));
                 });
-            }
+            } 
             return ResponseEntity.ok(new MessageResponse("Got all capabilities!", capabilities));
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to find environment by ID"));
@@ -77,60 +75,43 @@ public class CapabilityController {
         }
     }
     
-    @PostMapping("/{envId}")
-    public ResponseEntity<MessageResponse> createCapability(@PathVariable("envId") String envId, @Valid @RequestBody CapabilityCreateDto newCapability) {
+    @PostMapping("/")
+    public ResponseEntity<MessageResponse> createCapability(@Valid @RequestBody CapabilityCreateDto newCapability) {
         try {
             Capability capability = capabilityMapper.convertFromCreateDto(newCapability);
             capabilityRepository.save(capability);
-            Environment environment = environmentRepository.findById(envId).get();
-            environment.AddCapabilty(
-                capabilityRepository.findByNameAndDescription(capability.getName(), capability.getDescription()).get()
-            );
-            environmentRepository.save(environment);
             return ResponseEntity.ok(new MessageResponse("Successfully created capability!"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to create capability"));
         }
     }
     
-    @PutMapping("/{envid}/{id}")
-    public ResponseEntity<MessageResponse> updateCapability(@PathVariable("envid") String envId, @PathVariable("id") String id, @Valid @RequestBody CapabilityEditDto capabilityUpdate) {
-        if(capabilityRepository.existsById(id)) {
+    @PutMapping("/")
+    public ResponseEntity<MessageResponse> updateCapability(@Valid @RequestBody CapabilityEditDto capabilityUpdate) {
+        if(capabilityRepository.existsById(capabilityUpdate.getId())) {
 
             Capability updatedCapability = capabilityMapper.convertFromEditDto(capabilityUpdate);
-            logger.info("{}", updatedCapability);
-            updatedCapability.setId(id);
             capabilityRepository.save(updatedCapability);
 
-            Environment environment = environmentRepository.findById(envId).get();
-            logger.info("{}", capabilityRepository.findById(id).get());
-            environment.editCapability(
-                capabilityRepository.findById(id).get()
-            );
-            environmentRepository.save(environment);
             return ResponseEntity.ok(new MessageResponse("Successfully updated capability!"));
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to find capability with that ID"));
         }
     }
 
-    @DeleteMapping("/{envid}/{id}")
-    public ResponseEntity<MessageResponse> deleteCapability(@PathVariable("envid") String envId, @PathVariable("id") String id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deleteCapability(@PathVariable("id") String id) {
         if(capabilityRepository.existsById(id)) {
             Capability capabilityToDelete = capabilityRepository.findById(id).get();
-            capabilityRepository.findAllByParent(capabilityToDelete).forEach(capX -> {
+            capabilityRepository.findAllByParent(capabilityToDelete).get().forEach(capX -> {
                 if(capX.getLevel() < 3) {
-                    capabilityRepository.findAllByParent(capX).forEach(capY -> {
+                    capabilityRepository.findAllByParent(capX).get().forEach(capY -> {
                         capabilityRepository.deleteById(capY.getId());
                     });
                 }
                 capabilityRepository.deleteById(capX.getId());
             });
             capabilityRepository.deleteById(id);
-
-            Environment environment = environmentRepository.findById(envId).get();
-            environment.DeleteCapability(capabilityToDelete);
-            environmentRepository.save(environment);
             return ResponseEntity.ok(new MessageResponse("Successfully deleted capability and all its children!"));
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to find capability with that ID"));

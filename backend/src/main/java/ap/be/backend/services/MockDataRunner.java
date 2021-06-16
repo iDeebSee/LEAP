@@ -87,41 +87,11 @@ public class MockDataRunner implements CommandLineRunner {
         applicationRepository.deleteAll();
         resourceRepository.deleteAll();
 
-        Environment env1 = new Environment("test 1", "this is the 1st test envirement");
-        Environment env2 = new Environment("test 2", "this is the 2st test envirement");
-        Environment env3 = new Environment("test 3", "this is the 3st test envirement");
-        Environment env4 = new Environment("test 4", "this is the 4st test envirement");
-        Environment env5 = new Environment("test 5", "this is the 5st test envirement");
-
-        Capability capability1 = new Capability("test 1", "this is the 1st test capability", null);
-        Capability capability2 = new Capability("test 2", "this is the 2nd test capability", null);
-        Capability capability3 = new Capability("test 3", "this is the 3rd test capability", null);
-        Capability capability11 = new Capability("test 1.1", "this is the 1st child of the 1st test capability", capability1);
-        Capability capability12 = new Capability("test 1.2", "this is the 2nd child of the 1st test capability", capability1);
-        Capability capability111 = new Capability("test 1.1.1", "this is the 1st child of the 1st child of the 1st test capability", capability11);
-        Capability capability112 = new Capability("test 1.1.2", "this is the 2nd child of the 1st child of the 1st test capability", capability11);
-        Capability capability113 = new Capability("test 1.1.3", "this is the 3rd child of the 1st child of the 1st test capability", capability11);
-
-        capabilityRepository.save(capability1);
-        env1.AddCapabilty(capabilityRepository.findByNameAndDescription(capability1.getName(), capability1.getDescription()).get());
-        capabilityRepository.save(capability2);
-        env1.AddCapabilty(capabilityRepository.findByNameAndDescription(capability2.getName(), capability2.getDescription()).get());
-        capabilityRepository.save(capability3);
-        env1.AddCapabilty(capabilityRepository.findByNameAndDescription(capability3.getName(), capability3.getDescription()).get());
-        capabilityRepository.save(capability11);
-        env1.AddCapabilty(capabilityRepository.findByNameAndDescription(capability11.getName(), capability11.getDescription()).get());
-        capabilityRepository.save(capability12);
-        env1.AddCapabilty(capabilityRepository.findByNameAndDescription(capability12.getName(), capability12.getDescription()).get());
-        capabilityRepository.save(capability111);
-        env1.AddCapabilty(capabilityRepository.findByNameAndDescription(capability111.getName(), capability111.getDescription()).get());
-        capabilityRepository.save(capability112);
-        env1.AddCapabilty(capabilityRepository.findByNameAndDescription(capability112.getName(), capability112.getDescription()).get());
-        capabilityRepository.save(capability113);
-        env1.AddCapabilty(capabilityRepository.findByNameAndDescription(capability113.getName(), capability113.getDescription()).get());
-
-        capabilityRepository.findAll().forEach(cap -> {
-            logger.info("{}", cap);
-        });
+        Environment env1 = new Environment("test 1");
+        Environment env2 = new Environment("test 2");
+        Environment env3 = new Environment("test 3");
+        Environment env4 = new Environment("test 4");
+        Environment env5 = new Environment("test 5");
 
         environmentRepository.save(env1);
         environmentRepository.save(env2);
@@ -131,6 +101,28 @@ public class MockDataRunner implements CommandLineRunner {
 
         environmentRepository.findAll().forEach(env -> {
             logger.info("{}", env);
+        });
+
+        Capability capability1 = new Capability("test 1", "this is the 1st test capability", null, env1);
+        Capability capability2 = new Capability("test 2", "this is the 2nd test capability", null, env1);
+        Capability capability3 = new Capability("test 3", "this is the 3rd test capability", null, env1);
+        Capability capability11 = new Capability("test 1.1", "this is the 1st child of the 1st test capability", capability1, env1);
+        Capability capability12 = new Capability("test 1.2", "this is the 2nd child of the 1st test capability", capability1, env1);
+        Capability capability111 = new Capability("test 1.1.1", "this is the 1st child of the 1st child of the 1st test capability", capability11, env1);
+        Capability capability112 = new Capability("test 1.1.2", "this is the 2nd child of the 1st child of the 1st test capability", capability11, env1);
+        Capability capability113 = new Capability("test 1.1.3", "this is the 3rd child of the 1st child of the 1st test capability", capability11, env1);
+
+        capabilityRepository.save(capability1);
+        capabilityRepository.save(capability2);
+        capabilityRepository.save(capability3);
+        capabilityRepository.save(capability11);
+        capabilityRepository.save(capability12);
+        capabilityRepository.save(capability111);
+        capabilityRepository.save(capability112);
+        capabilityRepository.save(capability113);
+
+        capabilityRepository.findAll().forEach(cap -> {
+            logger.info("{}", cap);
         });
 
         Strategy strategy1 = new Strategy("strategy1");

@@ -16,7 +16,4 @@ public class EnvironmentReadDto {
 
     @NotBlank
     private String name;
-
-    @NotBlank
-    private String description;
 }

@@ -1,24 +1,25 @@
 import http from "./https-common";
 
+const baseUrl = '/strategy'
 class StrategyService {
-    getAll() {
-        return http.get("/strategy");
+    getAll(envId) {
+        return http.get(`${baseUrl}/strategies/${envId}`);
     }
 
     get(id) {
-        return http.get(`/strategy/${id}`);
+        return http.get(`${baseUrl}/${id}`);
     }
 
-    create(data) {
-        return http.post("/strategy", data);
+    create(envId, name) {
+        return http.post(`${baseUrl}/${envId}`, {name});
     }
 
-    update(id, data) {
-        return http.put(`/strategy/${id}`, data);
+    update(envId, id, data) {
+        return http.put(`${baseUrl}/${envId}/${id}`, data);
     }
 
-    delete(id) {
-        return http.delete(`/strategy/${id}`);
+    delete(envId, id) {
+        return http.delete(`${baseUrl}/${envId}/${id}`);
     }
 }
 

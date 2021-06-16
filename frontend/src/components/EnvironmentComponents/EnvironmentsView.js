@@ -11,8 +11,8 @@ import {
 } from "@material-ui/core";
 import React, { Component } from "react";
 import { withStyles } from '@material-ui/core/styles';
-import EnvironmentList from '../components/EnvironmentList';
-import EnvironmentService from "../services/Environment.Service";
+import EnvironmentList from './EnvironmentList';
+import EnvironmentService from "../../services/Environment.Service";
 
 const styles = theme => ({
     root: {
@@ -87,13 +87,13 @@ class EnvirenmentView extends Component {
 
     createEnvironment() {
         let text = "";
-        if(this.state.newEnvironmentName !== '' && this.state.newEnvironmentDescription !== '') {
-            let data = {name: this.state.newEnvironmentName, description: this.state.newEnvironmentDescription};
+        if(this.state.newEnvironmentName !== '') {
+            let data = {name: this.state.newEnvironmentName};
             
             EnvironmentService.create(data)
                 .then(res => {
                     console.log(res);
-                    this.setState({newEnvironmentName: '', newEnvironmentDescription: ''})
+                    this.setState({newEnvironmentName: ''})
                     this.getenvironments();
                 })
                 .catch(e => {
@@ -136,18 +136,6 @@ class EnvirenmentView extends Component {
                             color="primary"
                             required
                             onChange={e => this.setState({newEnvironmentName: e.target.value})}
-                        />
-                        <TextField
-                            id="outlined-multiline-static"
-                            label="Description"
-                            type="text"
-                            variant="filled"
-                            color="primary"
-                            required
-                            multiline
-                            rowsMax={6}
-                            rows={6}
-                            onChange={e => this.setState({newEnvironmentDescription: e.target.value})}
                         />
                     </DialogContent>
                     <DialogActions>

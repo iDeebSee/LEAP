@@ -46,7 +46,7 @@ export const WorkListItems = (envId) => (
             </ListItemIcon>
             <ListItemText primary="Capabilities" />
         </ListItem>
-        <ListItem button component={Link} to="/strategy">
+        <ListItem button component={Link} to={`/strategy/${envId}`}>
             <ListItemIcon>
                 <Timeline />
             </ListItemIcon>

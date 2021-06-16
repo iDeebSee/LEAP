@@ -78,8 +78,8 @@ class CapabilitiesView extends Component {
             });
     }
 
-    deleteCapability(envId, capabilityId) {
-        CapabilityService.delete(envId, capabilityId)
+    deleteCapability(capabilityId) {
+        CapabilityService.delete(capabilityId)
         .then(() => {
             this.getCapabilities();
         });

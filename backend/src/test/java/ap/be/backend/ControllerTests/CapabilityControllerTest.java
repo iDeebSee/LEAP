@@ -32,7 +32,7 @@ public class CapabilityControllerTest {
     @Test
     void findCapabilityById(){
         final String id ="1";
-        final Capability capability = new Capability("test", "test capability 1", null);
+        final Capability capability = new Capability("test", "test capability 1", null, null);
 
         given(capabilityRepository.findById(id)).willReturn(Optional.of(capability));
 
@@ -44,10 +44,10 @@ public class CapabilityControllerTest {
     void returnAllCapabilities() {
         
         List<Capability> capabilities = new ArrayList<>();
-        capabilities.add(new Capability("test1", "test capability 1", null));
-        capabilities.add(new Capability("test2", "test capability 2", null));
-        capabilities.add(new Capability("test3", "test capability 3", null));
-        capabilities.add(new Capability("test4", "test capability 4", null));
+        capabilities.add(new Capability("test1", "test capability 1", null, null));
+        capabilities.add(new Capability("test2", "test capability 2", null, null));
+        capabilities.add(new Capability("test3", "test capability 3", null, null));
+        capabilities.add(new Capability("test4", "test capability 4", null, null));
 
         given(capabilityRepository.findAll()).willReturn(capabilities);
 
@@ -58,7 +58,7 @@ public class CapabilityControllerTest {
 
     @Test
     void updateCapability() {
-        final Capability capability = new Capability("test1", "test capability 1", null);
+        final Capability capability = new Capability("test1", "test capability 1", null, null);
 
         given(capabilityRepository.save(capability)).willReturn(capability);
 
@@ -82,7 +82,7 @@ public class CapabilityControllerTest {
 
     @Test
     void addCapability() {
-        final Capability capability = new Capability("test1", "test capability 1", null);
+        final Capability capability = new Capability("test1", "test capability 1", null, null);
 
         given(capabilityRepository.save(capability)).willAnswer(invocation -> invocation.getArgument(0));
 

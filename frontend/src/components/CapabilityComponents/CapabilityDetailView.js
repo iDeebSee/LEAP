@@ -30,11 +30,11 @@ class CapabilityDetailView extends Component {
     }
 
     componentDidMount() {
-        this.getCapability(this.props.match.params.envId, this.props.match.params.id);
+        this.getCapability(this.props.match.params.id);
     }
 
-    getCapability(envId, id) {
-        CapabilityService.get(envId, id)
+    getCapability(id) {
+        CapabilityService.get(id)
             .then(res => {
                 this.setState({capability: res.data.data});
                 console.log(res.data.message);
@@ -45,8 +45,8 @@ class CapabilityDetailView extends Component {
             });
     }
 
-    getCapabilityParentName(envId, id) {
-        CapabilityService.get(envId, id)
+    getCapabilityParentName(id) {
+        CapabilityService.get(id)
             .then(res => {
                 this.setState({parent: res.data.data.name});
             })
@@ -60,7 +60,7 @@ class CapabilityDetailView extends Component {
 
         let parent = null;
         if(this.state.capability.parent !== null && this.state.capability.parent !== undefined) {
-            this.getCapabilityParentName(this.props.match.params.envId, this.state.capability.parent)
+            this.getCapabilityParentName(this.state.capability.parent)
             parent =
             <Grid item>
                 <Typography>Parent: {this.state.parent}</Typography>
