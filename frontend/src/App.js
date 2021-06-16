@@ -1,9 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems, secondaryListItems, adminListItems } from './components/AsideItems';
+import { WorkListItems, secondaryListItems, adminListItems, startWorkListItems } from './components/AsideItems';
 import Copyright from './components/Copyright'
 
 import { 
@@ -26,6 +26,7 @@ import {
 } from "react-router-dom";
 import AuthService from './services/Auth.service';
 import { ProtectedAdmin } from './services/ProtectRoute';
+import Index from './templates/Index';
 
 const drawerWidth = 240;
 
@@ -115,7 +116,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function App() {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
+    const [envId, setEnvId] = useState('');
+    const [open, setOpen] = useState(true);
+    
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -143,6 +146,9 @@ export default function App() {
         
     }
 
+    //make new router just for environment 
+    //load that router when no env is assigned
+
     if(AuthService.getCurrentUser() !== null) {
         return (
             <Router baseName='/Leap'>
@@ -163,9 +169,6 @@ export default function App() {
                                 Dashboard
                             </Typography>
                             <IconButton color="inherit">
-                                {/* <Badge badgeContent={4} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge> */}
                                 <Avatar alt="Profile icon" src="" className={classes.large} />
                             </IconButton>
                         </Toolbar>
@@ -184,7 +187,9 @@ export default function App() {
                         </div>
                         {displayAdminPage()}
                         <Divider />
-                        <List>{mainListItems}</List>
+                        <List>{startWorkListItems}</List>
+                        <Divider />
+                        <List>{WorkListItems(envId)}</List>
                         <Divider />
                         <List>{secondaryListItems}</List>
                     </Drawer>
@@ -192,7 +197,7 @@ export default function App() {
                         <div className={classes.appBarSpacer} />
                         <Container maxWidth="xl" className={classes.container}>
                             <Grid container spacing={3}>
-                                <Routes/>
+                                <Routes setEnvId={setEnvId}/>
                             </Grid>
                         </Container>
                     </main>

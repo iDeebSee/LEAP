@@ -19,20 +19,24 @@ import BussinesProces from '../templates/BussinesProces'
 import {
     Switch,
     Route,
-    Redirect
+    Redirect,
 } from "react-router-dom";
 import ResetPassword from '../templates/ResetPassword.js';
 import CreatePassword from '../templates/CreatePassword.js';
 
-export default function Routes() {
+export default function Routes(props) {
+
+    const setEnvId = (id) => {
+        props.setEnvId(id);
+    }
+
     return (
         <Switch>
-            <Route exact path="/home" component={Index} />
-            <Route exact path="/capabilities" component={CapabilitiesView} />
-            <Route exact path="/capabilities/:id" component={CapabilityDetailView} />
-            <Route exact path="/Environment/:id" component={EnvironmentDetailView} />
-            <Route exact path="/applications/:id" component={ApplicationEdit} />
-            <Route exact path="/applications" component={Applications} />
+            <Route exact path="/home" render={() => <Index setEnvId={setEnvId}/>} />
+            <Route exact path="/capabilities/:envId" component={CapabilitiesView} />
+            <Route exact path="/capabilities/:envId/:id" component={CapabilityDetailView} />
+            <Route exact path="/applications/:envId" component={Applications} />
+            <Route exact path="/applications/:envId/:id" component={ApplicationEdit} />
             <Route exact path="/strategy" component={StrategiesView} />
             <Route exact path="/strategy/:id" component={StrategyDetailView} />
             <Route exact path="/resources/" component={Resources} />
@@ -48,12 +52,10 @@ const AdminRoute = ({ component: Component, ...rest }) => {
     return (
         <Route {...rest} render={props => {
             return (
-                ProtectedAdmin.getAuth() ?
+                ProtectedAdmin.getAuth() ? 
                     <Component {...props} /> : <Redirect to={{ pathname: "/home" }} />
             )
-        }
-        }
-        />
+        }}/>
     );
 }
 

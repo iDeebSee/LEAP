@@ -7,18 +7,15 @@ import org.springframework.data.annotation.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
-@NoArgsConstructor
 @Data
-@EqualsAndHashCode
 @ToString
+@EqualsAndHashCode
+@NoArgsConstructor
 @Document(collection = "Environments")
 public class Environment {
     
@@ -29,33 +26,47 @@ public class Environment {
 
     private String description;
     
-    private ArrayList<String> capabityList= new ArrayList<>();
+    private List<Capability> capabilityList = new ArrayList<Capability>();
+
+    /**
+     * @param name the name of the capability.
+     * @param description describes what the capability does within the business.
+     */
+    public Environment(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     /**
      * @param name the name of the capability.
      * @param description describes what the capability does within the business.
      * @param capabiltyList is een lijst van capabilties binnen die environment
      */
-    public Environment(String name, String description, ArrayList<String> capLIst ) throws IllegalArgumentException {
-        //this(name, description);
-        this.name = name;
-        this.description = description;
-        this.capabityList=capLIst;
-        
-        }
+    public Environment(String name, String description, List<Capability> capabilityList ) throws IllegalArgumentException {
+        this(name, description);
+        this.capabilityList = capabilityList;
 
-    public void AddCapabilty(String capId){
-        capabityList.add(capId);
     }
-    public void DeleteCapability(String CapID){
-        capabityList.remove(CapID);
-        
-    }
-    
-    
 
-    
-    
-    
+    public void AddCapabilty(Capability capability){
+        capabilityList.add(capability);
+    }
+
+    public Capability findById(String capId) {
+        Capability output = 
+        capabilityList.stream()
+            .filter(capability -> capability.getId().equals(capId))
+            .findFirst()
+            .orElse(null);
+        return output;
+    }
+
+    public void editCapability(Capability capability) {
+        capabilityList.set(capabilityList.indexOf(findById(capability.getId())), capability);
+    }
+
+    public void DeleteCapability(Capability capability){
+        capabilityList.remove(capability);
+    }
 }
 

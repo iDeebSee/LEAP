@@ -21,18 +21,20 @@ class CapabilityDetailView extends Component {
         super(props);
 
         this.getCapability = this.getCapability.bind(this);
+        this.getCapabilityParentName = this.getCapabilityParentName.bind(this);
 
         this.state = {
             capability: {},
+            parent: ''
         };
     }
 
     componentDidMount() {
-        this.getCapability(this.props.match.params.id);
+        this.getCapability(this.props.match.params.envId, this.props.match.params.id);
     }
 
-    getCapability(id) {
-        CapabilityService.get(id)
+    getCapability(envId, id) {
+        CapabilityService.get(envId, id)
             .then(res => {
                 this.setState({capability: res.data.data});
                 console.log(res.data.message);
@@ -43,14 +45,25 @@ class CapabilityDetailView extends Component {
             });
     }
 
+    getCapabilityParentName(envId, id) {
+        CapabilityService.get(envId, id)
+            .then(res => {
+                this.setState({parent: res.data.data.name});
+            })
+            .catch(e => {
+                console.error(e);
+            })
+    }
+
     render() {
         const { classes } = this.props;
 
         let parent = null;
         if(this.state.capability.parent !== null && this.state.capability.parent !== undefined) {
+            this.getCapabilityParentName(this.props.match.params.envId, this.state.capability.parent)
             parent =
             <Grid item>
-                <Typography>Parent: {this.state.capability.parent.name}</Typography>
+                <Typography>Parent: {this.state.parent}</Typography>
             </Grid>
         }
         return(

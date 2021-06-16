@@ -54,7 +54,7 @@ public class MockDataRunner implements CommandLineRunner {
     @Autowired
     private CapabilityRepository capabilityRepository;
     @Autowired
-    private EnvironmentRepository envirenmentRepository;
+    private EnvironmentRepository environmentRepository;
     @Autowired
     private StrategyRepository strategyRepository;
     @Autowired
@@ -75,9 +75,8 @@ public class MockDataRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // verwijder alles uit de database voor nieuwe test data toe te voegen.g
-        capabilityRepository.deleteAll();
-        envirenmentRepository.deleteAll();
+        // verwijder alles uit de database voor nieuwe test data toe te voegen
+
         strategyRepository.deleteAll();
         roleRepository.deleteAll();
         userRepository.deleteAll();
@@ -87,19 +86,37 @@ public class MockDataRunner implements CommandLineRunner {
         applicationRepository.deleteAll();
         resourceRepository.deleteAll();
 
+        //#region Dataset Environments
+        environmentRepository.deleteAll();
+
+        Environment env1 = new Environment("test 1", "this is the 1st test envirement");
+        Environment env2 = new Environment("test 2", "this is the 2st test envirement");
+        Environment env3 = new Environment("test 3", "this is the 3st test envirement");
+        Environment env4 = new Environment("test 4", "this is the 4st test envirement");
+        Environment env5 = new Environment("test 5", "this is the 5st test envirement");
+
+        environmentRepository.save(env1);
+        environmentRepository.save(env2);
+        environmentRepository.save(env3);
+        environmentRepository.save(env4);
+        environmentRepository.save(env5);
+
+        environmentRepository.findAll().forEach(env -> {
+            logger.info("{}", env);
+        });
+        //#endregion Dataset Environments
+
+        //#region Dataset Capabilities
+        capabilityRepository.deleteAll();
+            
         Capability capability1 = new Capability("test 1", "this is the 1st test capability", null);
         Capability capability2 = new Capability("test 2", "this is the 2nd test capability", null);
         Capability capability3 = new Capability("test 3", "this is the 3rd test capability", null);
-        Capability capability11 = new Capability("test 1.1", "this is the 1st child of the 1st test capability",
-                capability1);
-        Capability capability12 = new Capability("test 1.2", "this is the 2nd child of the 1st test capability",
-                capability1);
-        Capability capability111 = new Capability("test 1.1.1",
-                "this is the 1st child of the 1st child of the 1st test capability", capability11);
-        Capability capability112 = new Capability("test 1.1.2",
-                "this is the 2nd child of the 1st child of the 1st test capability", capability11);
-        Capability capability113 = new Capability("test 1.1.3",
-                "this is the 3rd child of the 1st child of the 1st test capability", capability11);
+        Capability capability11 = new Capability("test 1.1", "this is the 1st child of the 1st test capability", capability1);
+        Capability capability12 = new Capability("test 1.2", "this is the 2nd child of the 1st test capability", capability1);
+        Capability capability111 = new Capability("test 1.1.1", "this is the 1st child of the 1st child of the 1st test capability", capability11);
+        Capability capability112 = new Capability("test 1.1.2", "this is the 2nd child of the 1st child of the 1st test capability", capability11);
+        Capability capability113 = new Capability("test 1.1.3", "this is the 3rd child of the 1st child of the 1st test capability", capability11);
 
         capabilityRepository.save(capability1);
         capabilityRepository.save(capability2);
@@ -113,23 +130,7 @@ public class MockDataRunner implements CommandLineRunner {
         capabilityRepository.findAll().forEach(cap -> {
             logger.info("{}", cap);
         });
-        
-
-        Environment env1 = new Environment("test 1", "this is the 1st test envirement");
-        Environment env2 = new Environment("test 2", "this is the 2st test envirement");
-        Environment env3 = new Environment("test 3", "this is the 3st test envirement");
-        Environment env4 = new Environment("test 4", "this is the 4st test envirement");
-        Environment env5 = new Environment("test 5", "this is the 5st test envirement");
-
-        envirenmentRepository.save(env1);
-        envirenmentRepository.save(env2);
-        envirenmentRepository.save(env3);
-        envirenmentRepository.save(env4);
-        envirenmentRepository.save(env5);
-
-        envirenmentRepository.findAll().forEach(env -> {
-            logger.info("{}", env);
-        });
+        //#endregion Dataset Capabilities
 
         Strategy strategy1 = new Strategy("strategy1");
         Strategy strategy2 = new Strategy("strategy2");

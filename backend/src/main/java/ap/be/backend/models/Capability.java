@@ -30,8 +30,6 @@ public class Capability {
     @Setter(AccessLevel.NONE)
     private int level = 1;
 
-    
-
     @DBRef
     @Setter(AccessLevel.NONE)
     private Capability parent = null;

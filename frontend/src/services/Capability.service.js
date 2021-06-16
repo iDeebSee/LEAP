@@ -2,24 +2,24 @@ import http from "./https-common";
 
 const urlBase = '/capability';
 class CapabilityService {
-    getAll() {
-        return http.get(`${urlBase}/all`);
+    getAll(envId) {
+        return http.get(`${urlBase}/caplist/${envId}`);
     }
 
-    get(id) {
+    get(envId, id) {
         return http.get(`${urlBase}/${id}`);
     }
 
-    create(name, description, parent) {
-        return http.post(`${urlBase}/`, {name, description, parent});
+    create(envId, name, description, parent) {
+        return http.post(`${urlBase}/${envId}`, {name, description, parent});
     }
 
-    update(id, data) {
-        return http.put(`${urlBase}/${id}`, data);
+    update(envId, id, name, description, parent) {
+        return http.put(`${urlBase}/${envId}/${id}`, {name, description, parent});
     }
 
-    delete(id) {
-        return http.delete(`${urlBase}/${id}`);
+    delete(envId, id) {
+        return http.delete(`${urlBase}/${envId}/${id}`);
     }
 }
 

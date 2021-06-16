@@ -58,7 +58,7 @@ class CapabilitiesView extends Component {
         this.state = {
             capabilities: [],
             dialogText: '',
-            open: false
+            open: false,
         };
     }
 
@@ -67,7 +67,7 @@ class CapabilitiesView extends Component {
     }
 
     getCapabilities() {
-        CapabilityService.getAll()
+        CapabilityService.getAll(this.props.match.params.envId)
             .then(res => {
                 this.setState({capabilities: res.data.data});
                 console.log(res.data.message);
@@ -78,8 +78,8 @@ class CapabilitiesView extends Component {
             });
     }
 
-    deleteCapability(capabilityId) {
-        CapabilityService.delete(capabilityId)
+    deleteCapability(envId, capabilityId) {
+        CapabilityService.delete(envId, capabilityId)
         .then(() => {
             this.getCapabilities();
         });
@@ -91,7 +91,7 @@ class CapabilitiesView extends Component {
             if(this.state.newCapabilityParent != null) {
                 parent = this.state.newCapabilityParent.id;
             }
-            CapabilityService.create(this.state.newCapabilityName, this.state.newCapabilityDescription, parent)
+            CapabilityService.create(this.props.match.params.envId, this.state.newCapabilityName, this.state.newCapabilityDescription, parent)
                 .then(res => {
                     console.log(res);
                     this.setState({newCapabilityName: '', newCapabilityDescription: '', newCapabilityParent: {}})
@@ -119,7 +119,7 @@ class CapabilitiesView extends Component {
         const { classes } = this.props;
         return(
             <Container>
-                <CapabilityList data={this.state.capabilities} getCapabilities={this.getCapabilities} onDelete={this.deleteCapability}/>
+                <CapabilityList data={this.state.capabilities} getCapabilities={this.getCapabilities} onDelete={this.deleteCapability} envId={this.props.match.params.envId}/>
                 <ButtonGroup className={classes.buttonGroup}>
                     <Button variant="contained" color="primary" onClick={this.handleOpen}>Add Capability</Button>
                     

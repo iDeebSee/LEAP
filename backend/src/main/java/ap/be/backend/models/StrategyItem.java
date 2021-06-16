@@ -7,6 +7,15 @@ import org.springframework.data.annotation.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@ToString
+@NoArgsConstructor
+@EqualsAndHashCode
 @Document(collection = "StrategyItem")
 public class StrategyItem {
     
@@ -15,15 +24,7 @@ public class StrategyItem {
 
     private String name;
 
-    
-    
-        
-    
-
-    
-
-    public StrategyItem() {}
-
+    private List<Capability> linkedCapabilities = new ArrayList<Capability>();
     /**
      * @param name the name of the capability.
     
@@ -31,38 +32,6 @@ public class StrategyItem {
     public StrategyItem(String name) throws IllegalArgumentException {
         //this(name, description);
         this.name = name;
-        
-        
-        }
-    
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-   
-    
-
-    
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append("\n\nStrategyItem:{ \nname=").append(this.name)
-       
-        .append("}\n");
-        return builder.toString();
     }
 }
 

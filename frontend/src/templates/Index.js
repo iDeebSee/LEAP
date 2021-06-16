@@ -52,6 +52,7 @@ class EnvirenmentView extends Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.createEnvironment = this.createEnvironment.bind(this);
+        this.setEnvId = this.setEnvId.bind(this);
 
         this.state = {
             environments:[],
@@ -112,12 +113,15 @@ class EnvirenmentView extends Component {
         this.setState({open: false});
     }
 
+    setEnvId(id) {
+        this.props.setEnvId(id)
+    }
 
     render() {
         const { classes } = this.props;
         return(
             <Container>
-                <EnvironmentList data={this.state.environments} getenvironments={this.getenvironments} onCardDelete={this.onCardDelete}/>
+                <EnvironmentList data={this.state.environments} getenvironments={this.getenvironments} onCardDelete={this.onCardDelete} setEnvId={this.setEnvId}/>
                 <ButtonGroup className={classes.buttonGroup}>
                     <Button variant="contained" color="primary" onClick={this.handleOpen}>Add environment</Button>
                 </ButtonGroup>
@@ -145,9 +149,6 @@ class EnvirenmentView extends Component {
                             rows={6}
                             onChange={e => this.setState({newEnvironmentDescription: e.target.value})}
                         />
-                        
-                          
-                        
                     </DialogContent>
                     <DialogActions>
                         <ButtonGroup>

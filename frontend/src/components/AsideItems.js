@@ -27,7 +27,7 @@ export const adminListItems = (
     </div>
 )
 
-export const mainListItems = (
+export const startWorkListItems = (
     <div>
         <ListItem button component={Link} to="/home">
             <ListItemIcon>
@@ -35,7 +35,12 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
         </ListItem>
-        <ListItem button component={Link} to="/capabilities">
+    </div>
+);
+
+export const WorkListItems = (envId) => (
+    <div>
+        <ListItem button component={Link} to={`/capabilities/${envId}`}>
             <ListItemIcon>
                 <Layers />
             </ListItemIcon>

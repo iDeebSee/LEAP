@@ -15,7 +15,7 @@ import {
     TextField,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
 import EnvironmentService from "../services/Environment.Service";
@@ -46,6 +46,7 @@ const useStyles = (makeStyles((theme) => ({
 const EnvironmentList = (props) => {
     const classes = useStyles(),
     Environments = props.data,
+    history = useHistory(),
     [openEdit, setOpenedit] = useState(false),
     [openDelete, setOpenDelete] = useState(false),
     [newName, setNewName] = useState(''),
@@ -108,6 +109,12 @@ const EnvironmentList = (props) => {
         setOpenedit(false);
         setCurrentEnv(null);
     }
+    
+
+    const selectEnv = (id) => {
+        props.setEnvId(id);
+        history.push(`/capabilities/${id}`)
+    }
     const editDialog = (
         <Dialog open={openEdit} onClose={() => {closeEditDialog()}} className={classes.dialog}>
             <DialogTitle>Edit capability</DialogTitle>
@@ -151,7 +158,7 @@ const EnvironmentList = (props) => {
                         <ListItem key={nanoid()}>
                             <ListItemText>{env.name}</ListItemText>
                             <ButtonGroup>
-                                <Button component={Link} to={`/Environment/${env.id}`}>View</Button>
+                                <Button onClick={() => selectEnv(env.id)}>View</Button>
                                 <Button onClick={() => openEditDialog(env)}>Edit</Button>
                                 <Button onClick={() => openDeleteDialog(env.id)}>Delete</Button>
                             </ButtonGroup>
