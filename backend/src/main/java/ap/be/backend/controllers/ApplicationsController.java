@@ -7,7 +7,7 @@ import ap.be.backend.models.TIMEValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("applications")
+@RequestMapping("/applications")
 @RestController
 public class ApplicationsController {
     @Autowired

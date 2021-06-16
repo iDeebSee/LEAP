@@ -1,12 +1,9 @@
 package ap.be.backend.models;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Date;
 
 import com.mongodb.lang.NonNull;
 
-import lombok.AllArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 

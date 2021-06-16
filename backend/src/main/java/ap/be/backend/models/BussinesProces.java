@@ -1,17 +1,14 @@
 package ap.be.backend.models;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @ToString
 @Document(collection = "BussinesProces")
 public class BussinesProces {
@@ -22,12 +19,6 @@ public class BussinesProces {
     private String name;
 
     private String description;
-
-    
-
-    
-
-   
 
     /**
      * @param name the name of the capability.
@@ -40,9 +31,4 @@ public class BussinesProces {
         this.description = description;
         
     }
-
-    
-
-    
-   
 }

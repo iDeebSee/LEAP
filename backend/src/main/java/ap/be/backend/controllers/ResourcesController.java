@@ -5,7 +5,7 @@ import ap.be.backend.models.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("resources")
+@RequestMapping("/resources")
 @RestController
 public class ResourcesController {
     @Autowired
