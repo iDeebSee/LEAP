@@ -9,14 +9,11 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode
-public class EnvironmentReadDto {
-    
+public class StrategyReadDto {
+
     @NotBlank
     private String id;
-
+    
     @NotBlank
     private String name;
-
-    @NotBlank
-    private String description;
 }

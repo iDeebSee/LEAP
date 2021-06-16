@@ -7,5 +7,5 @@ import ap.be.backend.models.Strategy;
 
 @Repository
 public interface StrategyRepository extends MongoRepository<Strategy, String>{
-
+    public boolean existsById(String id);
 }

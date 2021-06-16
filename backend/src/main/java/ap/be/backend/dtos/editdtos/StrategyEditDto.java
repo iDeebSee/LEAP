@@ -1,4 +1,4 @@
-package ap.be.backend.dtos.readdtos;
+package ap.be.backend.dtos.editdtos;
 
 import javax.validation.constraints.NotBlank;
 
@@ -9,14 +9,8 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode
-public class EnvironmentReadDto {
+public class StrategyEditDto {
     
     @NotBlank
-    private String id;
-
-    @NotBlank
     private String name;
-
-    @NotBlank
-    private String description;
 }
