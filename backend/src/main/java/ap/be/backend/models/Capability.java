@@ -50,6 +50,9 @@ public class Capability {
             this.parent = parent;
         }
     }
+    /**
+     * zet de parent en de capability level
+     */
 
     public void setParent(Capability parent) {
         this.parent = parent;

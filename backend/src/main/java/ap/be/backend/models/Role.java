@@ -20,6 +20,9 @@ public class Role {
     private String id;
 
     private RolesEnum name;
+     /**
+     * @param name  naam van de rol
+     */
 
     public Role(String name) {
         this.name = RolesEnum.valueOf(name.toUpperCase());

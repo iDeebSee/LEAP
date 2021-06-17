@@ -43,10 +43,16 @@ public class Environment {
         this.capabityList=capLIst;
         
         }
-
+        
+    /**
+     * capability toevoegen aan de lijst
+     */
     public void AddCapabilty(String capId){
         capabityList.add(capId);
     }
+    /**
+     * capability verwijderen van de lijst
+     */
     public void DeleteCapability(String CapID){
         capabityList.remove(CapID);
         

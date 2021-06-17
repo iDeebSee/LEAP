@@ -46,6 +46,9 @@ public class CapabilityController {
 
     @Autowired
     private EnvironmentRepository environmentRepository;
+     /**
+     * @return ophalen van capabilties per environment id
+     */
 
     @GetMapping("/caplist/{id}")
     public ResponseEntity<MessageResponse> readCapabilities(@PathVariable("id") String id) {
@@ -61,7 +64,9 @@ public class CapabilityController {
         }
         
     }
-
+     /**
+     * @return ophalen van een bepaalde capability
+     */
     @GetMapping("/{id}")
     public ResponseEntity<MessageResponse> readCapability(@PathVariable("id") String id) {
         if(capabilityRepository.existsById(id)) {
@@ -71,6 +76,9 @@ public class CapabilityController {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to find capability"));
         }
     }
+     /**
+     * @return voor het aanmaken van een capabilty 
+     */
     
     @PostMapping("/{envId}")
     public ResponseEntity<MessageResponse> createCapability(@PathVariable("envId") String envId, @Valid @RequestBody CapabilityCreateDto newCapability) {
@@ -88,6 +96,9 @@ public class CapabilityController {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to create capability"));
         }
     }
+    /**
+     * @return voor het updaten van een capabilty 
+     */
     
     @PutMapping("/{id}")
     public ResponseEntity<MessageResponse> updateCapability(@PathVariable("id") String id, @Valid @RequestBody CapabilityEditDto capabilityUpdate) {
@@ -100,7 +111,10 @@ public class CapabilityController {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to find capability with that ID"));
         }
     }
-
+    /**
+     * @return voor het verwijderen  van een capabilty per id, inclusief de cascading delete, dus eens een parent verwijderd word.
+     * dan zullen de children ook mee verwijderd worden.
+     */
     @DeleteMapping("/{envid}/{id}")
     public ResponseEntity<MessageResponse> deleteCapability(@PathVariable("envid") String envId, @PathVariable("id") String id) {
         if(capabilityRepository.existsById(id)) {
