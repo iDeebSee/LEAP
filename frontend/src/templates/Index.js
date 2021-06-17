@@ -67,8 +67,10 @@ class EnvirenmentView extends Component {
     getenvironments() {
         EnvironmentService.getAll()
             .then(res => {
-                this.setState({environments: res.data});
-                console.log("incoming environments", res.data);
+                console.log(res.data.message);
+                console.table(res.data.data)
+                this.setState({environments: res.data.data});
+                
             })
             .catch(e => {
                 console.log(e);
@@ -85,7 +87,7 @@ class EnvirenmentView extends Component {
     createEnvironment() {
         let text = "";
         if(this.state.newEnvironmentName !== '' && this.state.newEnvironmentDescription !== '') {
-            let data = {"name": this.state.newEnvironmentName, "description": this.state.newEnvironmentDescription};
+            let data = {name: this.state.newEnvironmentName, description: this.state.newEnvironmentDescription};
             
             EnvironmentService.create(data)
                 .then(res => {

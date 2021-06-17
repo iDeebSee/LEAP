@@ -1,7 +1,6 @@
-package ap.be.backend.dtos;
+package ap.be.backend.dtos.createdtos;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,12 +9,11 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode
-public class PasswordChangeDto {
+public class EnvironmentCreateDto {
+    
+    @NotBlank
+    private String name;
 
     @NotBlank
-    private String token;
-
-    @NotBlank
-    @Size(min = 8)
-    private String password;
+    private String description;
 }

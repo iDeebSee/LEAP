@@ -69,9 +69,9 @@ class CapabilitiesView extends Component {
     getCapabilities() {
         CapabilityService.getAll()
             .then(res => {
-                this.setState({capabilities: res.data});
-                console.log("incoming capabilities: ")
-                console.table(res.data);
+                this.setState({capabilities: res.data.data});
+                console.log(res.data.message);
+                console.table(res.data.data);
             })
             .catch(e => {
                 console.error(e);
@@ -86,20 +86,19 @@ class CapabilitiesView extends Component {
     }
 
     createCapability() {
-        let text = "";
+        let text = "", parent = null;
         if(this.state.newCapabilityName !== '' && this.state.newCapabilityDescription !== '') {
-            let data = {"name": this.state.newCapabilityName, "description": this.state.newCapabilityDescription};
             if(this.state.newCapabilityParent != null) {
-                data.parentId = this.state.newCapabilityParent.id;
+                parent = this.state.newCapabilityParent.id;
             }
-            CapabilityService.create(data)
+            CapabilityService.create(this.state.newCapabilityName, this.state.newCapabilityDescription, parent)
                 .then(res => {
                     console.log(res);
                     this.setState({newCapabilityName: '', newCapabilityDescription: '', newCapabilityParent: {}})
                     this.getCapabilities();
                 })
                 .catch(e => {
-                    console.log(e);
+                    console.error(e);
                 })
         } else {
             text = "Please make sure all required fields are filled in";
