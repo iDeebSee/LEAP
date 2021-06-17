@@ -27,8 +27,8 @@ public class Environment {
     private String description;
 
     /**
-     * @param name the name of the capability.
-     * @param description describes what the capability does within the business.
+     * @param name de naam van de environment.
+     * @param description beschrijft het bedrijf waarvoor de gebruiker objecten zal creëren.
      */
     public Environment(String name, String description) throws IllegalArgumentException {
         //this(name, description);
