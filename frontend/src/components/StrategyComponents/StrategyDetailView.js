@@ -62,24 +62,14 @@ function StrategyDetailView (props) {
     const[open,setOpen]=useState(false);
     const[dialogtext,setdialogtext]=useState("");
     
-
-            
-  function  getStrategy() {
-        StrategyService.getAll()
-            .then(res => {
-                setSTrategy(res.data)
-            })
-            .catch(e => {
-                console.log(e);
-            });
-    }
     function changeStateStratItem(data)
     {
         console.log("data",data);
         setStrategyItem(data);
         createStratItem();
     }
-   function createStratItem() {
+
+    function createStratItem() {
 
         let text = "";
         if(strategyItem !== '' ) {
@@ -105,7 +95,6 @@ function StrategyDetailView (props) {
 
     const editStrategyItem = () => {
         let data = {"name": newNameStratItem};
-       
         strategyItemService.update(ID, data)
         .then(res => {
             console.log(res.data,ID);
@@ -113,7 +102,6 @@ function StrategyDetailView (props) {
 
             setOpenEdit(false);
 
-           
         })
         .catch(e => {
             console.log(e);
@@ -125,7 +113,6 @@ function StrategyDetailView (props) {
             strategyItemService.getAll()
             .then(res => {
                 setNewStratItem(res.data);
-                console.log("klawi",res.data)
             })
             .catch(e => {
                 console.log(e);
@@ -133,8 +120,6 @@ function StrategyDetailView (props) {
         }, [])
 
         useEffect(()=>{
-            console.log("rare dingen")
-
             getStrategyItems();
 
         },[getStrategyItems])
@@ -143,13 +128,13 @@ function StrategyDetailView (props) {
         setOpen(true);
     }
 
-   function handleClose() {
-       setOpen(false);
+    function handleClose() {
+        setOpen(false);
     }
 
-     const openDeleteDialog = (id) => {
-         setOpenDelete(true);
-         setID(id); 
+    const openDeleteDialog = (id) => {
+        setOpenDelete(true);
+        setID(id); 
     }
 
     const closeDeleteDialog = () => {

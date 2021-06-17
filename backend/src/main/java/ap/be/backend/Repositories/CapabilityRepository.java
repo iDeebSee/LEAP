@@ -15,8 +15,6 @@ public interface CapabilityRepository extends MongoRepository<Capability, String
 
     public Optional<List<Capability>> findAllByParent(Capability parent);
 
-    public Optional<Capability> findByNameAndDescription(String name, String descripton);
-
     public boolean existsByEnvironment(Environment environment);
 
     public Optional<List<Capability>> findAllByEnvironment(Environment environment);

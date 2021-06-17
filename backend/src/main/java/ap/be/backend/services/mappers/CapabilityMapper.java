@@ -1,6 +1,5 @@
 package ap.be.backend.services.mappers;
 
-import org.modelmapper.Condition;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
@@ -40,19 +39,6 @@ public class CapabilityMapper {
         };
     }
 
-    private Converter<String, Environment> idtoEnvironmentConverter() {
-        return new Converter<String, Environment>() {
-            @Override
-            public Environment convert(MappingContext<String, Environment> ctx) {
-                if(environmentRepository.existsById(ctx.getSource())) {
-                    return environmentRepository.findById(ctx.getSource()).get();
-                } else {
-                    return null;
-                }
-            }
-        };
-    }
-
     private Converter<Capability, String> parentToIdConverter() {
         return new Converter<Capability, String>() {
             @Override
@@ -66,9 +52,36 @@ public class CapabilityMapper {
         };
     }
 
-    public Capability convertFromCreateDto(CapabilityCreateDto newCapability) {
+    private Converter<String, Environment> idtoEnvironmentConverter() {
+        return new Converter<String, Environment>() {
+            @Override
+            public Environment convert(MappingContext<String, Environment> ctx) {
+                if(environmentRepository.existsById(ctx.getSource())) {
+                    return environmentRepository.findById(ctx.getSource()).get();
+                } else {
+                    return null;
+                }
+            }
+        };
+    }
+
+    private Converter<Environment, String> environmentToIdConverter() {
+        return new Converter<Environment, String>() {
+            @Override
+            public String convert(MappingContext<Environment, String> ctx) {
+                if(ctx.getSource() != null) {
+                    return ctx.getSource().getId();
+                } else {
+                    return null;
+                }
+            }
+        };
+    }
+
+    public Capability convertFromCreateDto(CapabilityCreateDto capabilityCreateDto) {
+        modelMapper.addConverter(idToParentConverter());
         modelMapper.addConverter(idtoEnvironmentConverter());
-        return modelMapper.map(newCapability, Capability.class);
+        return modelMapper.map(capabilityCreateDto, Capability.class);
     }
 
     public Capability convertFromEditDto(CapabilityEditDto capabilityEditDto) {
@@ -79,6 +92,7 @@ public class CapabilityMapper {
 
     public CapabilityReadDto convertToReadDto(Capability capability) {
         modelMapper.addConverter(parentToIdConverter());
+        modelMapper.addConverter(environmentToIdConverter());
         return modelMapper.map(capability, CapabilityReadDto.class);
     }
 }

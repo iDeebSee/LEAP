@@ -13,4 +13,7 @@ public class StrategyCreateDto {
     
     @NotBlank
     private String name;
+
+    @NotBlank
+    private String environment;
 }

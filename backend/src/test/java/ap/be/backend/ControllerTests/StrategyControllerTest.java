@@ -32,7 +32,7 @@ public class StrategyControllerTest {
     @Test
     void findStrategyById(){
         final String id ="1";
-        final Strategy strategy = new Strategy("Strategy test1");
+        final Strategy strategy = new Strategy("Strategy test1", null);
 
         given(strategyRepository.findById(id)).willReturn(Optional.of(strategy));
 
@@ -44,10 +44,10 @@ public class StrategyControllerTest {
     void returnAllStrategies() {
         
         List<Strategy> strategies = new ArrayList<>();
-        strategies.add(new Strategy("Strategy test1"));
-        strategies.add(new Strategy("Strategy test2"));
-        strategies.add(new Strategy("Strategy test3"));
-        strategies.add(new Strategy("Strategy test4"));
+        strategies.add(new Strategy("Strategy test1", null));
+        strategies.add(new Strategy("Strategy test2", null));
+        strategies.add(new Strategy("Strategy test3", null));
+        strategies.add(new Strategy("Strategy test4", null));
 
         given(strategyRepository.findAll()).willReturn(strategies);
 
@@ -58,7 +58,7 @@ public class StrategyControllerTest {
 
     @Test
     void updateStrategy() {
-        final Strategy strategy = new Strategy("Strategy test1");
+        final Strategy strategy = new Strategy("Strategy test1", null);
 
         given(strategyRepository.save(strategy)).willReturn(strategy);
 
@@ -82,7 +82,7 @@ public class StrategyControllerTest {
 
     @Test
     void addStrategy() {
-        final Strategy strategy = new Strategy("Strategy test1");
+        final Strategy strategy = new Strategy("Strategy test1", null);
 
         given(strategyRepository.save(strategy)).willAnswer(invocation -> invocation.getArgument(0));
 

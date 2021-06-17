@@ -89,8 +89,8 @@ class StrategiesView extends Component {
     * Removes a strategy based on the id. Once its removed the method gives back the remaining strategies.
     * @param strategyId the id a strategy gets deleted by.
     */
-    onCardDelete(envId, strategyId) {
-        StrategyService.delete(envId, strategyId)
+    onCardDelete(strategyId) {
+        StrategyService.delete(strategyId)
         .then(() => {
             this.getStrategies();
         });

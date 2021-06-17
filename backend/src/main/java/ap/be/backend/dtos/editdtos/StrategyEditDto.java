@@ -12,5 +12,11 @@ import lombok.ToString;
 public class StrategyEditDto {
     
     @NotBlank
+    private String id;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
+    private String environment;
 }

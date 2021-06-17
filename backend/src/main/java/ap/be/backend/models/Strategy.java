@@ -28,7 +28,8 @@ public class Strategy {
     @DBRef
     private Environment environment;
     
-    public Strategy(String name){
+    public Strategy(String name, Environment environment) {
         this.name = name;
+        this.environment = environment;
     }
 }

@@ -3,7 +3,8 @@ package ap.be.backend.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,7 @@ import ap.be.backend.models.Strategy;
 import ap.be.backend.payload.response.MessageResponse;
 import ap.be.backend.repositories.EnvironmentRepository;
 import ap.be.backend.repositories.StrategyRepository;
+import ap.be.backend.services.mappers.StrategyMapper;
 
 @RestController
 @RequestMapping("/strategy")
@@ -35,16 +37,16 @@ public class StrategyController {
     private EnvironmentRepository environmentRepository;
 
     @Autowired 
-    private ModelMapper modelMapper;
+    private StrategyMapper strategyMapper;
 
     @GetMapping("/strategies/{envId}")
     public ResponseEntity<MessageResponse> readStrategies(@PathVariable("envId") String envId) {
         try {
             List<StrategyReadDto> strategies = new ArrayList<StrategyReadDto>();
             Environment environment = environmentRepository.findById(envId).get();
-            if(environment.getStrategies().size() > 0) {
-                environment.getStrategies().forEach(strategy -> {
-                    strategies.add(modelMapper.map(strategy, StrategyReadDto.class));
+            if(strategyRepository.existsByEnvironment(environment)) {
+                strategyRepository.findAllByEnvironment(environment).get().forEach(strategy -> {
+                    strategies.add(strategyMapper.convertToReadDto(strategy));
                 });
             }
             return ResponseEntity.ok(new MessageResponse("Successfully got all strategies!", strategies));
@@ -53,21 +55,20 @@ public class StrategyController {
         }
     }
 
-    @GetMapping("/{envId}/{id}")
-    public ResponseEntity<MessageResponse> readStrategy(@PathVariable("envId") String envId, @PathVariable("id") String id) {
-        if(environmentRepository.existsById(envId)) {
-            Environment environment = environmentRepository.findById(envId).get();
-            StrategyReadDto strategy = modelMapper.map(environment.findStrategyById(id), StrategyReadDto.class);
+    @GetMapping("/{id}")
+    public ResponseEntity<MessageResponse> readStrategy(@PathVariable("id") String id) {
+        if(strategyRepository.existsById(id)) {
+            StrategyReadDto strategy = strategyMapper.convertToReadDto(strategyRepository.findById(id).get());
             return ResponseEntity.ok(new MessageResponse("Successfully found strategy", strategy));
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to find strategy with that ID"));
         }
     }
 
-    @PostMapping("/{envId}")
-    public ResponseEntity<MessageResponse> createStrategy(@PathVariable("envId") String envId, @RequestBody StrategyCreateDto newStrategyDto) {
+    @PostMapping("/")
+    public ResponseEntity<MessageResponse> createStrategy(@Valid @RequestBody StrategyCreateDto strategyCreateDto) {
         try {
-            Strategy newStrategy = modelMapper.map(newStrategyDto, Strategy.class);
+            Strategy newStrategy = strategyMapper.convertFromCreateDto(strategyCreateDto);
             strategyRepository.save(newStrategy);
             return ResponseEntity.ok(new MessageResponse("Successfully created strategy"));
         } catch (Exception e) {
@@ -75,11 +76,10 @@ public class StrategyController {
         }
     }
 
-    @PutMapping("/{envId}/{id}")
-    public ResponseEntity<MessageResponse> updStrategy(@PathVariable("envId") String envId, @PathVariable("id") String id, @RequestBody StrategyEditDto updatedStrategyDto) {
-        if(strategyRepository.existsById(id)) {
-            Strategy updatedStrategy = modelMapper.map(updatedStrategyDto, Strategy.class);
-            updatedStrategy.setId(id);
+    @PutMapping("/")
+    public ResponseEntity<MessageResponse> updStrategy(@Valid @RequestBody StrategyEditDto strategyEditDto) {
+        if(strategyRepository.existsById(strategyEditDto.getId())) {
+            Strategy updatedStrategy = strategyMapper.convertFromEditDto(strategyEditDto);
             strategyRepository.save(updatedStrategy);
             return ResponseEntity.ok(new MessageResponse("Successfully updated strategy"));
         } else {
@@ -87,8 +87,8 @@ public class StrategyController {
         }
     }
 
-    @DeleteMapping("/{envId}/{id}")
-    public ResponseEntity<MessageResponse> deleteStrategy(@PathVariable("envId") String envId, @PathVariable("id") String id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deleteStrategy(@PathVariable("id") String id) {
         if(strategyRepository.existsById(id)) {
             strategyRepository.deleteById(id);
             return ResponseEntity.ok(new MessageResponse("Successfully deleted strategy"));

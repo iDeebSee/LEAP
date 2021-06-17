@@ -125,9 +125,9 @@ public class MockDataRunner implements CommandLineRunner {
             logger.info("{}", cap);
         });
 
-        Strategy strategy1 = new Strategy("strategy1");
-        Strategy strategy2 = new Strategy("strategy2");
-        Strategy strategy3 = new Strategy("strategy3");
+        Strategy strategy1 = new Strategy("strategy1", env1);
+        Strategy strategy2 = new Strategy("strategy2", env1);
+        Strategy strategy3 = new Strategy("strategy3", env1);
 
         strategyRepository.save(strategy1);
         strategyRepository.save(strategy2);

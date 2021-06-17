@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,8 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RestController
 @RequestMapping("/capability")
 public class CapabilityController {
-
-    private static final Logger logger = LoggerFactory.getLogger(CapabilityController.class);
     
     @Autowired
     private CapabilityRepository capabilityRepository;
@@ -48,6 +44,10 @@ public class CapabilityController {
     @Autowired
     private EnvironmentRepository environmentRepository;
 
+    /**
+     * @param envId ID of the environment which the capabilities are linked to.
+     * @return ResponseEntity containing appropriate HTTP status code, message and list of all capabilities on success. HTTP status error code and message on failure.
+     */
     @GetMapping("/capabilities/{envId}")
     public ResponseEntity<MessageResponse> readCapabilities(@PathVariable("envId") String envId) {
         if (environmentRepository.existsById(envId)) {

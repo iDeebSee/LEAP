@@ -11,15 +11,15 @@ class StrategyService {
     }
 
     create(envId, name) {
-        return http.post(`${baseUrl}/${envId}`, {name});
+        return http.post(`${baseUrl}/`, {environment: envId, name});
     }
 
-    update(envId, id, data) {
-        return http.put(`${baseUrl}/${envId}/${id}`, data);
+    update(envId, id, name) {
+        return http.put(`${baseUrl}/`, {environment: envId, id, name});
     }
 
-    delete(envId, id) {
-        return http.delete(`${baseUrl}/${envId}/${id}`);
+    delete(id) {
+        return http.delete(`${baseUrl}/${id}`);
     }
 }
 

@@ -16,4 +16,7 @@ public class StrategyReadDto {
     
     @NotBlank
     private String name;
+
+    @NotBlank
+    private String environment;
 }
