@@ -1,5 +1,7 @@
 package ap.be.backend.models;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,6 +30,8 @@ public class Capability {
     @Setter(AccessLevel.NONE)
     private int level = 1;
 
+    
+
     @DBRef
     @Setter(AccessLevel.NONE)
     private Capability parent = null;
@@ -45,6 +49,9 @@ public class Capability {
             this.parent = parent;
         }
     }
+    /**
+     * zet de parent en de capability level
+     */
 
     public void setParent(Capability parent) {
         this.parent = parent;

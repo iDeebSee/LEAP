@@ -25,16 +25,24 @@ public class BussinesProcesController {
 
     @Autowired
     private BussinesProcesRepository bussinesProcesRepository;
-
+     /**
+     * @return ophalen van alle bussinesprocessen 
+     */
     @GetMapping
     public Iterable<BussinesProces> readBussinesProces() {
         return bussinesProcesRepository.findAll();
     }
+    /**
+     * @return ophalen van de gevraagde(id) bussinesproces
+     */
 
     @GetMapping("/{id}")
     public BussinesProces readBussinesProces(@PathVariable("id") String id) {
         return bussinesProcesRepository.findById(id).orElseThrow(RuntimeException::new);
     }
+    /**
+     * @return het aanmaken van een bussinesproces 
+     */
 
     @PostMapping
     public BussinesProces createBussinesProces(@RequestBody LinkedHashMap<Object, Object> data) {
@@ -46,7 +54,9 @@ public class BussinesProcesController {
         
         return bussinesProcesRepository.save(newBussinesProces);
     }
-
+    /**
+     * @return het updaten van een bussinesproces
+     */
     @PutMapping("/{id}")
     public BussinesProces updBussinesProces(@PathVariable("id") String id, @RequestBody BussinesProces newBussineProces) {
         BussinesProces bussinesProces = bussinesProcesRepository.findById(id).orElseThrow(RuntimeException::new);
@@ -56,6 +66,9 @@ public class BussinesProcesController {
 
         return bussinesProcesRepository.save(bussinesProces);
     }
+    /**
+     * @return het verwijderen van de geselecteerde (id) bussinesproces
+      */
 
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageResponse> deleteBussinesProces(@PathVariable("id") String id) {

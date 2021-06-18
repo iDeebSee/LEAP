@@ -27,7 +27,6 @@ import ap.be.backend.models.Role;
 import ap.be.backend.models.Strategy;
 import ap.be.backend.models.StrategyItem;
 import ap.be.backend.models.User;
-import ap.be.backend.models.BussinesProces;
 
 import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.repositories.EnvironmentRepository;
@@ -217,7 +216,7 @@ public class MockDataRunner implements CommandLineRunner {
         BussinesProces bp2= new BussinesProces("test2","zakaria is een zemmer");
         BussinesProces bp3= new BussinesProces("test3","zakaria pokemonhoofd");
 
-       bussinesProcesRepository.save(bp1);
+        bussinesProcesRepository.save(bp1);
         bussinesProcesRepository.save(bp2);
         bussinesProcesRepository.save(bp3);
         bussinesProcesRepository.findAll().forEach(BpItem -> {

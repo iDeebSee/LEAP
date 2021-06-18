@@ -10,28 +10,42 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("applications")
 @RestController
 public class ApplicationsController {
+    
     @Autowired
     private ApplicationRepository applicationRepository;
-
+    /**
+     * @return ophalen van alle applicaties
+     */
     @GetMapping("/")
     public Iterable<Application> readApplication() {
         return applicationRepository.findAll();
     }
+    /**
+     * @return ophalen van tijd data van applications
+     */
 
     @GetMapping("/timevalue")
     public TIMEValue[] getTimeValue() {
         return TIMEValue.values();
     }
 
+    /**
+     * @return ophalen van een applicatie per ID
+     */
     @GetMapping("/{id}")
     public Application readApplication(@PathVariable("id") String id) {
         return applicationRepository.findById(id).orElseThrow(RuntimeException::new);
     }
-
+     /**
+     * @return aanmaken van een applicatie 
+     */
     @PostMapping("/")
     public Application createCapability(@RequestBody Application application) {
         return applicationRepository.save(application);
     }
+     /**
+     * @return voor het updaten van een applicatie
+     */
 
     @PutMapping("/{id}")
     public Application updateCapability(@PathVariable("id") String id, @RequestBody Application newApplication) {
@@ -65,12 +79,17 @@ public class ApplicationsController {
         application.setAvailability(newApplication.getAvailability());
         return applicationRepository.save(application);
     }
+     /**
+     * @return dit dient om een applicatie te verwijderen per id
+     */
 
     @DeleteMapping("/{id}")
     public void deleteCapability(@PathVariable("id") String id) {
         applicationRepository.deleteById(id);
     }
-
+     /**
+     * @return dit dient om alle applicaties te verwijderen
+     */
     @DeleteMapping("/")
     public void deleteAll() {
         applicationRepository.deleteAll();

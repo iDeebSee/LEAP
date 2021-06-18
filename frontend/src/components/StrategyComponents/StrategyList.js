@@ -42,10 +42,8 @@ const useStyles = (makeStyles((theme) => ({
         width: "100%"
     }
 })));
-/**
- * useState implementation.
- * @param props Properties of StrategyList.
- */
+
+
 const StrategyList = (props) => {
     const classes = useStyles(),
     strategies = props.data,
@@ -56,22 +54,22 @@ const StrategyList = (props) => {
     [currentStrat, setCurrentStrat] = useState(null);
 
 /**
- * Opens a popup box for the strategy you want to delete.
- * @param id the id to delete by.
+ * opent de delete dialog 
+ * @param id de id voor de strategy je wilt verwijderen
  */
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
         setId(id);
     }
 /**
- * Closes the popup box that's currently active.
+ * sluit de delete dialog
  */
     const closeDeleteDialog = () => {
         setOpenDelete(false);
     }
 /**
- * Deletes the strategy after confirmation by the user. 
- * The popup box closes once the strategy is deleted.
+ * vewijderdt de strategie na bevestiging van de gebruiker
+ * de dialog sluit na dat de strategy is verwijderd
  */
     const deleteStrategy = () => {
         props.onCardDelete(id);
@@ -96,7 +94,7 @@ const StrategyList = (props) => {
     );
     
 /**
- * Changes the parameters from the selected strategy.
+ * is om een strategy aan te passen
  */
     const editStrategy = () => {
         let data = {"name": newName};
@@ -112,7 +110,7 @@ const StrategyList = (props) => {
     };
 
 /**
- * Opens the edit popup box with the current values filled in the input fields.
+ * Opent de edit dialog en past de velden aan
  * @param strategy 
  */
     const openEditDialog = (strategy) => {
@@ -122,7 +120,7 @@ const StrategyList = (props) => {
         setOpenedit(true);
     };
 /**
- * Closes the edit popup box without saving any changes.
+ * sluit de dialog zonder enige changes
  */
     const closeEditDialog = () => {
         setOpenedit(false);
