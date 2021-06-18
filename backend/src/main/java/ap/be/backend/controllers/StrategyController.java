@@ -78,5 +78,19 @@ public class StrategyController {
         strategyRepository.deleteById(id);
     }
 
+    //get StrategyItem list
+    @GetMapping("/strategy/{id}")
+    public Strategy readStrategyItemList(@PathVariable("id") String id) {
+        return strategyRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
+    //update strategyItem list
+    @PutMapping("/strategy/{id}")
+    public Strategy updStrategy(@PathVariable("id") String id, @RequestBody Strategy newStrategy) {
+        Strategy strategy = strategyRepository.findById(id).orElseThrow(RuntimeException::new);
+        if(!newStrategy.getName().isBlank())
+            strategy.setName(newStrategy.getName());
+        return strategyRepository.save(strategy);
+    }
+
 
 }

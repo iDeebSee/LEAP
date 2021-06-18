@@ -24,15 +24,23 @@ public class StrategyItemController {
     @Autowired
     private StrategyItemRepository strategyItemRepository;
 
+    /**
+     * @return ophalen van alle strategysItems
+     */
     @GetMapping("/strategyItem")
     public Iterable<StrategyItem> readStrategies() {
         return strategyItemRepository.findAll();
     }
-
+    /**
+     * @return ophalen van strategyItems per ID
+     */
     @GetMapping("/strategyItem/{id}")
     public StrategyItem readStrategy(@PathVariable("id") String id) {
         return strategyItemRepository.findById(id).orElseThrow(RuntimeException::new);
     }
+    /**
+     * @return voor het aanmaken van een stretagyItem 
+     */
 
     @PostMapping("/strategyItem")
     public StrategyItem createStrategy(@RequestBody LinkedHashMap<Object, Object> data) {
@@ -42,7 +50,9 @@ public class StrategyItemController {
         newStrategyItem.setName(data.get("name").toString());
         return strategyItemRepository.save(newStrategyItem);
     }
-
+    /**
+     * @return voor het updaten van een strategyItem 
+     */
     @PutMapping("/strategyItem/{id}")
     public StrategyItem updStrategy(@PathVariable("id") String id, @RequestBody StrategyItem newStrategyItem) {
         StrategyItem strategy = strategyItemRepository.findById(id).orElseThrow(RuntimeException::new);
@@ -50,6 +60,9 @@ public class StrategyItemController {
             strategy.setName(newStrategyItem.getName());
         return strategyItemRepository.save(strategy);
     }
+    /**
+     * @return voor het verwijderen van het geselecteerde  StrategyItem  
+     */
 
     @DeleteMapping("/strategyItem/{id}")
     public ResponseEntity<MessageResponse> deleteStrategy(@PathVariable("id") String id) {
