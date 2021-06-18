@@ -233,7 +233,7 @@ function StrategyDetailView (props) {
             <Container>
              <Paper className={clsx(classes.paper, classes.fixedHeight)}>
             <List>
-            <ListSubheader className={classes.listSubHeader}>strategyItem list</ListSubheader>
+            <ListSubheader className={classes.listSubHeader}>strategy Item list</ListSubheader>
                 {newStratItem.map(strat => {
                     console.log("klawi3",strat)
                     return (
@@ -255,10 +255,10 @@ function StrategyDetailView (props) {
             {deleteDialog}
             </Paper>
             <ButtonGroup className={classes.buttonGroup}>
-                <Button variant="contained" color="primary" onClick={handleOpen}>Add StrategyItem</Button>
+                <Button variant="contained" color="primary" onClick={handleOpen}>Add Strategy Item</Button>
             </ButtonGroup>
             <Dialog onClose={handleClose} open={open} className={classes.dialog}>
-                <DialogTitle>Create new StrategyItem</DialogTitle>
+                <DialogTitle>Create new Strategy Item</DialogTitle>
                 <DialogContent>
                     <DialogContentText>{dialogtext}</DialogContentText>
                     <TextField

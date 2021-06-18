@@ -55,16 +55,22 @@ export default function UserList({users, setUser, onDelete}) {
       </Dialog>
     );
   }
-
+  /**
+   * dit dient om het deletedialog te openen 
+   */
   const openDeleteDialog = (id) => {
     setId(id);
     setOpen(true);
   }
-
+/**
+   * dit dient om het deletedialog te sluiten 
+   */
   const closeDeleteDialog = () => {
     setOpen(false);
   }
-
+  /**
+   * dit dient om een gebruiker te verwijderen
+   */
   const deleteUser = () => {
     onDelete(id);
     closeDeleteDialog();
