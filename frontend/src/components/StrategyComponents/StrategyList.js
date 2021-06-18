@@ -53,24 +53,26 @@ const StrategyList = (props) => {
     [id, setId] = useState(''),
     [currentStrat, setCurrentStrat] = useState(null);
 
-/**
- * opent de delete dialog 
- * @param id de id voor de strategy je wilt verwijderen
- */
+    /**
+     * Opent een delete popup box.
+     * @param id de id voor de strategy je wilt verwijderen.
+     */
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
         setId(id);
     }
-/**
- * sluit de delete dialog
- */
+
+    /**
+    * Sluit de delete popup box.
+    */
     const closeDeleteDialog = () => {
         setOpenDelete(false);
     }
-/**
- * vewijderdt de strategie na bevestiging van de gebruiker
- * de dialog sluit na dat de strategy is verwijderd
- */
+
+    /**
+    * Verwijdert de strategie op basis van id.
+    * De popup box sluit nadat de strategy is verwijderd.
+    */
     const deleteStrategy = () => {
         props.onCardDelete(id);
         closeDeleteDialog();
@@ -93,9 +95,9 @@ const StrategyList = (props) => {
         </Dialog>
     );
     
-/**
- * is om een strategy aan te passen
- */
+    /**
+    * Wijzigt een strategy.
+    */
     const editStrategy = () => {
         let data = {"name": newName};
         StrategyService.update(id, data)
@@ -109,19 +111,20 @@ const StrategyList = (props) => {
         });
     };
 
-/**
- * Opent de edit dialog en past de velden aan
- * @param strategy 
- */
+    /**
+     * Opent de edit popup box met ingevulde velden voor meer gebruiktvriendelijkheid..
+     * @param strategy 
+     */
     const openEditDialog = (strategy) => {
         setCurrentStrat(strategy);
         setId(strategy.id);
         setNewName(strategy.name);
         setOpenedit(true);
     };
-/**
- * sluit de dialog zonder enige changes
- */
+
+    /**
+    * sluit de popup box zonder enige veranderingen.
+    */
     const closeEditDialog = () => {
         setOpenedit(false);
         setCurrentStrat(null);

@@ -63,7 +63,9 @@ function StrategyDetailView (props) {
     const[dialogtext,setdialogtext]=useState("");
     
 
-            
+  /**
+   * Geeft alle strategies terug.
+   */
   function  getStrategy() {
         StrategyService.getAll()
             .then(res => {
@@ -73,12 +75,20 @@ function StrategyDetailView (props) {
                 console.log(e);
             });
     }
+
+    /**
+     * Veranderingen in een strategyItem worden gemaakt.
+     */
     function changeStateStratItem(data)
     {
         console.log("data",data);
         setStrategyItem(data);
         createStratItem();
     }
+
+    /**
+     * Creatie van een nieuwe stragegyItem.
+     */
    function createStratItem() {
 
         let text = "";
@@ -102,7 +112,9 @@ function StrategyDetailView (props) {
         setdialogtext(text);
     }
 
-
+    /**
+     * Wijzigt een stragegyItem en geeft de lijst met items opnieuw terug.
+     */
     const editStrategyItem = () => {
         let data = {"name": newNameStratItem};
        
@@ -113,49 +125,69 @@ function StrategyDetailView (props) {
 
             setOpenEdit(false);
 
-           
         })
         .catch(e => {
             console.log(e);
         });
     };
 
-
-        const getStrategyItems = useCallback(() => {
-            strategyItemService.getAll()
-            .then(res => {
-                setNewStratItem(res.data);
-                console.log("klawi",res.data)
-            })
-            .catch(e => {
-                console.log(e);
-            });
+    /**
+     * Geeft alle strategyItems terug.
+     */
+    const getStrategyItems = useCallback(() => {
+        strategyItemService.getAll()
+        .then(res => {
+             setNewStratItem(res.data);
+             console.log("klawi",res.data)
+        })
+        .catch(e => {
+            console.log(e);
+        });
         }, [])
 
-        useEffect(()=>{
-            console.log("rare dingen")
+    /**
+     * Geeft alle strategyItems terug na het renderen.
+     */
+    useEffect(()=>{
+        console.log("rare dingen")
 
-            getStrategyItems();
+        getStrategyItems();
 
-        },[getStrategyItems])
+    },[getStrategyItems])
 
+    /**
+     * Opent een popup box.
+     */
     function handleOpen() {
         setOpen(true);
     }
 
+    /**
+     * Sluit een popup box.
+     */
    function handleClose() {
        setOpen(false);
     }
 
+    /**
+     * Opent een Delete popup box op basis van id.
+     */
      const openDeleteDialog = (id) => {
          setOpenDelete(true);
          setID(id); 
     }
 
+    /**
+     * Sluit een Delete popup box.
+     */
     const closeDeleteDialog = () => {
         setOpenDelete(false)
     }
-    function   deleteStrategyItem()
+
+    /**
+     * Verwijdert een strategyItem op basis van id.
+     */
+    function deleteStrategyItem()
     {
         strategyItemService.delete(ID)
         .then(res => {
@@ -184,16 +216,21 @@ function StrategyDetailView (props) {
             </DialogActions>
         </Dialog>
     );
-   const  openEditDialog = (strategyItem) => {
-        
+
+    /**
+     * Opent een edit popup box.
+     */
+    const openEditDialog = (strategyItem) => {
        setCurrentStratItem(strategyItem);
        setID(strategyItem.id);
        setNewNameStratItem(strategyItem.name);
        setOpenEdit(true);
     };
 
-
-   const  closeEditDialog = () => {
+    /**
+     * Sluit een edit popup box.
+     */
+    const closeEditDialog = () => {
        setOpenEdit(false);
        setCurrentStratItem(null);
     }

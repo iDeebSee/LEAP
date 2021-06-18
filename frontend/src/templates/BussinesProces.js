@@ -61,12 +61,18 @@ class BussinesProcesView extends Component {
             open: false
             
         };
+    
+    /**
+     * Krijgt alle bedrijfsprocessen terug bij het laden van de pagina.
+     */
     }
     componentDidMount(){
         this.getBussinesProcess();
     }
    
-
+    /**
+     * Geeft alle bedrijfsprocessen terug.
+     */
     getBussinesProcess() {
         BussinesProcesService.getAll()
             .then(res => {
@@ -78,6 +84,10 @@ class BussinesProcesView extends Component {
             });
     }
 
+    /**
+     * Verwijdert een specifieke bedrijfsproces.
+     * @param bussinesProcesID de id van de proces die je wilt verwijderen.
+     */
     onCardDelete(bussinesProcesID) {
         BussinesProcesService.delete(bussinesProcesID)
         .then(() => {
@@ -85,6 +95,9 @@ class BussinesProcesView extends Component {
         });
     }
 
+    /**
+     * Creatie van een nieuwe bedrijfsproces.
+     */
     createBussinesProces() {
         let text = "";
         if(this.state.newBussinesProcesName !== '' && this.state.newBussinesProcesDescription !== '') {
@@ -105,10 +118,16 @@ class BussinesProcesView extends Component {
         this.setState({open: false, dialogText: text});
     }
 
+    /** 
+     * Opent een popup box.
+    */
     handleOpen() {
         this.setState({open: true});
     }
 
+    /**
+     * Sluit een popup box.
+     */
     handleClose() {
         this.setState({open: false});
     }

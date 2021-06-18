@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export function NameField({value, setValue, fieldValidity, setFieldValidity}) {
     /**
-     * @param nameToValidate dient om te chekken of de naam gevalideerd is
+     * @param nameToValidate dient om te chekken of de naam gevalideerd is.
      */
     const changeName = (nameToValidate) => {
         setValue(nameToValidate);
@@ -43,13 +43,13 @@ NameField.propTypes = {
     fieldValidity: PropTypes.bool.isRequired,
     setFieldValidity: PropTypes.func.isRequired
 }
+
 /**
  * @param value waarde die meegegeven word
  * @param setValue hier word de waarde aangepast
  * @param fieldValidity de valididteit van het veld
  * @param setFieldValidity de validiteit van het veld dat word aangepast 
  */
-
 export function EmailField({value, setValue, fieldValidity, setFieldValidity}) {
     const changeEmail = (emailToValidate) => {
         setValue(emailToValidate);

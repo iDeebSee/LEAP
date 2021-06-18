@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Index() {
     /**
-     * declareren van de states
+     * Implementatie van useState
+     * @param props gebruikte properties.
      */
     const classes = useStyles(),
     [hideEdit, setHideEdit] = useState(true),
@@ -49,8 +50,9 @@ export default function Index() {
     [password, setPassword] = useState(''),
     [nameFieldValid, setNameFieldValid] = useState(true),
     [emailFieldValid, setEmailFieldValid] = useState(true);
+
     /**
-     * in deze functie worden alle rollen  opgehaald
+     * Alle rollen worden opgehaald.
      */
     const getRoles = useCallback(() => {
         AuthService.getRoles()
@@ -64,7 +66,7 @@ export default function Index() {
             });
     }, []);
     /**
-     * in deze functie worden alle gebruikers opgehaald
+     * Alle gebruikers worden opgehaald.
      */
     const getUsers = useCallback(() => {
         AuthService.getAll()
@@ -77,30 +79,31 @@ export default function Index() {
                 console.error(e);
             });
     }, []);
-    /**
-     * did doet hetzelfde als een componentDidUpdate, chekken of de component geupdate is.
-     */
+
     useEffect(() => {
         getUsers();
         getRoles();
     }, [getUsers, getRoles]);
+
     /**
-     * dit dient om de velden te resetten, dus leeg te maken 
+     * Maakt alle velden leeg.
      */
     const resetFields = () => {
         setName("");
         setEmail("");
         setChosenRoles([]);
     }
+
     /**
-     * bij het resetten van de page, moest er een veldje leeg zijn dat dat opnieuw valid word
+     * Bij het resetten van de page, moest er een veldje leeg zijn dat dat opnieuw valid wordt.
      */
     const resetValidities = () => {
         setNameFieldValid(true);
         setEmailFieldValid(true);
     }
+
     /**
-     * dit dient om de form te resetten
+     * reset de form.
      */
     const resetForm = () => {
         resetFields();
@@ -108,8 +111,9 @@ export default function Index() {
         setHideEdit(true);
         getRoles();
     }
+
     /**
-     * dit dient om de editform in te vullen
+     * Wordt gebruikt om op een gebruiksvriendelijke manier gegevens van de gebruiker te wijzigen.
      */
     const fillEditForm = (user) => {
         setId(user.id);
@@ -121,7 +125,7 @@ export default function Index() {
 
     const formValid = (name && nameFieldValid) && (email && emailFieldValid);
     /**
-     * met deze functie gaan we een user aanmaken 
+     * Wordt gebruikt om een gebruiker aan te maken.
      */
     const createUser = () => {
         if(formValid) {
@@ -143,8 +147,9 @@ export default function Index() {
             });
         }
     };
+
     /**
-     * met deze functie gaan we een gebruiker bewerken 
+     * Wordt gebruikt om informatie van een gebruiker te wijzigen.
      */
     const editUser = () => {
         if(formValid) {
@@ -159,8 +164,9 @@ export default function Index() {
             });
         }
     };
+
     /**
-     * met deze functie gaan we de gebruiker verwijderen
+     * Verwijdert een gebruiker op basis van id.
      */
     const deleteUser = (id) => {
         AuthService.delete(id)

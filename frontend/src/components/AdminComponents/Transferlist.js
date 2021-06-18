@@ -18,20 +18,21 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 /**
- * 
- * chekt de values links en rechts, zodat ze niet hetzelfde zijn. 
+ * Controllert de values links en rechts, zodat ze niet hetzelfde zijn. 
  */
 function not(a, b) {
     return a.filter((value) => b.indexOf(value) === -1);
 }
+
 /**
- * chekken of de values bestaan aan beide kanten
+ * Controleert of de values bestaan aan beide kanten
  */
 function intersection(a, b) {
     return a.filter((value) => b.indexOf(value) !== -1);
 }
+
 /**
- * dit dient om meerdere veranderingen tegelijkertijd te kunnen doen
+ * Dient om meerdere wijzigen tegelijkertijd aan te kunnen brengen.
  */
 export default function TransferList({leftItems, setLeft, rightItems, setRight}) {
     const classes = useStyles(), 
@@ -60,33 +61,36 @@ export default function TransferList({leftItems, setLeft, rightItems, setRight})
     
         setChecked(newChecked);
     };
+
     /**
-     * zet alle items van links naar de rechterkant
+     * Zet alle items van links naar de rechts.
      */
     const handleAllRight = () => {
         setRight(right.concat(left));
         setLeft([]);
     };
+
     /**
-     * dat is item van de rechterkant dat is gecheked naar linkerkant zet
+     * De item van de rechterkant dat is gecontroleert wordt naar links verplaatst.
      */
     const handleCheckedRight = () => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
     };
+
     /**
-     * returtn een array van alle items die in A zitten die niet gelijkaardig zijn aan een item die in B zitten.
+     * Geeft een array terug van alle items die in A zitten die niet gelijkaardig zijn aan een item die in B zitten.
      */
     const handleCheckedLeft = () => {
         setLeft(left.concat(rightChecked));
         setRight(not(right, rightChecked));
         setChecked(not(checked, rightChecked));
     };
+
     /**
-     * zet alle items van rechts naar links
+     * Zet alle items van rechts naar links.
      */
-    
     const handleAllLeft = () => {
         setLeft(left.concat(right));
         setRight([]);
