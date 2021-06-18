@@ -32,6 +32,12 @@ public class AuthTokenFilter extends OncePerRequestFilter{
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
+    
+    /** 
+     * Vraagt de hele request header op om ze daarna te ontleden en de JSON Web Token eruit te halen.
+     * @param request nodig om de request header te kunnen aanvragen.
+     * @return geeft de JSON Web Token terug.
+     */
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
 
@@ -42,6 +48,15 @@ public class AuthTokenFilter extends OncePerRequestFilter{
         return null;
     }
 
+    
+    /** 
+     * Controleert of de gebruiker en token bij elkaar horen.
+     * @param request interface dat wordt gebruikt om authenticatie details aan te vragen.
+     * @param response interface dat wordt gebruikt om HTTP specifieke functionaliteiten binnen te krijgen. 
+     * @param filterChain vuurt de volgende filter in de kettingreactie af.
+     * @throws ServletException wordt afgevuurd bij een algemene fout.
+     * @throws IOException wordt afgevuurd bij gefaalde of onderbroken i/o processen.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {

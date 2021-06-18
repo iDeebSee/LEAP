@@ -43,6 +43,10 @@ const useStyles = (makeStyles((theme) => ({
     }
 })));
 
+/**
+ * useState implementatie.
+ * @param props gebruikte properties. 
+ */
 const EnvironmentList = (props) => {
     const classes = useStyles(),
     Environments = props.data,
@@ -53,16 +57,25 @@ const EnvironmentList = (props) => {
     [newDesc, setNewDesc] = useState(''),
     [id, setId] = useState('');
 
-
+    /**
+     * Opent een delete popup box die vraagt of je een specifieke environment zeker wilt verwijderen.
+     * @param {*} id de id van de environment die verwijderd moet worden.
+     */
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
         setId(id);
     }
-
+    
+    /**
+     * Sluit een geopende delete popup box.
+     */
     const closeDeleteDialog = () => {
         setOpenDelete(false);
     }
 
+    /**
+     * Verwijdert een environment en sluit de delete popup box.
+     */
     const deleteEnvironment = () => {
         props.onCardDelete(id);
         closeDeleteDialog();
@@ -70,10 +83,10 @@ const EnvironmentList = (props) => {
     }
     const deleteDialog = (
         <Dialog open={openDelete} onClose={() => {closeDeleteDialog()}} className={classes.dialog}>
-            <DialogTitle>Are you sure you want to delete this capability?</DialogTitle>
+            <DialogTitle>Are you sure you want to delete this environment?</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    This action cannot be reversed! Deleting this capability will also delete all of it's children!
+                    This action cannot be reversed!
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -84,6 +97,9 @@ const EnvironmentList = (props) => {
             </DialogActions>
         </Dialog>);
 
+    /**
+     * Wijzigt de parameters van een bestaande environment.
+     */
     const editEnvironment = () => {
         let data = {"name": newName, "description": newDesc};
         
@@ -97,6 +113,11 @@ const EnvironmentList = (props) => {
             console.log(e);
         });
     }
+
+    /**
+     * Opent een edit popup box om een specifieke environment te wijzigen.
+     * @param environment de environment die gewijzigd moet worden.
+     */
     const openEditDialog = (environment) => {
         setCurrentEnv(environment);
         setId(environment.id);
@@ -104,6 +125,10 @@ const EnvironmentList = (props) => {
         setNewDesc(environment.description);
         setOpenedit(true);
     };
+
+    /**
+     * Sluit een geopende edit popup box.
+     */
     const closeEditDialog = () => {
         setOpenedit(false);
         setCurrentEnv(null);

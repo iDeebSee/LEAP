@@ -13,6 +13,11 @@ export default function DatePicker(props) {
     const [selectedDate, setSelectedDate] = React.useState(null);//(props.addDate) ? new Date() : props.value
 
 
+    /**
+     * De datum die is gekozen door de gebruiker uit een datepicker wordt geformatteerd.
+     * @param date een datum gekozen door de gebruiker.
+     * @return de gekozen datum wordt geconverteerd naar het formaat 'yyyy-MM-dd'.
+     */
     const formatDate = (date) => {
         try {
             let year = date.getFullYear();
@@ -26,6 +31,10 @@ export default function DatePicker(props) {
     }
 
 
+    /**
+     * Zorgt ervoor dat de datum bij veranderingen steeds in de juiste formaat staat.
+     * @param date een datum gekozen door de gebruiker.
+     */
     const handleDateChange = (date) => {
 
         console.log("1: " + date);

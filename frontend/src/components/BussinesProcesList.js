@@ -43,6 +43,10 @@ const useStyles = (makeStyles((theme) => ({
     }
 })));
 
+/**
+ * useState implementatie.
+ * @param props gebruikte properties. 
+ */
 const BussinesProcesList = (props) => {
     const classes = useStyles(),
     BussinesProces = props.data,
@@ -53,16 +57,25 @@ const BussinesProcesList = (props) => {
     [newDesc, setNewDesc] = useState(''),
     [id, setId] = useState('');
 
-
+    /**
+     * Opent een delete popup box die vraagt of je een specifieke bedrijfsproces zeker wilt verwijderen.
+     * @param {*} id de id van de bedrijfsproces die verwijderd moet worden.
+     */
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
         setId(id);
     }
 
+    /**
+     * Sluit een geopende delete popup box.
+     */
     const closeDeleteDialog = () => {
         setOpenDelete(false);
     }
 
+    /**
+     * Verwijdert een bedrijfsproces en sluit de delete popup box.
+     */
     const deleteBP = () => {
         props.onCardDelete(id);
         closeDeleteDialog();
@@ -84,10 +97,11 @@ const BussinesProcesList = (props) => {
             </DialogActions>
         </Dialog>);
 
+    /**
+     * Wijzigt de parameters van een bestaande bedrijfsproces.
+     */
     const editBussinesProces = () => {
-        let data = {"name": newName, "description": newDesc};
-       
-        
+        let data = {"name": newName, "description": newDesc}; 
         BussinesProcesService.update(id, data)
         .then(res => {
             console.log(res.data);
@@ -98,6 +112,11 @@ const BussinesProcesList = (props) => {
             console.log(e);
         });
     }
+
+    /**
+     * Opent een edit popup box om een specifieke bedrijfsproces te wijzigen.
+     * @param bussinesProces het bedrijfsproces die gewijzigd moet worden.
+     */
     const openEditDialog = (bussinesProces) => {
         setCurrentBP(bussinesProces);
         setId(bussinesProces.id);
@@ -105,6 +124,10 @@ const BussinesProcesList = (props) => {
         setNewDesc(bussinesProces.description);
         setOpenedit(true);
     };
+
+    /**
+     * Sluit een geopende edit popup box.
+     */
     const closeEditDialog = () => {
         setOpenedit(false);
         setCurrentBP(null);
