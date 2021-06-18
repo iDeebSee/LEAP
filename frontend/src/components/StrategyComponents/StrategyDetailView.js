@@ -30,10 +30,10 @@ const styles =(makeStyles((theme)  => ({
         display: 'flex',
         overflow: 'auto',
         flexDirection: 'column',
-        width:'100%',
+        width: "100%",
     },
     fixedHeight: {
-        height: 240,
+        height: "42rem",
     },
     dialog: {
         '& .MuiTextField-root': {
@@ -221,27 +221,17 @@ function StrategyDetailView (props) {
             </DialogActions>
         </Dialog>
     );
-    
-
-
-    
-       
-    
-
-        
+            
         return(
-            <>
-            <Paper className={clsx(classes.paper, classes.fixedHeight)}>
-                <Grid container spacing={3}>
-                    <Grid item>
-                        <Typography>Name: {strategy.name}</Typography>
-                        
-                    </Grid>
-                </Grid>
-
-               
-            </Paper>
-            <Paper className={clsx(classes.paper, classes.fixedHeight)}>
+            
+            
+           
+                
+            
+           
+            
+            <Container>
+             <Paper className={clsx(classes.paper, classes.fixedHeight)}>
             <List>
             <ListSubheader className={classes.listSubHeader}>strategyItem list</ListSubheader>
                 {newStratItem.map(strat => {
@@ -264,11 +254,6 @@ function StrategyDetailView (props) {
             {editDialog}
             {deleteDialog}
             </Paper>
-                
-            
-           
-            
-            <Container>
             <ButtonGroup className={classes.buttonGroup}>
                 <Button variant="contained" color="primary" onClick={handleOpen}>Add StrategyItem</Button>
             </ButtonGroup>
@@ -297,7 +282,7 @@ function StrategyDetailView (props) {
                 </DialogActions>
             </Dialog>
         </Container>
-        </>
+        
         )
         
     }
