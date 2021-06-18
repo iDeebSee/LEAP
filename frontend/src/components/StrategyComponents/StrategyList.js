@@ -96,7 +96,7 @@ const StrategyList = (props) => {
     );
     
 /**
- * Changes the strategy parameters.
+ * Changes the parameters from the selected strategy.
  */
     const editStrategy = () => {
         let data = {"name": newName};

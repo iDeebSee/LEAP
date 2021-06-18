@@ -17,7 +17,10 @@ const styles = theme => ({
 });
 
 class EnvironmentDetailView extends Component {
-
+    /**
+     * Constructor van EnvironmentDetailView
+     * @param props de gebruikte properties.
+     */
     constructor(props) {
         super(props);
 
@@ -28,10 +31,17 @@ class EnvironmentDetailView extends Component {
         };
     }
 
+    /**
+     * Laadt de juiste enivronment op basis van de id.
+     */
     componentDidMount() {
         this.getEnvironments(this.props.match.params.id);
     }
 
+    /**
+     * Wordt gebruikt om een specifieke environment terug te krijgen.
+     * @param id de id van de environment die opgehaald moet worden.
+     */
     getEnvironments(id) {
         EnvironmentService.get(id)
             .then(res => {
