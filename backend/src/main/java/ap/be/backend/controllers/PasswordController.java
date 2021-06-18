@@ -44,11 +44,12 @@ public class PasswordController {
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+
     /**
-     * @return eerst een controle of de gebruiker wel bestaat en dan een request om wachtwoord te veranderen en een token om binnen de dag het wachtwoord nog te veranderen
+     * Een controle of de gebruiker wel bestaat en dan een request om wachtwoord te veranderen en een token om binnen de dag het wachtwoord nog te veranderen
      * anders zal de email verlopen dit is dus om de email te versturen
+     * @return een statusbericht.
      */
-    
     @PostMapping("/edit/request_edit")
     public ResponseEntity<MessageResponse> newPassword(@Valid @RequestBody PasswordChangeRequestDto passwordChangeRequestDto) {
         if(userRepository.existsByNameAndEmail(passwordChangeRequestDto.getName(), passwordChangeRequestDto.getEmail())) {
@@ -62,10 +63,11 @@ public class PasswordController {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to find user with that name and email..."));
         }
     }
-    /**
-     * @return apparte getmapping of de token te controlleren, dus of de houdbaarheid nog goed is
-     */
 
+    /**
+     * Controleert of de wachtwoord reset token nog geldig is.
+     * @return een statusbericht over de geldigheid.
+     */
     @GetMapping("/edit/check_token/{token}")
     public ResponseEntity<MessageResponse> checkResetToken(@PathVariable("token") String token) {
         if(passwordResetTokenRepository.existsByToken(token)) {
@@ -74,10 +76,11 @@ public class PasswordController {
             return ResponseEntity.badRequest().body(new MessageResponse("The reset token has expired..."));
         }
     }
-    /**
-     * @return voor het effectief veranderen van het wachtwoord
-     */
 
+    /**
+     * Verandering van het wachtwoord
+     * @return een statusbericht met
+     */
     @PutMapping("/edit/edit_password")
     public ResponseEntity<MessageResponse> resetPassword(@RequestBody PasswordChangeDto passwordChangeDto) {
         if(passwordResetTokenRepository.existsByToken(passwordChangeDto.getToken())) {
@@ -90,8 +93,10 @@ public class PasswordController {
             return ResponseEntity.badRequest().body(new MessageResponse("The token has expired..."));
         }
     }
+
     /**
-     * @return voor de email te versturen om effectief een wachtwoord aan te maken 
+     * verstuurt de email om een wachtwoord aan te maken
+     * @return een statusbericht.
      */
     @PostMapping("/create/request_creation")
     public ResponseEntity<MessageResponse> requestPasswordCreation(@Valid @RequestBody PasswordChangeRequestDto passwordChangeRequestDto) {
@@ -106,8 +111,10 @@ public class PasswordController {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to find user with that name and email..."));
         }
     }
+
     /**
-     * @return voor het chekken van de token voor de paswoord aanmaak
+     * Controleert de token vooraleer een wachtwoord wordt aangemaakt.
+     * @return een statusbericht over de token.
      */
     @GetMapping("/create/check_token/{token}")
     public ResponseEntity<MessageResponse> checkCreateToken(@PathVariable("token") String token) {
@@ -117,8 +124,10 @@ public class PasswordController {
             return ResponseEntity.badRequest().body(new MessageResponse("The token has expired..."));
         }   
     }
+
     /**
-     * @return om effectief het wachtwoord aan te maken
+     * Maakt effectief een wachtwoord aan.
+     * @return een statusbericht.
      */
     @PutMapping("/create/create_password")
     public ResponseEntity<MessageResponse> createPassword(@RequestBody PasswordChangeDto passwordChangeDto) {

@@ -34,7 +34,7 @@ public class Environment {
     /**
      * @param name the name of the capability.
      * @param description describes what the capability does within the business.
-     * @param capabiltyList is een lijst van capabilties binnen die environment
+     * @param capLIst is een lijst van capabilties binnen die environment.
      */
     public Environment(String name, String description, ArrayList<String> capLIst ) throws IllegalArgumentException {
         //this(name, description);

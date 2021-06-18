@@ -33,7 +33,6 @@ public class User {
     private Set<Role> roles = new HashSet<Role>();
 
     /**
-     * 
      * @param name de naam van de nieuwe user, moet uniek zijn. Minimum 3 letters.
      * @param email het email van de nieuwe user, moet uniek en well formed zijn.
      * @param password het wachtwoord van de nieuwe user. Minimum 8 letters, wordt geëncrypteerd in de database.

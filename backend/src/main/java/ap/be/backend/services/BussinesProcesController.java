@@ -25,25 +25,31 @@ public class BussinesProcesController {
 
     @Autowired
     private BussinesProcesRepository bussinesProcesRepository;
-     /**
-     * @return ophalen van alle bussinesprocessen 
+
+    /** 
+     * Itereert over elke bedrijfsproces in de repository.
+     * @return geeft alle bedrijfsproces terug.
      */
     @GetMapping
     public Iterable<BussinesProces> readBussinesProces() {
         return bussinesProcesRepository.findAll();
     }
-    /**
-     * @return ophalen van de gevraagde(id) bussinesproces
-     */
 
+    /** 
+     * @param id id van de bedrijfsproces die opgehaalt moet worden. 
+     * @return geeft een specifieke bedrijfsproces terug.
+     */
     @GetMapping("/{id}")
     public BussinesProces readBussinesProces(@PathVariable("id") String id) {
         return bussinesProcesRepository.findById(id).orElseThrow(RuntimeException::new);
     }
-    /**
-     * @return het aanmaken van een bussinesproces 
-     */
 
+
+    /** 
+     * Creatie van een nieuwe bedrijfsproces.
+     * @param data ingevulde bedrijfsproces parameters.
+     * @return slaat de nieuwe bedrijfsproces op in de repository.
+     */
     @PostMapping
     public BussinesProces createBussinesProces(@RequestBody LinkedHashMap<Object, Object> data) {
         System.out.println(data);
@@ -54,8 +60,11 @@ public class BussinesProcesController {
         
         return bussinesProcesRepository.save(newBussinesProces);
     }
-    /**
-     * @return het updaten van een bussinesproces
+
+    /** 
+     * wijzigt een specifieke bedrijfsproces op basis van de id.
+     * @param newBussineProces nieuwe bedrijfsproces parameters.
+     * @return Vervangt de oude parameters door de nieuwe.
      */
     @PutMapping("/{id}")
     public BussinesProces updBussinesProces(@PathVariable("id") String id, @RequestBody BussinesProces newBussineProces) {
@@ -66,10 +75,12 @@ public class BussinesProcesController {
 
         return bussinesProcesRepository.save(bussinesProces);
     }
-    /**
-     * @return het verwijderen van de geselecteerde (id) bussinesproces
-      */
 
+     /** 
+     * Verwijdert een specifieke bedrijfsproces op basis van id.
+     * @param id id van de bedrijfsproces die verwijdert moet worden.
+     * @return een statusbericht
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageResponse> deleteBussinesProces(@PathVariable("id") String id) {
 

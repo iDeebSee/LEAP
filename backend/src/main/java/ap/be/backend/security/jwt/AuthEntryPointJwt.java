@@ -22,8 +22,8 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
      * @param request aanvraag dat zorgt voor ongeldige authenticatie.
      * @param response error dat wordt teruggestuurd naar de gebruiker.
      * @param authException wordt afgevuurd bij een autorisatie fout.
-     * @throws IOException
-     * @throws ServletException
+     * @throws ServletException wordt afgevuurd bij een algemene fout.
+     * @throws IOException wordt afgevuurd bij gefaalde of onderbroken i/o processen.
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)

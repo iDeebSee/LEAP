@@ -35,11 +35,11 @@ public class PasswordCreateToken {
 
     @Indexed(expireAfterSeconds = EXPIRATION)
     private Date expiryDate;
-    /**
-     * @param token token voor de houdbaarheid van de aanmaak van de wachtwoord
-     * @param user gebruiker meesturen
-     */
 
+    /**
+     * @param token token voor de houdbaarheid van de aanmaak van de wachtwoord.
+     * @param user gebruiker meesturen.
+     */
     public PasswordCreateToken(String token, User user) {
         this.token = token;
         this.user = user;    

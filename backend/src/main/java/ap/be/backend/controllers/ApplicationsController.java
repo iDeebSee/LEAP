@@ -14,39 +14,41 @@ public class ApplicationsController {
     @Autowired
     private ApplicationRepository applicationRepository;
     /**
-     * @return ophalen van alle applicaties
+     * Itereert over elke applicatie in de repository.
+     * @return Geeft alle applicaties terug.
      */
     @GetMapping("/")
     public Iterable<Application> readApplication() {
         return applicationRepository.findAll();
     }
     /**
-     * @return ophalen van tijd data van applications
+     * @return geeft alle tijdwaarden terug.
      */
-
     @GetMapping("/timevalue")
     public TIMEValue[] getTimeValue() {
         return TIMEValue.values();
     }
 
     /**
-     * @return ophalen van een applicatie per ID
+     * @param id id die wordt gebruikt om een specifieke applicatie te vinden.
+     * @return geeft de specifieke applicatie terug.
      */
     @GetMapping("/{id}")
     public Application readApplication(@PathVariable("id") String id) {
         return applicationRepository.findById(id).orElseThrow(RuntimeException::new);
     }
+
      /**
-     * @return aanmaken van een applicatie 
-     */
+      * @return maakt een nieuwe applicatie aan en slaat het op.
+      */
     @PostMapping("/")
     public Application createCapability(@RequestBody Application application) {
         return applicationRepository.save(application);
     }
-     /**
-     * @return voor het updaten van een applicatie
-     */
 
+     /**
+      * @return wijzigt een applicatie en slaat het op.
+      */
     @PutMapping("/{id}")
     public Application updateCapability(@PathVariable("id") String id, @RequestBody Application newApplication) {
         Application application = applicationRepository.findById(id).orElseThrow(RuntimeException::new);
@@ -79,17 +81,19 @@ public class ApplicationsController {
         application.setAvailability(newApplication.getAvailability());
         return applicationRepository.save(application);
     }
-     /**
-     * @return dit dient om een applicatie te verwijderen per id
-     */
 
+     /**
+      * Verwijdert een specifieke applicatie uit de repository.
+      * @param id manier waarop een specifieke applicatie wordt geselecteerd.
+      */
     @DeleteMapping("/{id}")
     public void deleteCapability(@PathVariable("id") String id) {
         applicationRepository.deleteById(id);
     }
+
      /**
-     * @return dit dient om alle applicaties te verwijderen
-     */
+      * Dit dient om alle applicaties te verwijderen.
+      */
     @DeleteMapping("/")
     public void deleteAll() {
         applicationRepository.deleteAll();
