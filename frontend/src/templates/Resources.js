@@ -21,6 +21,8 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
+
+
 export default function Resources() {
 
     const [resources, setResources] = useState([]);
@@ -204,7 +206,7 @@ export default function Resources() {
         <Container maxWidth="lg" className={classes.container} style={{ width: '80%', maxWidth: 'none', }}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
-                    <Button variant="outlined" color="primary" onClick={() => openCreateDialog()}>Add</Button>
+                    <Button variant="contained" color="primary" onClick={() => openCreateDialog()}>Add</Button>
                     <Paper >
                         <TableContainer component={Paper}>
                             <Table className={classes.table} aria-label="customized table">
