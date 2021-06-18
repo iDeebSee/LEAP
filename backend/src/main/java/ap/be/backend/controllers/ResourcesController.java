@@ -55,9 +55,8 @@ public class ResourcesController {
     }
 
     /**
-     * Verwijdert een specifieke resource.
+     * Verwijdert een specifieke resource uit de repository.
      * @param id id van de resource die verwijdert moet worden.
-     * @return verwijdert de capability uit repository.
      */
     @DeleteMapping("/{id}")
     public void deleteCapability(@PathVariable("id") String id) {

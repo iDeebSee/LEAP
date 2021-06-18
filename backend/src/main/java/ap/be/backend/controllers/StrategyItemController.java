@@ -24,24 +24,29 @@ public class StrategyItemController {
     @Autowired
     private StrategyItemRepository strategyItemRepository;
 
-    /**
-     * @return ophalen van alle strategysItems
+    /** 
+     * Itereert over elke strategieItem in de repository.
+     * @return geeft alle strategieItems terug.
      */
     @GetMapping("/strategyItem")
     public Iterable<StrategyItem> readStrategies() {
         return strategyItemRepository.findAll();
     }
-    /**
-     * @return ophalen van strategyItems per ID
+
+    /** 
+     * @param id id van de strategieItem die opgehaalt moet worden. 
+     * @return geeft een specifieke strategieItem terug.
      */
     @GetMapping("/strategyItem/{id}")
     public StrategyItem readStrategy(@PathVariable("id") String id) {
         return strategyItemRepository.findById(id).orElseThrow(RuntimeException::new);
     }
-    /**
-     * @return voor het aanmaken van een stretagyItem 
-     */
 
+    /** 
+     * Creatie van een nieuwe strategieItem.
+     * @param data ingevulde strategieItem parameters.
+     * @return slaat de nieuwe strategieItems op in de repository.
+     */
     @PostMapping("/strategyItem")
     public StrategyItem createStrategy(@RequestBody LinkedHashMap<Object, Object> data) {
         System.out.println(data);
@@ -50,8 +55,11 @@ public class StrategyItemController {
         newStrategyItem.setName(data.get("name").toString());
         return strategyItemRepository.save(newStrategyItem);
     }
-    /**
-     * @return voor het updaten van een strategyItem 
+
+    /** 
+     * wijzigt een specifieke strategieItem op basis van de id.
+     * @param newStrategyItem nieuwe strategieItem parameters.
+     * @return Vervangt de oude parameters door de nieuwe.
      */
     @PutMapping("/strategyItem/{id}")
     public StrategyItem updStrategy(@PathVariable("id") String id, @RequestBody StrategyItem newStrategyItem) {
@@ -60,10 +68,12 @@ public class StrategyItemController {
             strategy.setName(newStrategyItem.getName());
         return strategyItemRepository.save(strategy);
     }
-    /**
-     * @return voor het verwijderen van het geselecteerde  StrategyItem  
-     */
 
+     /** 
+     * Verwijdert een specifieke strategyItem op basis van id.
+     * @param id id van de strategieItem die verwijdert moet worden.
+     * @return een statusbericht
+     */
     @DeleteMapping("/strategyItem/{id}")
     public ResponseEntity<MessageResponse> deleteStrategy(@PathVariable("id") String id) {
 

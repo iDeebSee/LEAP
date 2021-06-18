@@ -60,8 +60,8 @@ public class AuthController {
     JwtUtils jwtUtils;
 
      /**
-     * @return alle rollen worden opgehaald
-     */
+      * @return alle rollen worden opgehaald.
+      */
     @GetMapping("/roles")
     public ResponseEntity<List<String>> getRoles() {
         List<String> roles = new ArrayList<String>();
@@ -69,8 +69,8 @@ public class AuthController {
         return ResponseEntity.ok(roles);
     }
      /**
-     * @return alle users worden hier opgehaald
-     */
+      * @return alle users worden hier opgehaald.
+      */
     @GetMapping("/users")
     public ResponseEntity<List<UserReadDto>> getUsers() {
         List<UserReadDto> users = new ArrayList<UserReadDto>();
@@ -78,9 +78,9 @@ public class AuthController {
         return ResponseEntity.ok(users);
     }
      /**
-     * @return dit dient om in te loggen, er word gecontrolleerd of de email en wachtwoord kloppen.
-     *  verder is er ook een token van 24h, indien deze verloopt kan je geen api calls meer doen
-     */
+      *  Dient om in te loggen, er word gecontrolleerd of de email en wachtwoord kloppen.
+      *  verder is er ook een token van 24h, indien deze verloopt kan je geen api calls meer doen.
+      */
     @PostMapping("/signin")
     public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
@@ -95,8 +95,8 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
     }
      /**
-     * @return deze dient om te registeren, er word een rol toegekend en een controle op email en gebruikersnaam
-     */
+      * @return dient om te registeren, er word een rol toegekend en een controle op email en gebruikersnaam
+      */
     @PostMapping("/register")
     public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody UserCreateDto newUser) {
         if(userRepository.existsByName(newUser.getName())) {
@@ -140,8 +140,8 @@ public class AuthController {
     }
 
      /**
-     * @return deze dient om een gebruiker te bewerken, eventueel rollen veranderen.
-     */
+      * @return dient om een gebruiker te bewerken, eventueel rollen veranderen.
+      */
     @PutMapping("/user/{id}")
     public ResponseEntity<MessageResponse> editUser(@PathVariable("id") String id, @Valid @RequestBody UserEditDto newUser ) {
         try {
@@ -182,8 +182,8 @@ public class AuthController {
 
     }
      /**
-     * @return deze dient om een bepaalde gebruiker te verwijderen per id
-     */
+      * @return dient om een bepaalde gebruiker te verwijderen per id.
+      */
 
     @DeleteMapping("/user/{id}")
     public ResponseEntity<MessageResponse> deleteUser(@PathVariable("id") String id) {

@@ -65,8 +65,8 @@ public class CapabilityController {
         
     }
      /**
-     * @return ophalen van een bepaalde capability
-     */
+      * @return ophalen van een bepaalde capability.
+      */
     @GetMapping("/{id}")
     public ResponseEntity<MessageResponse> readCapability(@PathVariable("id") String id) {
         if(capabilityRepository.existsById(id)) {
@@ -76,10 +76,10 @@ public class CapabilityController {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to find capability"));
         }
     }
+
      /**
-     * @return voor het aanmaken van een capabilty 
+     * @return voor het aanmaken van een capabilty.
      */
-    
     @PostMapping("/{envId}")
     public ResponseEntity<MessageResponse> createCapability(@PathVariable("envId") String envId, @Valid @RequestBody CapabilityCreateDto newCapability) {
         logger.info("Incoming Capability DTO:\n {}", newCapability);
@@ -96,10 +96,10 @@ public class CapabilityController {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to create capability"));
         }
     }
+
     /**
-     * @return voor het updaten van een capabilty 
+     * @return wijzigt een specifieke capability en slaat he dan op.
      */
-    
     @PutMapping("/{id}")
     public ResponseEntity<MessageResponse> updateCapability(@PathVariable("id") String id, @Valid @RequestBody CapabilityEditDto capabilityUpdate) {
         if(capabilityRepository.existsById(id)) {
@@ -112,7 +112,7 @@ public class CapabilityController {
         }
     }
     /**
-     * @return voor het verwijderen  van een capabilty per id, inclusief de cascading delete, dus eens een parent verwijderd word.
+     * Verwijdering van een capabilty per id, inclusief de cascading delete, dus eens een parent verwijderd word.
      * dan zullen de children ook mee verwijderd worden.
      */
     @DeleteMapping("/{envid}/{id}")
