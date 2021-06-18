@@ -85,7 +85,7 @@ public class StrategyController {
     }
     //update strategyItem list
     @PutMapping("/strategy/{id}")
-    public Strategy updStrategy(@PathVariable("id") String id, @RequestBody Strategy newStrategy) {
+    public Strategy updateStrategy(@PathVariable("id") String id, @RequestBody Strategy newStrategy) {
         Strategy strategy = strategyRepository.findById(id).orElseThrow(RuntimeException::new);
         if(!newStrategy.getName().isBlank())
             strategy.setName(newStrategy.getName());
