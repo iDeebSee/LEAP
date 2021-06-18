@@ -115,11 +115,11 @@ public class MockDataRunner implements CommandLineRunner {
         });
         
 
-        Environment env1 = new Environment("test 1", "this is the 1st test envirement");
-        Environment env2 = new Environment("test 2", "this is the 2st test envirement");
-        Environment env3 = new Environment("test 3", "this is the 3st test envirement");
-        Environment env4 = new Environment("test 4", "this is the 4st test envirement");
-        Environment env5 = new Environment("test 5", "this is the 5st test envirement");
+        Environment env1 = new Environment("test 1", "this is the 1st test envirement",null);
+        Environment env2 = new Environment("test 2", "this is the 2st test envirement",null);
+        Environment env3 = new Environment("test 3", "this is the 3st test envirement",null);
+        Environment env4 = new Environment("test 4", "this is the 4st test envirement",null);
+        Environment env5 = new Environment("test 5", "this is the 5st test envirement",null);
 
         envirenmentRepository.save(env1);
         envirenmentRepository.save(env2);
