@@ -7,5 +7,8 @@
     "prop-types": "^15.7.2",
     "react-helmet": "^6.1.0",
     "react-validation": "^3.0.7"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.6.7"
   }
 }

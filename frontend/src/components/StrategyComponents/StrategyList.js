@@ -42,10 +42,8 @@ const useStyles = (makeStyles((theme) => ({
         width: "100%"
     }
 })));
-/**
- * useState implementation.
- * @param props Properties of StrategyList.
- */
+
+
 const StrategyList = (props) => {
     const classes = useStyles(),
     strategies = props.data,
@@ -55,24 +53,26 @@ const StrategyList = (props) => {
     [id, setId] = useState(''),
     [currentStrat, setCurrentStrat] = useState(null);
 
-/**
- * Opens a popup box for the strategy you want to delete.
- * @param id the id to delete by.
- */
+    /**
+     * Opent een delete popup box.
+     * @param id de id voor de strategy je wilt verwijderen.
+     */
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
         setId(id);
     }
-/**
- * Closes the popup box that's currently active.
- */
+
+    /**
+    * Sluit de delete popup box.
+    */
     const closeDeleteDialog = () => {
         setOpenDelete(false);
     }
-/**
- * Deletes the strategy after confirmation by the user. 
- * The popup box closes once the strategy is deleted.
- */
+
+    /**
+    * Verwijdert de strategie op basis van id.
+    * De popup box sluit nadat de strategy is verwijderd.
+    */
     const deleteStrategy = () => {
         props.onCardDelete(id);
         closeDeleteDialog();
@@ -95,9 +95,9 @@ const StrategyList = (props) => {
         </Dialog>
     );
     
-/**
- * Changes the strategy parameters.
- */
+    /**
+    * Wijzigt een strategy.
+    */
     const editStrategy = () => {
         let data = {"name": newName};
         StrategyService.update(id, data)
@@ -111,19 +111,20 @@ const StrategyList = (props) => {
         });
     };
 
-/**
- * Opens the edit popup box with the current values filled in the input fields.
- * @param strategy 
- */
+    /**
+     * Opent de edit popup box met ingevulde velden voor meer gebruiktvriendelijkheid..
+     * @param strategy 
+     */
     const openEditDialog = (strategy) => {
         setCurrentStrat(strategy);
         setId(strategy.id);
         setNewName(strategy.name);
         setOpenedit(true);
     };
-/**
- * Closes the edit popup box without saving any changes.
- */
+
+    /**
+    * sluit de popup box zonder enige veranderingen.
+    */
     const closeEditDialog = () => {
         setOpenedit(false);
         setCurrentStrat(null);

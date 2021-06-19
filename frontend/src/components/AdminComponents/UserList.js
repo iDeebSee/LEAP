@@ -56,15 +56,24 @@ export default function UserList({users, setUser, onDelete}) {
     );
   }
 
+  /**
+   * Dient om het delete popup box te openen voor een specifieke gebruiker.
+   */
   const openDeleteDialog = (id) => {
     setId(id);
     setOpen(true);
   }
 
+  /**
+   * Dient om het delete popup box te sluiten.
+   */
   const closeDeleteDialog = () => {
     setOpen(false);
   }
 
+  /**
+   * Dient om een gebruiker te verwijderen op basis van id.
+   */
   const deleteUser = () => {
     onDelete(id);
     closeDeleteDialog();

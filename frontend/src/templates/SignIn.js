@@ -37,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+/**
+ * een JSX element die alle functionaliteiten bevat die nodig zijn om te kunnen inloggen.
+ * @returns de JSX element.
+ */
 export default function SignIn() {
   const classes = useStyles(),
   history = useHistory(),
@@ -44,6 +48,10 @@ export default function SignIn() {
   [password, setPassword] = useState(''),
   [error, setError] = useState(false);
 
+  /**
+   * Zorgt ervoor dat je kan inloggen. Vangt alle mogelijke fouten op.
+   * @param e om een fout op te vangen.
+   */
   const handleLogin = (e) => {
     e.preventDefault();
 

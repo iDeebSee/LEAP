@@ -46,6 +46,10 @@ const styles = theme => ({
 });
 
 class CapabilitiesView extends Component {
+    /**
+     * De constructor van CapabilitiesView.
+     * @param props gebruikte properties.
+     */
     constructor(props) {
         super(props);
 
@@ -61,11 +65,15 @@ class CapabilitiesView extends Component {
             open: false
         };
     }
-
+    /**
+     * Laat alle capabilities zien.
+     */
     componentDidMount() {
         this.getCapabilities();
     }
-
+    /**
+     * Gebruikt om alle capabilities te krijgen.
+     */
     getCapabilities() {
         CapabilityService.getAll()
             .then(res => {
@@ -77,14 +85,20 @@ class CapabilitiesView extends Component {
                 console.error(e);
             });
     }
-
+    /**
+     * Verwijdert een specifieke capability. Eens de capability is verwijdert worden de resterende capabilities geladen.
+     * @param strategyId de id van een capapbility die verwijderd moet worden.
+     */
     deleteCapability(capabilityId) {
         CapabilityService.delete(capabilityId)
         .then(() => {
             this.getCapabilities();
         });
     }
-
+    /**
+     * Creërt een capability op basis van de user input. Bij niet ingevulde velden
+     * krijg je een foutmelding terug.
+     */
     createCapability() {
         let text = "", parent = null;
         if(this.state.newCapabilityName !== '' && this.state.newCapabilityDescription !== '') {
@@ -105,11 +119,15 @@ class CapabilitiesView extends Component {
         }
         this.setState({open: false, dialogText: text});
     }
-
+    /**
+     * Opent een popup box wanneer het wordt afgevuurd.
+     */
     handleOpen() {
         this.setState({open: true});
     }
-
+    /**
+     * Sluit een popup box wanneer het wordt afgevuurd.
+     */
     handleClose() {
         this.setState({open: false});
     }

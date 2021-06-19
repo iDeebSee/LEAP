@@ -90,12 +90,17 @@ export default function AddDialog(props) {
         costCurrency,
     }
 
-
+    /**
+     * Opens a popup box.
+     */
     const handleClickOpen = () => {
         setOpen(true);
 
     };
 
+    /**
+     * Closes a popup box.
+     */
     const handleClose = () => {
         setOpen(false);
     };
@@ -107,6 +112,9 @@ export default function AddDialog(props) {
         return values;
     }
 
+    /**
+     * Wijzigt de datum en controleert user input op onmogelijke omstandigheden.
+     */
     const handleDateChange = (date) => {
         setDisabled(false);
         setError("");
@@ -124,6 +132,9 @@ export default function AddDialog(props) {
         }
     };
 
+    /**
+     * Wijzigt de datum  en controleert user input op onmogelijke omstandigheden.
+     */
     const handleEndOfLife = (date) => {
         setDisabled(false);
         setError("");
@@ -141,6 +152,9 @@ export default function AddDialog(props) {
         }
     };
 
+    /**
+     * Geeft alle timeValues terug.
+     */
     const getTimeValues = () => {
         ApplicationsService.getTimeValues().then(res => {
             setTimeValues(res.data);
@@ -156,6 +170,9 @@ export default function AddDialog(props) {
 
     }, []);
 
+    /**
+     * Wordt afgevuurd bij een verandering van timeValues.
+     */
     const handleChange = (event) => {
         setTimeValue(event.target.value);
     };

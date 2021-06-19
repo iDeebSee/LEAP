@@ -64,6 +64,9 @@ class EnvirenmentView extends Component {
         this.getenvironments();
     }
 
+    /**
+     * Geeft alle environments terug.
+     */
     getenvironments() {
         EnvironmentService.getAll()
             .then(res => {
@@ -77,6 +80,10 @@ class EnvirenmentView extends Component {
             });
     }
 
+    /**
+     * Verwijdert een enivronment op basis van ID.
+     * @param environmentID id van de environment die je wilt verwijderen.
+     */
     onCardDelete(environmentID) {
         EnvironmentService.delete(environmentID)
         .then(() => {
@@ -84,6 +91,9 @@ class EnvirenmentView extends Component {
         });
     }
 
+    /**
+     * Maakt een nieuwe environment aan en controleert of alles ingevuld is..
+     */
     createEnvironment() {
         let text = "";
         if(this.state.newEnvironmentName !== '' && this.state.newEnvironmentDescription !== '') {
@@ -104,10 +114,16 @@ class EnvirenmentView extends Component {
         this.setState({open: false, dialogText: text});
     }
 
+    /**
+     * Opent een popup box.
+     */
     handleOpen() {
         this.setState({open: true});
     }
 
+    /**
+     * Sluit een popup box.
+     */
     handleClose() {
         this.setState({open: false});
     }

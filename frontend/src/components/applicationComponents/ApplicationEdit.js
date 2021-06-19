@@ -98,6 +98,9 @@ export default function ApplicationEdit(props) {
     }, [])
 
 
+    /**
+     * Wijziging van de acquisition datum.
+     */
     const handleDateChange = (date) => {
         if (date !== null || date !== undefined) {
             console.log(date);
@@ -107,6 +110,9 @@ export default function ApplicationEdit(props) {
         }
     };
 
+    /**
+     * Wijziging van de end of life datum.
+     */
     const handleEndOfLife = (date) => {
         if (date !== null || date !== undefined) {
             console.log(date);
@@ -115,6 +121,9 @@ export default function ApplicationEdit(props) {
         }
     };
 
+    /**
+     * Geeft alle timeValues terug.
+     */
     const getTimeValues = () => {
         ApplicationsService.getTimeValues().then(res => {
             setTimeValues(res.data);
@@ -124,12 +133,17 @@ export default function ApplicationEdit(props) {
         });
     }
 
+    /**
+     *behandelt timeValue aanpassingen.
+     */
     const handleChange = (event) => {
         setTimeValue(event.target.value);
         console.log(event.target.value);
     };
 
-
+    /**
+     * Update elke parameter.
+     */
     const update = () => {
 
         ApplicationsService.update(id, {
@@ -165,6 +179,9 @@ export default function ApplicationEdit(props) {
         });
     }
 
+    /**
+     * Wijzigt de naam van een applicatie.
+     */
     const handleNameChange = (e) => {
         setName(e.target.value);
         console.log(name);

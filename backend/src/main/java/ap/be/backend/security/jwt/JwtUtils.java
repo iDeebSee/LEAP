@@ -27,6 +27,12 @@ public class JwtUtils {
     @Value("${Leap.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
+    
+    /** 
+     * Genereert een Json Web Token voor een principal.
+     * @param authentication stelt de token voor een geauthenticeerde principal voor.
+     * @return Geeft een compacte Json Web Token terug voor een specifieke principal.
+     */
     public String generateJwtToken(Authentication authentication) {
 
         UserDetailsImpl userPrincipal = (UserDetailsImpl)authentication.getPrincipal();
@@ -39,10 +45,22 @@ public class JwtUtils {
             .compact();
     }
 
+    
+    /** 
+     * Geeft de gebruiksnaam van een user weer op basis van zijn token.
+     * @param token unieke Jason Web Token dat wordt gegenereerd voor elke user.
+     * @return gebruiksnaam van die specifieke user.
+     */
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
+    
+    /** 
+     * Als er iets mis is met de token wordt de fout opgevangen.
+     * @param token unieke Jason Web Token dat wordt gegenereerd voor elke user.
+     * @return een statusbericht afhankelijk van de juistheid van de token.
+     */
     public boolean validateJwtToken(String token) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);

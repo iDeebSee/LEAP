@@ -1,5 +1,7 @@
 package ap.be.backend.models;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,17 +30,18 @@ public class Capability {
     @Setter(AccessLevel.NONE)
     private int level = 1;
 
+    
+
     @DBRef
     @Setter(AccessLevel.NONE)
     private Capability parent = null;
 
     /**
-     * @param name the name of the capability.
-     * @param description describes what the capability does within the business.
-     * @param parent the parent of this capability, has to be an existing capability and cannot be level 3 or lower.
+     * @param name naam van de capability.
+     * @param description beschrijft wat de capability doet binnen het bedrijf.
+     * @param parent de parent van dit capability, de capability moet bestaan en kan niet level 3 of lager zijn.
      */
     public Capability(String name, String description, Capability parent) throws IllegalArgumentException {
-        //this(name, description);
         this.name = name;
         this.description = description;
         if(parent != null && parent.getName() != null) {
@@ -46,6 +49,9 @@ public class Capability {
             this.parent = parent;
         }
     }
+    /**
+     * zet de parent en de capability level
+     */
 
     public void setParent(Capability parent) {
         this.parent = parent;
