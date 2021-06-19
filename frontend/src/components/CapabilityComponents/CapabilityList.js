@@ -193,7 +193,7 @@ const CapabilityList = (props) => {
                         <ListItem key={nanoid()}>
                             <ListItemText>{cap.name}</ListItemText>
                             <ButtonGroup>
-                                <Button component={Link} to={`/capability/${cap.id}`}>View</Button>
+                                <Button component={Link} to={`/capability/${props.envId}/${cap.id}`}>View</Button>
                                 <Button onClick={() => {openEditDialog(cap)}}>Edit</Button>
                                 <Button onClick={() => {openDeleteDialog(cap.id)}}>Delete</Button>
                             </ButtonGroup>

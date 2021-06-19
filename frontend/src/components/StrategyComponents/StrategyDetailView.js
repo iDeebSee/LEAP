@@ -28,6 +28,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
 import { useParams } from 'react-router-dom';
+import _ from 'lodash';
 const useStyles = (makeStyles((theme)  => ({
     formControl: {
         margin: theme.spacing(1),
@@ -190,7 +191,6 @@ function StrategyDetailView (props) {
         setStrategyItemId(strategyItem.id);
         setNewStrategyItemName(strategyItem.name);
         setChosenCapabilities(strategyItem.linkedCapabilities);
-        console.log(chosenCapabilities)
         setOpenEdit(true);
     };
 
@@ -198,6 +198,24 @@ function StrategyDetailView (props) {
         setOpenEdit(false);
         getCapabilities();
         setChosenCapabilities([]);
+    }
+
+    const handleEditChange = (capabilities) => {
+
+        //make array of unique objects from input
+        let output = _.uniqWith(capabilities, _.isEqual)
+
+        //go through all the CURRENT capabilities IN THE OBJECT WE'RE EDITING
+        chosenCapabilities.forEach(cap => {
+            //left of and (&&): see if the current capability exists in the unique input
+            //right of and (&&): see if the non unique input contains the current capability more than once
+            //this results in any duplicates in the input being removed, unlinking the capability that was already in the strategy item
+            if(_.find(output, cap) !== undefined && capabilities.filter(x => _.isEqual(x, cap)).length > 1) {
+                _.remove(output, cap)
+            }
+        });
+
+        setChosenCapabilities(output)
     }
     
     const editDialog = (
@@ -223,7 +241,7 @@ function StrategyDetailView (props) {
                                 id="multiple-select-checkbox"
                                 multiple
                                 value={chosenCapabilities}
-                                onChange={(e) => {setChosenCapabilities(e.target.value)}}
+                                onChange={(e) => {handleEditChange(e.target.value)}}
                                 input={<Input/>}
                                 renderValue={selected => joinSelectedItemNames(selected)}
                                 MenuProps={MenuProps}
@@ -231,7 +249,7 @@ function StrategyDetailView (props) {
                                 {capabilities.map((capability) => {
                                 return(
                                     <MenuItem key={nanoid()} value={capability}>
-                                        <Checkbox checked={chosenCapabilities.indexOf(capability) > -1}/>
+                                        <Checkbox checked={chosenCapabilities.map(function(cap) {return cap.id}).indexOf(capability.id) > -1}/>
                                         <ListItemText primary={capability.name}/>
                                     </MenuItem>
                                 )})}
@@ -250,6 +268,7 @@ function StrategyDetailView (props) {
         </Dialog>
     );
     
+    //joins all names of the linked capabilities for display in the select
     const joinSelectedItemNames = (selected) => {
         let output = []
         selected.forEach(item => {
@@ -315,7 +334,7 @@ function StrategyDetailView (props) {
                                     {capabilities.map((capability) => {
                                     return(
                                         <MenuItem key={nanoid()} value={capability}>
-                                            <Checkbox checked={chosenCapabilities.indexOf(capability) > -1}/>
+                                            <Checkbox checked={chosenCapabilities.map(function(cap) {return cap.id}).indexOf(capability.id) > -1}/>
                                             <ListItemText primary={capability.name}/>
                                         </MenuItem>
                                     )})}
