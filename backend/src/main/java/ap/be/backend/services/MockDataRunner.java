@@ -157,9 +157,9 @@ public class MockDataRunner implements CommandLineRunner {
         strategyRepository.findAll().forEach(strat ->{logger.info("{}", strat);});
 
 
-        StrategyItem testitem1= new StrategyItem("test1");
-        StrategyItem testitem2= new StrategyItem("test2");
-        StrategyItem testitem3= new StrategyItem("test3");
+        StrategyItem testitem1= new StrategyItem("test1", strategy1);
+        StrategyItem testitem2= new StrategyItem("test2", strategy1);
+        StrategyItem testitem3= new StrategyItem("test3", strategy1);
 
         strategyItemRepository.save(testitem1);
         strategyItemRepository.save(testitem2);

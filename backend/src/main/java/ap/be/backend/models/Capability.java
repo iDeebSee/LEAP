@@ -15,9 +15,49 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @EqualsAndHashCode
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return Capability
+ */
+
+/** 
+ * @return Environment
+ */
 @Document(collection = "Capabilities")
+
+/** 
+ * @return String
+ */
 public class Capability {
     
+
+/** 
+ * @return boolean
+ */
+
+/** 
+ * @return boolean
+ */
+
+/** 
+ * @return int
+ */
     @Id
     private String id;
 
@@ -51,6 +91,10 @@ public class Capability {
         this.environment = environment;
     }
 
+    
+    /** 
+     * @param parent
+     */
     public void setParent(Capability parent) {
         this.parent = parent;
         if(parent != null) {

@@ -13,9 +13,41 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+
+/** 
+ * @return String
+ */
 @ToString
 @NoArgsConstructor
+
+/** 
+ * @return boolean
+ */
+
+/** 
+ * @return boolean
+ */
+
+/** 
+ * @return int
+ */
 @EqualsAndHashCode
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return User
+ */
+
+/** 
+ * @return Date
+ */
 @Getter @Setter
 @Document(collection = "Password_create_tokens")
 public class PasswordCreateToken {

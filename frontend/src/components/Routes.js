@@ -33,11 +33,11 @@ export default function Routes(props) {
         <Switch>
             <Route exact path="/home" render={() => <EnvironmentsView setEnvId={setEnvId}/>} />
             <Route exact path="/capabilities/:envId" component={CapabilitiesView} />
-            <Route exact path="/capability/:id" component={CapabilityDetailView} />
+            <Route exact path="/capability/:envId/:id" component={CapabilityDetailView} />
             <Route exact path="/applications/:envId" component={Applications} />
-            <Route exact path="/applications/:id" component={ApplicationEdit} />
-            <Route exact path="/strategy/:envId" component={StrategiesView} />
-            <Route exact path="/strategy/:id" component={StrategyDetailView} />
+            <Route exact path="/application/:envId/:id" component={ApplicationEdit} />
+            <Route exact path="/strategies/:envId" component={StrategiesView} />
+            <Route exact path="/strategy/:envId/:id" component={StrategyDetailView} />
             <Route exact path="/resources/" component={Resources} />
             <Route exact path="/bussinesproces/" component={BussinesProces} />
             <AdminRoute path="/admin" component={Admin} />

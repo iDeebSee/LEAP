@@ -15,6 +15,7 @@ import ap.be.backend.services.mappers.CapabilityMapper;
 import ap.be.backend.dtos.createdtos.CapabilityCreateDto;
 import ap.be.backend.dtos.editdtos.CapabilityEditDto;
 import ap.be.backend.dtos.readdtos.CapabilityReadDto;
+import ap.be.backend.dtos.readdtos.LinkedCapabilityReadDto;
 import ap.be.backend.models.Capability;
 import ap.be.backend.models.Environment;
 import ap.be.backend.payload.response.MessageResponse;
@@ -63,6 +64,23 @@ public class CapabilityController {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to find environment by ID"));
         }
         
+    }
+
+    @GetMapping("linkedCapabilities/{envId}")
+    public ResponseEntity<MessageResponse> getLinkedCapabilities(@PathVariable("envId") String envId) {
+        if (environmentRepository.existsById(envId)) {
+            List<LinkedCapabilityReadDto> linkedCapabilities = new ArrayList<LinkedCapabilityReadDto>();
+            Environment environment = environmentRepository.findById(envId).get();
+            if(capabilityRepository.existsByEnvironment(environment)) {
+                capabilityRepository.findAllByEnvironment(environment).get().forEach(capability -> {
+                    System.out.println(capability);
+                    linkedCapabilities.add(capabilityMapper.convertToLinkedReadDto(capability));
+                });
+            } 
+            return ResponseEntity.ok(new MessageResponse("Got all capabilities!", linkedCapabilities));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find environment by ID"));
+        }
     }
 
     @GetMapping("/{id}")

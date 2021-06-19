@@ -24,7 +24,119 @@ public class Application {
     private String id;
     private String name;
     private String technology;
+
+/** 
+ * @return String
+ */
     private String version;
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return double
+ */
+
+/** 
+ * @return double
+ */
+
+/** 
+ * @return LocalDate
+ */
+
+/** 
+ * @return LocalDate
+ */
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return int
+ */
+
+/** 
+ * @return TIMEValue
+ */
     private double currentTotalCostPerYear;
     private double toleratedTotalCostPerYear;
     private LocalDate acquisitionDate;
@@ -120,6 +232,11 @@ public class Application {
         this.availability = availability;
     }
 
+    
+    /** 
+     * @param rating
+     * @return int
+     */
     public int maxRatingControl(int rating) {
         if (rating > 5) {
             throw new IllegalArgumentException("Rating was higher than " + 5);
@@ -128,6 +245,11 @@ public class Application {
         }
     }
 
+    
+    /** 
+     * @param date
+     * @return LocalDate
+     */
     public LocalDate endOfLifeDateControl(LocalDate date) {
         if (date.isBefore(this.acquisitionDate)) {
             throw new IllegalArgumentException("End of life date is before acquisition date:\nAcquisition date:\t" + this.acquisitionDate + "\nEnd of life date:\t" + date);

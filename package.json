@@ -6,5 +6,8 @@
     "nanoid": "^3.1.22",
     "prop-types": "^15.7.2",
     "react-validation": "^3.0.7"
+  },
+  "devDependencies": {
+    "eslint-plugin-react-hooks": "^4.2.0"
   }
 }

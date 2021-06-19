@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ap.be.backend.dtos.createdtos.CapabilityCreateDto;
 import ap.be.backend.dtos.editdtos.CapabilityEditDto;
 import ap.be.backend.dtos.readdtos.CapabilityReadDto;
+import ap.be.backend.dtos.readdtos.LinkedCapabilityReadDto;
 import ap.be.backend.models.Capability;
 import ap.be.backend.models.Environment;
 import ap.be.backend.repositories.CapabilityRepository;
@@ -94,5 +95,9 @@ public class CapabilityMapper {
         modelMapper.addConverter(parentToIdConverter());
         modelMapper.addConverter(environmentToIdConverter());
         return modelMapper.map(capability, CapabilityReadDto.class);
+    }
+
+    public LinkedCapabilityReadDto convertToLinkedReadDto(Capability capability) {
+        return modelMapper.map(capability, LinkedCapabilityReadDto.class);
     }
 }

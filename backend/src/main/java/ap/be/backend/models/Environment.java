@@ -1,8 +1,5 @@
 package ap.be.backend.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -25,7 +22,7 @@ public class Environment {
     private String name;
 
     /**
-     * @param name the name of the capability.
+     * @param name the name of the environment.
      */
     public Environment(String name) {
         this.name = name;

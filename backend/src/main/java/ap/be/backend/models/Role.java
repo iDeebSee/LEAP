@@ -9,9 +9,33 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+
+/** 
+ * @return String
+ */
 @ToString
+
+/** 
+ * @return boolean
+ */
+
+/** 
+ * @return boolean
+ */
+
+/** 
+ * @return int
+ */
 @EqualsAndHashCode
 @NoArgsConstructor
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return RolesEnum
+ */
 @Getter @Setter
 @Document(collection = "Roles")
 public class Role {

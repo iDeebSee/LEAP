@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import { Button, ButtonGroup, Grid, Paper } from '@material-ui/core';
 import AuthService from '../../services/Auth.service';
 import UserList from './UserList';
-import { EmailField, NameField, PasswordField } from './TextFields'
-import Transferlist from './Transferlist'
+import { EmailField, NameField } from '../TextFields'
+import Transferlist from '../Transferlist'
 import PasswordService from '../../services/Password.service';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +43,6 @@ export default function Index() {
     [id, setId] = useState(''),
     [name, setName] = useState(''),
     [email, setEmail] = useState(''),
-    [password, setPassword] = useState(''),
     [nameFieldValid, setNameFieldValid] = useState(true),
     [emailFieldValid, setEmailFieldValid] = useState(true);
 
@@ -182,7 +181,7 @@ export default function Index() {
                             <EmailField value={email} setValue={setEmail} fieldValidity={emailFieldValid} setFieldValidity={setEmailFieldValid}/>
                         </Grid>
                         <Grid item>
-                            <Transferlist leftItems={roles} setLeft={setRoles} rightItems={chosenRoles} setRight={setChosenRoles}/>
+                            <Transferlist leftItems={roles} setLeft={setRoles} leftTitle={'Roles'} rightItems={chosenRoles} setRight={setChosenRoles} rightTitle={'Chosen roles'}/>
                         </Grid>
                         <Grid item>
                             <ButtonGroup>

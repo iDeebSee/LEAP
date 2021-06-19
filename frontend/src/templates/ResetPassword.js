@@ -2,7 +2,7 @@ import { Button, makeStyles, Paper } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import React from 'react-dom';
 import { useHistory, useParams } from 'react-router';
-import { PasswordField } from '../components/AdminComponents/TextFields';
+import { PasswordField } from '../components/TextFields';
 import PasswordService from '../services/Password.service';
 
 const useStyles = makeStyles((theme) => ({

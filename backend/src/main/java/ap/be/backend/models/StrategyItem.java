@@ -25,14 +25,16 @@ public class StrategyItem {
     private String name;
 
     @DBRef
+    private Strategy strategy;
+
+    @DBRef
     private List<Capability> linkedCapabilities = new ArrayList<Capability>();
     /**
      * @param name the name of the capability.
-    
      */
-    public StrategyItem(String name) throws IllegalArgumentException {
-        //this(name, description);
+    public StrategyItem(String name, Strategy strategy) throws IllegalArgumentException {
         this.name = name;
+        this.strategy = strategy;
     }
 }
 

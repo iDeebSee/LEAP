@@ -1,6 +1,4 @@
 package ap.be.backend.models;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -21,9 +19,6 @@ public class Strategy {
     private String id;
 
     private String name;
-
-    @DBRef
-    private List<StrategyItem> strategyItems = new ArrayList<StrategyItem>();
 
     @DBRef
     private Environment environment;

@@ -75,7 +75,6 @@ class CapabilityDetailView extends Component {
                     </Grid>
                     {parent}
                 </Grid>
-                
             </Paper>
         )
     }

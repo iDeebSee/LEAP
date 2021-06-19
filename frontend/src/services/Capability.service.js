@@ -10,6 +10,10 @@ class CapabilityService {
         return http.get(`${baseUrl}/${id}`);
     }
 
+    getLinked(envId) {
+        return http.get(`${baseUrl}/linkedCapabilities/${envId}`)
+    }
+
     create(envId, name, description, parent) {
         return http.post(`${baseUrl}/`, {name, description, parent, environment: envId});
     }

@@ -13,27 +13,36 @@ import {
     ListItemText,
     ListItem,
     ListSubheader,
-    
-
+    FormControl,
+    Grid, 
+    Paper,
+    InputLabel,
+    Select,
+    Input,
+    Checkbox,
+    MenuItem
 } from "@material-ui/core";
-import strategyItemService from "../../services/StrategyItemService";
-import StrategyService from "../../services/Strategy.service";
+import strategyItemService from "../../services/StrategyItem.service";
+import CapabilityService from '../../services/Capability.service';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Grid, Paper, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
-import { Link } from 'react-router-dom'
-
-const styles =(makeStyles((theme)  => ({
+import { useParams } from 'react-router-dom';
+const useStyles = (makeStyles((theme)  => ({
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+        maxWidth: 300,
+        overflow: "scroll"
+    },
     paper: {
         padding: theme.spacing(2),
         display: 'flex',
         overflow: 'auto',
         flexDirection: 'column',
-        width:'100%',
     },
     fixedHeight: {
-        height: 240,
+        height: "42rem",
     },
     dialog: {
         '& .MuiTextField-root': {
@@ -48,37 +57,36 @@ const styles =(makeStyles((theme)  => ({
     }
 })));
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+
 function StrategyDetailView (props) {
-   
-    const[strategy,setSTrategy]=useState([]);
-    const[newStratItem,setNewStratItem]=useState([]);
-    const[newNameStratItem,setNewNameStratItem]=useState("");
-    const[strategyItem,setStrategyItem]=useState([""]);
+    const classes = useStyles();
+    const[strategyItems,setStrategyItems]=useState([]);
     const[openEdit,setOpenEdit]=useState(false);
     const[openDelete,setOpenDelete]=useState(false);
-    const[ID,setID]=useState("");
-    const[currentStratItem,setCurrentStratItem]=useState([]);
-    const[newName,setNewName]=useState("");
+    const[strategyItemId, setStrategyItemId]=useState("");
+    const[newStrategyItemName, setNewStrategyItemName]=useState("");
+    const [capabilities, setCapabilities] = useState([]);
+    const [chosenCapabilities, setChosenCapabilities] = useState([]);
     const[open,setOpen]=useState(false);
     const[dialogtext,setdialogtext]=useState("");
-    
-    function changeStateStratItem(data)
-    {
-        console.log("data",data);
-        setStrategyItem(data);
-        createStratItem();
-    }
+    const { envId, id } = useParams();
 
-    function createStratItem() {
-
+    function createStrategyItem() {
         let text = "";
-        if(strategyItem !== '' ) {
-            let data = {"name": newNameStratItem};
-            
-            strategyItemService.create(data)
+        if(newStrategyItemName) {
+            strategyItemService.create(newStrategyItemName, id, chosenCapabilities)
                 .then(res => {
                     console.log(res);
-                    setNewNameStratItem(res.data.name)
                     getStrategyItems();
                 })
                 .catch(e => {
@@ -94,14 +102,11 @@ function StrategyDetailView (props) {
 
 
     const editStrategyItem = () => {
-        let data = {"name": newNameStratItem};
-        strategyItemService.update(ID, data)
+        strategyItemService.update(strategyItemId, newStrategyItemName, id)
         .then(res => {
-            console.log(res.data,ID);
+            console.log(res.data);
             getStrategyItems();
-
             setOpenEdit(false);
-
         })
         .catch(e => {
             console.log(e);
@@ -109,20 +114,31 @@ function StrategyDetailView (props) {
     };
 
 
-        const getStrategyItems = useCallback(() => {
-            strategyItemService.getAll()
+    const getStrategyItems = useCallback(() => {
+        strategyItemService.getAll(id)
             .then(res => {
-                setNewStratItem(res.data);
+                console.log(res.data.message);
+                console.table(res.data.data)
+                setStrategyItems(res.data.data);
             })
             .catch(e => {
                 console.log(e);
             });
-        }, [])
+    }, [id])
 
-        useEffect(()=>{
-            getStrategyItems();
+    const getCapabilities = useCallback(() => {
+        CapabilityService.getLinked(envId)
+            .then(res => {
+                console.log(res.data.message)
+                console.table(res.data.data)
+                setCapabilities(res.data.data)
+            })
+    }, [envId, setCapabilities]);
 
-        },[getStrategyItems])
+    useEffect(()=>{
+        getStrategyItems();
+        getCapabilities();
+    },[getStrategyItems, getCapabilities])
 
     function handleOpen() {
         setOpen(true);
@@ -134,15 +150,15 @@ function StrategyDetailView (props) {
 
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
-        setID(id); 
+        setStrategyItemId(id); 
     }
 
     const closeDeleteDialog = () => {
         setOpenDelete(false)
     }
-    function   deleteStrategyItem()
-    {
-        strategyItemService.delete(ID)
+
+    function deleteStrategyItem() {
+        strategyItemService.delete(strategyItemId)
         .then(res => {
             console.log(res)
             getStrategyItems()
@@ -152,7 +168,7 @@ function StrategyDetailView (props) {
         })
         setOpenDelete(false);
     }
-    const { classes } = props;
+
     const deleteDialog = (
         <Dialog open={openDelete} onClose={() => {closeDeleteDialog()}} className={classes.dialog}>
             <DialogTitle>Are you sure you want to delete this strategy?</DialogTitle>
@@ -169,34 +185,62 @@ function StrategyDetailView (props) {
             </DialogActions>
         </Dialog>
     );
-   const  openEditDialog = (strategyItem) => {
-        
-       setCurrentStratItem(strategyItem);
-       setID(strategyItem.id);
-       setNewNameStratItem(strategyItem.name);
-       setOpenEdit(true);
+
+    const openEditDialog = (strategyItem) => {
+        setStrategyItemId(strategyItem.id);
+        setNewStrategyItemName(strategyItem.name);
+        setChosenCapabilities(strategyItem.linkedCapabilities)
+        console.log(strategyItem)
+        console.log(chosenCapabilities)
+        setOpenEdit(true);
     };
 
-
-   const  closeEditDialog = () => {
-       setOpenEdit(false);
-       setCurrentStratItem(null);
+    const closeEditDialog = () => {
+        setOpenEdit(false);
+        getCapabilities();
+        setChosenCapabilities([]);
     }
-
     
     const editDialog = (
         <Dialog open={openEdit} onClose={() => {closeEditDialog()}} className={classes.dialog}>
-            <DialogTitle>Edit strategy</DialogTitle>
+            <DialogTitle>Edit strategy item</DialogTitle>
             <DialogContent>
-                <TextField
-                        label="Name"
-                        type="text"
-                        variant="filled"
-                        color="primary"
-                        defaultValue={currentStratItem === null ? "" : newName}
-                        onChange={(e) => setNewNameStratItem(e.target.value)}
-                                                       
-                    />
+                <Grid container spacing={2} direction="column">
+                    <Grid item>
+                        <TextField
+                            label="Name"
+                            type="text"
+                            variant="filled"
+                            color="primary"
+                            defaultValue={newStrategyItemName}
+                            onChange={(e) => setNewStrategyItemName(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item className={classes.formControl}>
+                        <FormControl>
+                            <InputLabel id="multiple-select-checkbox-label">Capabilities</InputLabel>
+                            <Select
+                                labelId="multiple-select-checkbox-label"
+                                id="multiple-select-checkbox"
+                                multiple
+                                value={chosenCapabilities}
+                                onChange={(e) => {setChosenCapabilities(e.target.value)}}
+                                input={<Input/>}
+                                renderValue={selected => joinSelectedItemNames(selected)}
+                                MenuProps={MenuProps}
+                            >
+                                {capabilities.map((capability) => {
+                                return(
+                                    <MenuItem key={nanoid()} value={capability}>
+                                        <Checkbox checked={chosenCapabilities.indexOf(capability) > -1}/>
+                                        <ListItemText primary={capability.name}/>
+                                    </MenuItem>
+                                )})}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+
             </DialogContent>
             <DialogActions>
                 <ButtonGroup>
@@ -207,85 +251,89 @@ function StrategyDetailView (props) {
         </Dialog>
     );
     
+    const joinSelectedItemNames = (selected) => {
+        let output = []
+        selected.forEach(item => {
+            output.push(item.name);
+        })
 
+        return output.join(', ');
+    }
 
-    
-       
-    
-
-        
-        return(
-            <>
+    return(
+        <Container>
             <Paper className={clsx(classes.paper, classes.fixedHeight)}>
-                <Grid container spacing={3}>
-                    <Grid item>
-                        <Typography>Name: {strategy.name}</Typography>
-                        
-                    </Grid>
-                </Grid>
-
-               
+                <List>
+                    <ListSubheader className={classes.listSubHeader}>strategyItem list</ListSubheader>
+                    {strategyItems.map(strat => {
+                        return (
+                            <ListItem key={nanoid()}>
+                                <ListItemText>{strat.name}</ListItemText>
+                                <ButtonGroup>
+                                    <Button onClick={() => {openEditDialog(strat)}}>Edit</Button>
+                                    <Button onClick={() => {openDeleteDialog(strat.id)}}>Delete</Button>
+                                </ButtonGroup>
+                            </ListItem>
+                            );
+                        })}
+                </List>
+                {editDialog}
+                {deleteDialog}
             </Paper>
-            <Paper className={clsx(classes.paper, classes.fixedHeight)}>
-            <List>
-            <ListSubheader className={classes.listSubHeader}>strategyItem list</ListSubheader>
-                {newStratItem.map(strat => {
-                    console.log("klawi3",strat)
-                    return (
-                        <ListItem key={nanoid()}>
-                            <ListItemText>{strat.name}</ListItemText>
-                            <ButtonGroup>
-                            <Button onClick={() => {openEditDialog(strat)}}>Edit</Button>
-                            <Button onClick={() => {openDeleteDialog(strat.id)}}>Delete</Button>
-                               
-                            </ButtonGroup>
-                        </ListItem>
-                    );
-                })}
-              
-
-               
-            </List>
-            {editDialog}
-            {deleteDialog}
-            </Paper>
-                
-            
-           
-            
-            <Container>
             <ButtonGroup className={classes.buttonGroup}>
                 <Button variant="contained" color="primary" onClick={handleOpen}>Add StrategyItem</Button>
             </ButtonGroup>
             <Dialog onClose={handleClose} open={open} className={classes.dialog}>
-                <DialogTitle>Create new StrategyItem</DialogTitle>
+                <DialogTitle>Create new Strategy Item</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>{dialogtext}</DialogContentText>
-                    <TextField
-                        label="Name"
-                        type="text"
-                        variant="filled"
-                        color="primary"
-                        required
-                        onChange={e => setNewNameStratItem(e.target.value)}
-                    />
-                    
-                    
-                      
-                    
+                    <Grid container spacing={2} direction="column">
+                        <Grid item>
+                            <DialogContentText>{dialogtext}</DialogContentText>
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="Name"
+                                type="text"
+                                variant="filled"
+                                color="primary"
+                                required
+                                onChange={e => setNewStrategyItemName(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item className={classes.formControl}>
+                            <FormControl>
+                                <InputLabel id="multiple-select-checkbox-label">Capabilities</InputLabel>
+                                <Select
+                                    labelId="multiple-select-checkbox-label"
+                                    id="multiple-select-checkbox"
+                                    multiple
+                                    value={chosenCapabilities}
+                                    onChange={(e) => {setChosenCapabilities(e.target.value)}}
+                                    input={<Input/>}
+                                    renderValue={selected => joinSelectedItemNames(selected)}
+                                    MenuProps={MenuProps}
+                                >
+                                    {capabilities.map((capability) => {
+                                    return(
+                                        <MenuItem key={nanoid()} value={capability}>
+                                            <Checkbox checked={chosenCapabilities.indexOf(capability) > -1}/>
+                                            <ListItemText primary={capability.name}/>
+                                        </MenuItem>
+                                    )})}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
                 </DialogContent>
                 <DialogActions>
                     <ButtonGroup>
-                        <Button variant="text" color="primary" onClick={(e)=>changeStateStratItem(e)}>Create</Button>
+                        <Button variant="text" color="primary" onClick={() => {createStrategyItem()}}>Create</Button>
                         <Button variant="text" color="primary" onClick={handleClose}>Cancel</Button>
                     </ButtonGroup>
                 </DialogActions>
             </Dialog>
         </Container>
-        </>
-        )
-        
-    }
+    )
+}
 
- 
-export default withStyles(styles)(StrategyDetailView);
+export default StrategyDetailView;
