@@ -73,7 +73,6 @@ public class CapabilityController {
             Environment environment = environmentRepository.findById(envId).get();
             if(capabilityRepository.existsByEnvironment(environment)) {
                 capabilityRepository.findAllByEnvironment(environment).get().forEach(capability -> {
-                    System.out.println(capability);
                     linkedCapabilities.add(capabilityMapper.convertToLinkedReadDto(capability));
                 });
             } 

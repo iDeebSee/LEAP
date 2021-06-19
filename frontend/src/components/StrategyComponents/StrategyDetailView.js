@@ -102,7 +102,7 @@ function StrategyDetailView (props) {
 
 
     const editStrategyItem = () => {
-        strategyItemService.update(strategyItemId, newStrategyItemName, id)
+        strategyItemService.update(strategyItemId, newStrategyItemName, id, chosenCapabilities)
         .then(res => {
             console.log(res.data);
             getStrategyItems();
@@ -189,8 +189,7 @@ function StrategyDetailView (props) {
     const openEditDialog = (strategyItem) => {
         setStrategyItemId(strategyItem.id);
         setNewStrategyItemName(strategyItem.name);
-        setChosenCapabilities(strategyItem.linkedCapabilities)
-        console.log(strategyItem)
+        setChosenCapabilities(strategyItem.linkedCapabilities);
         console.log(chosenCapabilities)
         setOpenEdit(true);
     };

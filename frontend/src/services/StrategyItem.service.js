@@ -15,8 +15,8 @@ class StrategyItemService {
         return http.post(`${baseUrl}/`, {name, strategy: strategyId, linkedCapabilities});
     }
 
-    update(id, name, strategyId) {
-        return http.put(`${baseUrl}/`, {id, name, strategy: strategyId});
+    update(id, name, strategyId, linkedCapabilities) {
+        return http.put(`${baseUrl}/`, {id, name, strategy: strategyId, linkedCapabilities});
     }
 
     delete(id) {
