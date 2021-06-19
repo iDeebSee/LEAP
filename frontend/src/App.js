@@ -6,7 +6,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems, adminListItems } from './components/AsideItems';
 import Copyright from './components/Copyright'
 
-import { 
+import {
     CssBaseline,
     Drawer,
     Box,
@@ -16,7 +16,6 @@ import {
     Typography,
     Divider,
     IconButton,
-    Avatar,
     Container,
     Grid,
 } from '@material-ui/core';
@@ -126,7 +125,7 @@ export default function App() {
     const displayAdminPage = () => {
         let output;
 
-        if(AuthService.isAdmin()) {
+        if (AuthService.isAdmin()) {
             ProtectedAdmin.authenticate();
             output = (
                 <div>
@@ -140,10 +139,10 @@ export default function App() {
             ProtectedAdmin.LogOut();
         }
         return output;
-        
+
     }
 
-    if(AuthService.getCurrentUser() !== null) {
+    if (AuthService.getCurrentUser() !== null) {
         return (
             <Router baseName='/Leap'>
                 <div className={classes.root}>
@@ -162,12 +161,7 @@ export default function App() {
                             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                                 Dashboard
                             </Typography>
-                            <IconButton color="inherit">
-                                {/* <Badge badgeContent={4} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge> */}
-                                <Avatar alt="Profile icon" src="" className={classes.large} />
-                            </IconButton>
+
                         </Toolbar>
                     </AppBar>
                     <Drawer
@@ -192,7 +186,7 @@ export default function App() {
                         <div className={classes.appBarSpacer} />
                         <Container maxWidth="xl" className={classes.container}>
                             <Grid container spacing={3}>
-                                <Routes/>
+                                <Routes />
                             </Grid>
                         </Container>
                     </main>
@@ -201,21 +195,21 @@ export default function App() {
                     <Copyright />
                 </Box>
             </Router>
-            );
+        );
     } else {
-        return(
-        <Router>
-            <Container className={clsx(classes.container && classes.centered)}>
-                <CssBaseline/>
-                <div>
-                    <UserRoutes/>
-                    <Box pt={4}>
-                        <Copyright />
-                    </Box>
-                </div>
-            </Container>
-        </Router>
+        return (
+            <Router>
+                <Container className={clsx(classes.container && classes.centered)}>
+                    <CssBaseline />
+                    <div>
+                        <UserRoutes />
+                        <Box pt={4}>
+                            <Copyright />
+                        </Box>
+                    </div>
+                </Container>
+            </Router>
         );
     }
-    
+
 }

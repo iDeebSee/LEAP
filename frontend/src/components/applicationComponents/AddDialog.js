@@ -118,15 +118,15 @@ export default function AddDialog(props) {
     const handleDateChange = (date) => {
         setDisabled(false);
         setError("");
-        if ((date !== null || date !== undefined) && date < endOfLife) {
+        if ((date !== null || date !== undefined) || date < endOfLife) {
             console.log(date);
             setAcquisitionDate(date)
             console.log("acq date " + date);
 
-        }else if (date > endOfLife) {
+        } else if (date > endOfLife) {
             setDisabled(true);
             setError("acquisition date should come before end of life date");
-        }else if (date === null || date === undefined || date === "") {
+        } else if (date === null || date === undefined || date === "") {
             setDisabled(true);
             setError("fill in the required fields! (*)");
         }
@@ -149,7 +149,6 @@ export default function AddDialog(props) {
         } else if (date === null || date === undefined || date === "") {
             setDisabled(true);
             setError("fill in the required fields! (*)");
-
         }
     };
 
@@ -181,7 +180,7 @@ export default function AddDialog(props) {
     return (
         <div>
             {(props.open) ? handleClickOpen : handleClose}
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+            <Button variant="contained" color="primary" onClick={handleClickOpen}>
                 Add
             </Button>
             <Dialog
@@ -235,13 +234,12 @@ export default function AddDialog(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={handleClose} color="secondary">
-                        Cancel
-          </Button>
                     <Button disabled={disabled} onClick={() => props.values(handleRow())} color="primary">
                         Add
-          </Button>
-
+                    </Button>
+                    <Button autoFocus onClick={handleClose} color="secondary">
+                        Cancel
+                    </Button>
                 </DialogActions>
                 <h3 style={{ width: '80%', marginLeft: '10%', marginRight: '10%', }}>{error}</h3>
             </Dialog>
