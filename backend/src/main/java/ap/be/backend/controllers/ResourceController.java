@@ -111,9 +111,4 @@ public class ResourceController {
         }
     }
 
-    @DeleteMapping("/")
-    public void deleteAll() {
-        resourceRepository.deleteAll();
-    }
-
 }

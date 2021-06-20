@@ -89,7 +89,10 @@ public class BussinesProcesController {
         if(bussinesProcesRepository.existsById(id)) {
             BussinesProcesReadDto bussinesproces = bussinesProcesMapper.convertToReadDto(bussinesProcesRepository.findById(id).get());
             return ResponseEntity.ok(new MessageResponse("Successfully found bussinesproces", bussinesproces));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find business process with that ID"));
         }
+       
     }
 
      /** 
@@ -97,16 +100,7 @@ public class BussinesProcesController {
      * @param id id van de bedrijfsproces die verwijdert moet worden.
      * @return een statusbericht
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<MessageResponse> deleteBussinesProces(@PathVariable("id") String id) {
-
-        if (bussinesProcesRepository.existsById(id)) {
-            bussinesProcesRepository.deleteById(id);
-            return ResponseEntity.ok(new MessageResponse("Successfully deleted bussines proces "));
-        } else {
-            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find bussinesproces with that ID"));
-        }
-    }
+    
 
     @PostMapping("/")
         public ResponseEntity<MessageResponse> createResource(@Valid @RequestBody BussinesProcesCreateDto bussinesProcesCreateDto) {
