@@ -1,12 +1,16 @@
 package ap.be.backend.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import ap.be.backend.dtos.readdtos.LinkedCapabilityReadDto;
 import com.mongodb.lang.NonNull;
 
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
@@ -20,15 +24,11 @@ import lombok.Setter;
 @Document(collection = "Applications")
 public class Application {
 
-    @Id
-    private String id;
-    private String name;
-    private String technology;
 
 /** 
  * @return String
  */
-    private String version;
+
 
 /** 
  * @return String
@@ -137,11 +137,15 @@ public class Application {
 /** 
  * @return TIMEValue
  */
+    @Id
+    private String id;
+    private String name;
+    private String technology;
+    private String version;
     private double currentTotalCostPerYear;
     private double toleratedTotalCostPerYear;
     private LocalDate acquisitionDate;
     private LocalDate endOfLife;
-
     private String costCurrency;
     private int importance,
             efficiencySupport,
@@ -151,8 +155,6 @@ public class Application {
             completeness,
             iqCorrectness,
             availability;
-
-    //private final int MAX_RATING = 5;
 
     private int currentScalability;
     private int expectedScalability;
@@ -169,6 +171,11 @@ public class Application {
 
     private int currentValueForMoney;
     private TIMEValue timeValue;
+    @DBRef
+    private Environment environment;
+
+    @DBRef
+    private List<Capability> linkedCapabilities = new ArrayList<Capability>();
 
     /**
      * @param name
@@ -203,7 +210,7 @@ public class Application {
                        @NonNull LocalDate endOfLife, int currentScalability, int expectedScalability, int currentPerformance, int expectedPerformance,
                        int currentSecurityLevel, int expectedSecurityLevel, int currentStability, int expectedStability, int currentValueForMoney,
                        @NonNull TIMEValue timeValue, String costCurrency, int importance, int efficiencySupport, int functionalCoverage, int bfCorrectness,
-                       int futurePotential, int completeness, int iqCorrectness, int availability) {
+                       int futurePotential, int completeness, int iqCorrectness, int availability, @NonNull Environment environment) {
         this.name = name;
         this.technology = technology;
         this.version = version;
@@ -230,6 +237,7 @@ public class Application {
         this.completeness = completeness;
         this.iqCorrectness = iqCorrectness;
         this.availability = availability;
+        this.environment = environment;
     }
 
     

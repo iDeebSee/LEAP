@@ -170,19 +170,19 @@ public class MockDataRunner implements CommandLineRunner {
         Application application1 = new Application("App1", "technology", "version", 2.5, 5.0, LocalDate.now() ,
                 LocalDate.now().plusDays(10), 5, 4, 3, 5,
         0,1, 2, 3, 5, TIMEValue.ELIMINATE,
-        "euro", 5, 5, 5, 5, 5, 5, 5, 5 );
+        "euro", 5, 5, 5, 5, 5, 5, 5, 5 , env1);
 
         Application application2 = new Application("App2", "java", "2.5", 2.5, 5.0, LocalDate.now() ,
                 LocalDate.now().plusDays(15), 5, 4, 5, 5,
                 5,1, 2, 2, 5, TIMEValue.INVEST,
                 "dollar", 5, 5, 5, 5, 5, 5,
-                5, 5 );
+                5, 5 , env1);
         
         Application application3 = new Application("App2", "javascript", "2.5", 2.5, 5.0, LocalDate.now() ,
                 LocalDate.now().plusDays(15), 5, 4, 5, 5,
                 5,1, 2, 2, 5, TIMEValue.INVEST,
                 "dollar", 5, 5, 5, 5, 5, 5,
-                5, 5 );
+                5, 5 , env1);
 
         applicationRepository.save(application1);
         applicationRepository.save(application2);

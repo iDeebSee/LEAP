@@ -1,6 +1,5 @@
 package ap.be.backend.dtos.editdtos;
 
-import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
@@ -8,6 +7,9 @@ import ap.be.backend.dtos.readdtos.LinkedCapabilityReadDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.core.env.Environment;
+
+import java.util.List;
 
 @Data
 @ToString
@@ -24,4 +26,6 @@ public class ResourceEditDto {
     private String description;
 
     private List<LinkedCapabilityReadDto> linkedCapabilities;
+    @NotBlank
+    private Environment environment;
 }
