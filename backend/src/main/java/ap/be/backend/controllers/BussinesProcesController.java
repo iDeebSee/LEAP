@@ -1,6 +1,10 @@
 package ap.be.backend.controllers;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 import ap.be.backend.models.BussinesProces;
 import ap.be.backend.payload.response.MessageResponse;
 import ap.be.backend.repositories.BussinesProcesRepository;
+import ap.be.backend.dtos.createdtos.BussinesProcesCreateDto;
+import ap.be.backend.repositories.EnvironmentRepository;
+import ap.be.backend.services.mappers.BussinesProcesMapper;
+import ap.be.backend.dtos.editdtos.BussinesProcesEditDto;
+
+import ap.be.backend.dtos.readdtos.BussinesProcesReadDto;
+import ap.be.backend.models.Environment;
 
 @RestController
 @RequestMapping("/bussinesproces")
@@ -24,23 +35,23 @@ public class BussinesProcesController {
     @Autowired
     private BussinesProcesRepository bussinesProcesRepository;
 
+
+    @Autowired
+    private EnvironmentRepository environmentRepository;
+
+    @Autowired
+    private BussinesProcesMapper bussinesProcesMapper;
+
     /** 
      * Itereert over elke bedrijfsproces in de repository.
      * @return geeft alle bedrijfsproces terug.
      */
-    @GetMapping
-    public Iterable<BussinesProces> readBussinesProces() {
-        return bussinesProcesRepository.findAll();
-    }
-
+   
     /** 
      * @param id id van de bedrijfsproces die opgehaalt moet worden. 
      * @return geeft een specifieke bedrijfsproces terug.
      */
-    @GetMapping("/{id}")
-    public BussinesProces readBussinesProces(@PathVariable("id") String id) {
-        return bussinesProcesRepository.findById(id).orElseThrow(RuntimeException::new);
-    }
+
 
 
     /** 
@@ -48,30 +59,37 @@ public class BussinesProcesController {
      * @param data ingevulde bedrijfsproces parameters.
      * @return slaat de nieuwe bedrijfsproces op in de repository.
      */
-    @PostMapping
-    public BussinesProces createBussinesProces(@RequestBody LinkedHashMap<Object, Object> data) {
-        System.out.println(data);
-        BussinesProces newBussinesProces = new BussinesProces();
-
-        newBussinesProces.setName(data.get("name").toString());
-        newBussinesProces.setDescription(data.get("description").toString());
-        
-        return bussinesProcesRepository.save(newBussinesProces);
-    }
+    
 
     /** 
      * wijzigt een specifieke bedrijfsproces op basis van de id.
      * @param newBussineProces nieuwe bedrijfsproces parameters.
      * @return Vervangt de oude parameters door de nieuwe.
      */
-    @PutMapping("/{id}")
-    public BussinesProces updBussinesProces(@PathVariable("id") String id, @RequestBody BussinesProces newBussineProces) {
-        BussinesProces bussinesProces = bussinesProcesRepository.findById(id).orElseThrow(RuntimeException::new);
-        if(!newBussineProces.getName().isBlank())
-            bussinesProces.setName(newBussineProces.getName());
-            bussinesProces.setDescription(newBussineProces.getDescription());
+    
 
-        return bussinesProcesRepository.save(bussinesProces);
+    @GetMapping("/{envId}")
+    public ResponseEntity<MessageResponse> readBussinesProcesses(@PathVariable("envId") String envId) {
+        try {
+            List<BussinesProcesReadDto> bussineprocesses = new ArrayList<BussinesProcesReadDto>();
+            Environment environment = environmentRepository.findById(envId).get();
+            if (bussinesProcesRepository.existsByEnvironment(environment)) {
+                bussinesProcesRepository.findAllByEnvironment(environment).get().forEach(BussinesProces -> {
+                    bussineprocesses.add(bussinesProcesMapper.convertToReadDto(BussinesProces));
+                });
+            }
+            return ResponseEntity.ok(new MessageResponse("Successfully got all bussinesprocesses!", bussineprocesses));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to get bussines processes"));
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MessageResponse> readbussinesproces(@PathVariable("id") String id) {
+        if(bussinesProcesRepository.existsById(id)) {
+            BussinesProcesReadDto bussinesproces = bussinesProcesMapper.convertToReadDto(bussinesProcesRepository.findById(id).get());
+            return ResponseEntity.ok(new MessageResponse("Successfully found bussinesproces", bussinesproces));
+        }
     }
 
      /** 
@@ -86,9 +104,40 @@ public class BussinesProcesController {
             bussinesProcesRepository.deleteById(id);
             return ResponseEntity.ok(new MessageResponse("Successfully deleted bussines proces "));
         } else {
-            return ResponseEntity.badRequest().body(new MessageResponse("Item did not exist"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find bussinesproces with that ID"));
         }
     }
 
+    @PostMapping("/")
+        public ResponseEntity<MessageResponse> createResource(@Valid @RequestBody BussinesProcesCreateDto bussinesProcesCreateDto) {
+            try {
+                BussinesProces newbussinesproces = bussinesProcesMapper.convertFromCreateDto(bussinesProcesCreateDto);
+                bussinesProcesRepository.save(newbussinesproces);
+                return ResponseEntity.ok(new MessageResponse("Successfully created bussinesproces"));
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(new MessageResponse("Failed to create bussinesproces"));
+            }
+        }
+
+        @PutMapping("/")
+            public ResponseEntity<MessageResponse> updateResource(@Valid @RequestBody BussinesProcesEditDto bussinesProcesEditDto) {
+                if(bussinesProcesRepository.existsById(bussinesProcesEditDto.getId())) {
+                    BussinesProces updateBussinesProces = bussinesProcesMapper.convertFromEditDto(bussinesProcesEditDto);
+                    bussinesProcesRepository.save(updateBussinesProces);
+                    return ResponseEntity.ok(new MessageResponse("Successfully updated bussinesproces"));
+                } else {
+                    return ResponseEntity.badRequest().body(new MessageResponse("Failed to find bussinesproces with that ID"));
+                }
+            }
+
+            @DeleteMapping("/{id}")
+                public ResponseEntity<MessageResponse> deleteBussinesProcesses(@PathVariable("id") String id) {
+                    if(bussinesProcesRepository.existsById(id)) {
+                        bussinesProcesRepository.deleteById(id);
+                        return ResponseEntity.ok(new MessageResponse("Successfully deleted bussinesproces"));
+                    } else {
+                        return ResponseEntity.badRequest().body(new MessageResponse("Failed to find bussinesproces with that ID"));
+                    }
+                }
 
 }

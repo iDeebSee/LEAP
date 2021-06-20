@@ -1,62 +1,42 @@
 package ap.be.backend.models;
 
+import com.mongodb.lang.NonNull;
+
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
-@NoArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
 
-/** 
- * @return String
- */
 
-/** 
- * @return String
- */
 
-/** 
- * @return String
- */
-
-/** 
- * @return boolean
- */
-
-/** 
- * @return boolean
- */
-
-/** 
- * @return int
- */
-@Data
-
-/** 
- * @return String
- */
 @ToString
-@Document(collection = "BussinesProces")
-public class BussinesProces {
-    
+
+
+@Getter 
+@Setter
+@NoArgsConstructor
+@Document(collection="Resources")
+public class BussinesProces{
+
     @Id
     private String id;
-
     private String name;
-
     private String description;
+    @DBRef
+    private List<Capability> linkedCapabilities = new ArrayList<Capability>();
+    @DBRef
+    private Environment environment;
 
-    /**
-     * @param name the name of the capability.
-     * @param description describes what the capability does within the business.
-     */
-
-    public BussinesProces(String name, String description) throws IllegalArgumentException {
-        
+    public BussinesProces(@NonNull String name, @NonNull String description, @NonNull Environment env){
         this.name = name;
         this.description = description;
-        
+        this.environment = env;
     }
 }
