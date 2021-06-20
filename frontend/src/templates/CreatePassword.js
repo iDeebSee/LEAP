@@ -19,7 +19,10 @@ const useStyles = makeStyles((theme) => ({
         width: '100%'
     },
 }));  
-
+/**
+ * een JSX element met de optie om een wachtwoord aan te maken of te resetten.
+ * @return de JSX element
+ */
 export default function CreatePassword() {
     const classes = useStyles(),
     { token } = useParams(),
@@ -37,6 +40,9 @@ export default function CreatePassword() {
             })
     }, [token, history]);
 
+    /**
+     * Maakt het wachtwoord aan.
+     */
     const createPassword = () => {
         PasswordService.createPassword({token: token, password: password})
             .then(res => {

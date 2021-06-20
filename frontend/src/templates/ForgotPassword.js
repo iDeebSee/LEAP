@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * een JSX element met de optie om een wachtwoord reset aan te vragen of resetten.
+ * @return de JSX element
+ */
 export default function ForgotPassword() {
   const classes = useStyles(),
   [name, setName] = useState(''),
@@ -33,6 +37,9 @@ export default function ForgotPassword() {
 
   const formValid = (name && nameFieldValid) && (email && emailFieldValid);
 
+  /**
+   * Valideert de reset request op basis van de naam & email van de gebruiker.
+   */
   const ValidateResetRequest = () => {
     if(formValid) {
       PasswordService.requestEdit({email: email, name: name})

@@ -33,6 +33,10 @@ const styles = (theme) => ({
 });
 
 class Lvl3CapabilityCard extends Component {
+    /**
+     * Constructor van Lvl3CapabilityCard
+     * @param props gebruikte properties.
+     */
     constructor(props) {
         super(props);
 
@@ -43,6 +47,10 @@ class Lvl3CapabilityCard extends Component {
         };
     }
 
+    /**
+     * Verwijdert een specifieke level 3 capability (kan geen children hebben).
+     * @param capability de level 3 capability die verwijdert moet worden
+     */
     handleDelete(capability) {
         this.setState({capability: {}});
         this.props.handleDelete(capability);

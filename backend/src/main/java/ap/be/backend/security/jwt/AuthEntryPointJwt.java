@@ -16,6 +16,15 @@ import org.springframework.stereotype.Component;
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
+    
+    /** 
+     * Gebruikt om de gebruiker er op aan te wijzen dat je geauthenticeerd moet zijn om een pagina te bekijken.
+     * @param request aanvraag dat zorgt voor ongeldige authenticatie.
+     * @param response error dat wordt teruggestuurd naar de gebruiker.
+     * @param authException wordt afgevuurd bij een autorisatie fout.
+     * @throws ServletException wordt afgevuurd bij een algemene fout.
+     * @throws IOException wordt afgevuurd bij gefaalde of onderbroken i/o processen.
+     */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {

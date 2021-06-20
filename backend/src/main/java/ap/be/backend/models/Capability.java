@@ -76,9 +76,9 @@ public class Capability {
     private Environment environment;
 
     /**
-     * @param name the name of the capability.
-     * @param description describes what the capability does within the business.
-     * @param parent the parent of this capability, has to be an existing capability and cannot be level 3 or lower.
+     * @param name naam van de capability.
+     * @param description beschrijft wat de capability doet binnen het bedrijf.
+     * @param parent de parent van dit capability, de capability moet bestaan en kan niet level 3 of lager zijn.
      */
     public Capability(String name, String description, Capability parent, Environment environment) throws IllegalArgumentException {
         //this(name, description);
@@ -90,6 +90,9 @@ public class Capability {
         }
         this.environment = environment;
     }
+    /**
+     * zet de parent en de capability level
+     */
 
     
     /** 

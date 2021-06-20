@@ -36,6 +36,10 @@ const styles = theme => ({
 });
 
 class CapabilitiesCardList extends Component {
+    /**
+     * Constructor van CapabilitiesCardList.
+     * @param props gebruikte properties.
+     */
     constructor(props) {
         super(props);
 
@@ -53,10 +57,16 @@ class CapabilitiesCardList extends Component {
         };
     }
 
+    /**
+     * Laat alle capabilities zien.
+     */
     componentDidMount() {
         this.getCapabilities();
     }
 
+    /**
+     * Gebruikt om alle capabilities te krijgen.
+     */
     getCapabilities() {
         CapabilityService.getAll()
             .then(res => {
@@ -69,6 +79,9 @@ class CapabilitiesCardList extends Component {
             });
     }
 
+    /**
+     * Sorteert de capabilities op basis van hun level.
+     */
     sortCapabilities() {
         let lvl1Capabilities = [], lvl2Capabilities = [], lvl3Capabilities = [];
         this.state.capabilities.forEach(capability => {       
@@ -89,6 +102,11 @@ class CapabilitiesCardList extends Component {
         this.setState({lvl1Capabilities: lvl1Capabilities, lvl2Capabilities: lvl2Capabilities, lvl3Capabilities: lvl3Capabilities})
     }
 
+    /**
+     * Pusht de level 2 en level 3 capabilities in de juiste variabele.
+     * @param {*} capability 
+     * @returns stopt de verschillende levels capabilities in de juiste property.
+     */
     getCapabilityChildren(capability) {
         const { lvl2Capabilities, lvl3Capabilities } = this.state;
         let lvl2Children = [], lvl3Children = [];

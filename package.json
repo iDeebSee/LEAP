@@ -5,9 +5,11 @@
     "date-fns": "^2.21.3",
     "nanoid": "^3.1.22",
     "prop-types": "^15.7.2",
+    "react-helmet": "^6.1.0",
     "react-validation": "^3.0.7"
   },
   "devDependencies": {
+    "jsdoc": "^3.6.7",
     "eslint-plugin-react-hooks": "^4.2.0"
   }
 }

@@ -57,7 +57,10 @@ function createData(name, technology, version, currentTotalCostPerYear, tolerate
     };
 }
 
-
+/**
+ * useState implementatie
+ * @param props gebruikte properties.
+ */
 function Row(props) {
     const { row } = props;
     const classes = useRowStyles();
@@ -73,11 +76,17 @@ function Row(props) {
         <AddDialog></AddDialog>
     );
 
+    /**
+     * Opent een delete applicatie popup box.
+     */
     const openDeleteDialog = () => {
         setOpenDelete(true);
 
     }
 
+    /**
+     * Sluit een delete applicatie popup box.
+     */
     const closeDeleteDialog = () => {
         setOpenDelete(false);
     }
@@ -199,6 +208,9 @@ export default function SimpleTable() {
     const [map, setMap] = useState(new Map());
     const [application, setApplication] = React.useState([]);
 
+    /**
+     * Geeft alle aplicaties terug.
+     */
     function getApplications() {
         ApplicationsService.getAll().then(res => {
             setApplication(res.data);
@@ -211,6 +223,9 @@ export default function SimpleTable() {
         });
     }
 
+    /**
+     * Verwijdert een aplicatie op basis van id en herlaadt de huidige applicatie lijst.
+     */
     function deleteApplication(id) {
         ApplicationsService.delete(id).then(() => {
             console.log("after delete", application);
@@ -224,11 +239,17 @@ export default function SimpleTable() {
         console.log("application after use effect", application);
     }, [])
 
+    /**
+     * Zorgt ervoor dat de applicatiemapper update.
+     */
     const updateMap = (k, v) => {
         setMap(new Map(map.set(k, v)));
         console.log(k);
     }
 
+    /**
+     * Geeft alle applicatiewaarden terug.
+     */
     function getValues(values) {
 
         console.log("values", values);

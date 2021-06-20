@@ -17,11 +17,16 @@ const useStyles = makeStyles((theme) => ({
         overflow:'scroll',
     }
 }));
-
+/**
+ * Controllert de values links en rechts, zodat ze niet hetzelfde zijn. 
+ */
 function not(a, b) {
     return a.filter((value) => b.indexOf(value) === -1);
 }
 
+/**
+ * Controleert of de values bestaan aan beide kanten
+ */
 function intersection(a, b) {
     return a.filter((value) => b.indexOf(value) !== -1);
 }
@@ -53,24 +58,36 @@ export default function TransferList({leftItems, setLeft, leftTitle, rightItems,
     
         setChecked(newChecked);
     };
-    
+
+    /**
+     * Zet alle items van links naar de rechts.
+     */
     const handleAllRight = () => {
         setRight(right.concat(left));
         setLeft([]);
     };
-    
+
+    /**
+     * De item van de rechterkant dat is gecontroleert wordt naar links verplaatst.
+     */
     const handleCheckedRight = () => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
     };
-    
+
+    /**
+     * Geeft een array terug van alle items die in A zitten die niet gelijkaardig zijn aan een item die in B zitten.
+     */
     const handleCheckedLeft = () => {
         setLeft(left.concat(rightChecked));
         setRight(not(right, rightChecked));
         setChecked(not(checked, rightChecked));
     };
-    
+
+    /**
+     * Zet alle items van rechts naar links.
+     */
     const handleAllLeft = () => {
         setLeft(left.concat(right));
         setRight([]);

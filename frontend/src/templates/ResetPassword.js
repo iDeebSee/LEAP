@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));  
 
+/**
+ * Reset het wachtwoord van een gebruiker.
+ * @returns Een JSX element met de optie om je wachtwoord te resetten.
+ */
 export default function ResetPassword() {
     const classes = useStyles(),
     { token } = useParams(),
@@ -37,6 +41,9 @@ export default function ResetPassword() {
             })
     }, [token, history]);
 
+    /**
+     * Wijzigt het wachtwoord.
+     */
     const resetPassword = () => {
         PasswordService.editPassword({token: token, password: password})
             .then(res => {

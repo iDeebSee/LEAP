@@ -41,6 +41,10 @@ const useStyles = (makeStyles((theme)  => ({
         display: 'flex',
         overflow: 'auto',
         flexDirection: 'column',
+<<<<<<< HEAD
+        width: "100%",
+=======
+>>>>>>> BE--samenhang
     },
     fixedHeight: {
         height: "42rem",
@@ -80,7 +84,39 @@ function StrategyDetailView (props) {
     const [chosenCapabilities, setChosenCapabilities] = useState([]);
     const[open,setOpen]=useState(false);
     const[dialogtext,setdialogtext]=useState("");
+<<<<<<< HEAD
+    
+
+  /**
+   * Geeft alle strategies terug.
+   */
+  function  getStrategy() {
+        StrategyService.getAll()
+            .then(res => {
+                setSTrategy(res.data)
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+
+    /**
+     * Veranderingen in een strategyItem worden gemaakt.
+     */
+    function changeStateStratItem(data)
+    {
+        console.log("data",data);
+        setStrategyItem(data);
+        createStratItem();
+    }
+
+    /**
+     * Creatie van een nieuwe stragegyItem.
+     */
+   function createStratItem() {
+=======
     const { envId, id } = useParams();
+>>>>>>> BE--samenhang
 
     function createStrategyItem() {
         let text = "";
@@ -101,19 +137,50 @@ function StrategyDetailView (props) {
         setdialogtext(text);
     }
 
-
+    /**
+     * Wijzigt een stragegyItem en geeft de lijst met items opnieuw terug.
+     */
     const editStrategyItem = () => {
         strategyItemService.update(strategyItemId, newStrategyItemName, id, chosenCapabilities)
         .then(res => {
             console.log(res.data);
             getStrategyItems();
             setOpenEdit(false);
+<<<<<<< HEAD
+
+=======
+>>>>>>> BE--samenhang
         })
         .catch(e => {
             console.log(e);
         });
     };
 
+<<<<<<< HEAD
+    /**
+     * Geeft alle strategyItems terug.
+     */
+    const getStrategyItems = useCallback(() => {
+        strategyItemService.getAll()
+        .then(res => {
+             setNewStratItem(res.data);
+             console.log("klawi",res.data)
+        })
+        .catch(e => {
+            console.log(e);
+        });
+        }, [])
+
+    /**
+     * Geeft alle strategyItems terug na het renderen.
+     */
+    useEffect(()=>{
+        console.log("rare dingen")
+
+        getStrategyItems();
+
+    },[getStrategyItems])
+=======
 
     const getStrategyItems = useCallback(() => {
         strategyItemService.getAll(id)
@@ -140,11 +207,30 @@ function StrategyDetailView (props) {
         getStrategyItems();
         getCapabilities();
     },[getStrategyItems, getCapabilities])
+>>>>>>> BE--samenhang
 
+    /**
+     * Opent een popup box.
+     */
     function handleOpen() {
         setOpen(true);
     }
 
+<<<<<<< HEAD
+    /**
+     * Sluit een popup box.
+     */
+   function handleClose() {
+       setOpen(false);
+    }
+
+    /**
+     * Opent een Delete popup box op basis van id.
+     */
+     const openDeleteDialog = (id) => {
+         setOpenDelete(true);
+         setID(id); 
+=======
     function handleClose() {
         setOpen(false);
     }
@@ -152,14 +238,27 @@ function StrategyDetailView (props) {
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
         setStrategyItemId(id); 
+>>>>>>> BE--samenhang
     }
 
+    /**
+     * Sluit een Delete popup box.
+     */
     const closeDeleteDialog = () => {
         setOpenDelete(false)
     }
 
+<<<<<<< HEAD
+    /**
+     * Verwijdert een strategyItem op basis van id.
+     */
+    function deleteStrategyItem()
+    {
+        strategyItemService.delete(ID)
+=======
     function deleteStrategyItem() {
         strategyItemService.delete(strategyItemId)
+>>>>>>> BE--samenhang
         .then(res => {
             console.log(res)
             getStrategyItems()
@@ -186,6 +285,25 @@ function StrategyDetailView (props) {
             </DialogActions>
         </Dialog>
     );
+<<<<<<< HEAD
+
+    /**
+     * Opent een edit popup box.
+     */
+    const openEditDialog = (strategyItem) => {
+       setCurrentStratItem(strategyItem);
+       setID(strategyItem.id);
+       setNewNameStratItem(strategyItem.name);
+       setOpenEdit(true);
+    };
+
+    /**
+     * Sluit een edit popup box.
+     */
+    const closeEditDialog = () => {
+       setOpenEdit(false);
+       setCurrentStratItem(null);
+=======
 
     const openEditDialog = (strategyItem) => {
         setStrategyItemId(strategyItem.id);
@@ -198,6 +316,7 @@ function StrategyDetailView (props) {
         setOpenEdit(false);
         getCapabilities();
         setChosenCapabilities([]);
+>>>>>>> BE--samenhang
     }
 
     const handleEditChange = (capabilities) => {
@@ -267,6 +386,40 @@ function StrategyDetailView (props) {
             </DialogActions>
         </Dialog>
     );
+<<<<<<< HEAD
+            
+        return(
+            
+            
+           
+                
+            
+           
+            
+            <Container>
+             <Paper className={clsx(classes.paper, classes.fixedHeight)}>
+            <List>
+            <ListSubheader className={classes.listSubHeader}>strategy Item list</ListSubheader>
+                {newStratItem.map(strat => {
+                    console.log("klawi3",strat)
+                    return (
+                        <ListItem key={nanoid()}>
+                            <ListItemText>{strat.name}</ListItemText>
+                            <ButtonGroup>
+                            <Button onClick={() => {openEditDialog(strat)}}>Edit</Button>
+                            <Button onClick={() => {openDeleteDialog(strat.id)}}>Delete</Button>
+                               
+                            </ButtonGroup>
+                        </ListItem>
+                    );
+                })}
+              
+
+               
+            </List>
+            {editDialog}
+            {deleteDialog}
+=======
     
     //joins all names of the linked capabilities for display in the select
     const joinSelectedItemNames = (selected) => {
@@ -297,9 +450,10 @@ function StrategyDetailView (props) {
                 </List>
                 {editDialog}
                 {deleteDialog}
+>>>>>>> BE--samenhang
             </Paper>
             <ButtonGroup className={classes.buttonGroup}>
-                <Button variant="contained" color="primary" onClick={handleOpen}>Add StrategyItem</Button>
+                <Button variant="contained" color="primary" onClick={handleOpen}>Add Strategy Item</Button>
             </ButtonGroup>
             <Dialog onClose={handleClose} open={open} className={classes.dialog}>
                 <DialogTitle>Create new Strategy Item</DialogTitle>
@@ -351,7 +505,14 @@ function StrategyDetailView (props) {
                 </DialogActions>
             </Dialog>
         </Container>
+<<<<<<< HEAD
+        
+        )
+        
+    }
+=======
     )
 }
+>>>>>>> BE--samenhang
 
 export default StrategyDetailView;

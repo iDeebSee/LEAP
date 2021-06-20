@@ -21,6 +21,8 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
+
+
 export default function Resources() {
 
     const [resources, setResources] = useState([]);
@@ -64,7 +66,9 @@ export default function Resources() {
 
     const classes = useStyles();
 
-
+    /**
+     * Wordt gebruikt om alle resources op te halen.
+     */
     const getAllResources = () => {
         ResourcesService.getAll().then(res => {
             console.log(res.data);
@@ -74,17 +78,30 @@ export default function Resources() {
     }
 
 
-
+    /**
+     * Opent een popup box met de vraag of je de resource zeker wilt verwijderen.
+     * @param id de id van de resource die je wilt verwijderen.
+     */
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
         setResourceID(id);
         console.log(id);
     }
 
+    /**
+     * Opent een popup box waar de user input kan ingeven voor
+     * de creatie van een nieuwe resourve.
+     */
     const openCreateDialog = () => {
         setOpenCreate(true);
     }
 
+    /**
+     * Opent een edit popup box om een specifieke resource te wijzigen.
+     * @param id verandert de huidige id.
+     * @param _name verandert de huidige naam.
+     * @param _description verandert de huidige beschrijving.
+     */
     const openEditDialog = (id, _name, _description) => {
         setResourceID(id)
         setName(_name);
@@ -93,18 +110,30 @@ export default function Resources() {
         setOpenEdit(true);
     }
 
+    /**
+     * Sluit een geopende delete popup box.
+     */
     const closeDeleteDialog = () => {
         setOpenDelete(false);
     }
 
+    /**
+     * Sluit een geopende create popup box.
+     */
     const closeCreateDialog = () => {
         setOpenCreate(false);
     }
 
+    /**
+     * Sluit een geopende edit popup box.
+     */
     const closeEditDialog = () => {
         setOpenEdit(false);
     }
 
+    /**
+     * Verwijdert een resource.
+     */
     const deleteResource = () => {
         console.log(resourceID);
         ResourcesService.delete(resourceID).then(() => {
@@ -113,6 +142,9 @@ export default function Resources() {
         closeDeleteDialog();
     }
 
+    /**
+     * Creërt een resource op basis van de user input.
+     */
     const createResource = () => {
         const data = { name, description }
         console.log(data);
@@ -122,6 +154,9 @@ export default function Resources() {
         closeCreateDialog();
     }
 
+    /**
+     * Wijzigt de parameters van een bestaande resource.
+     */
     const editResource = () => {
         let data = { "name": name, "description": description };
         ResourcesService.update(resourceID, data).then(() => {
@@ -204,7 +239,7 @@ export default function Resources() {
         <Container maxWidth="lg" className={classes.container} style={{ width: '80%', maxWidth: 'none', }}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
-                    <Button variant="outlined" color="primary" onClick={() => openCreateDialog()}>Add</Button>
+                    <Button variant="contained" color="primary" onClick={() => openCreateDialog()}>Add</Button>
                     <Paper >
                         <TableContainer component={Paper}>
                             <Table className={classes.table} aria-label="customized table">

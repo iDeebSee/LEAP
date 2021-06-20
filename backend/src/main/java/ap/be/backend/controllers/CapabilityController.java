@@ -44,6 +44,9 @@ public class CapabilityController {
 
     @Autowired
     private EnvironmentRepository environmentRepository;
+     /**
+     * @return ophalen van capabilties per environment id
+     */
 
     /**
      * @param envId ID of the environment which the capabilities are linked to.
@@ -65,6 +68,9 @@ public class CapabilityController {
         }
         
     }
+     /**
+      * @return ophalen van een bepaalde capability.
+      */
 
     @GetMapping("linkedCapabilities/{envId}")
     public ResponseEntity<MessageResponse> getLinkedCapabilities(@PathVariable("envId") String envId) {

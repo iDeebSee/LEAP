@@ -6,7 +6,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { WorkListItems, secondaryListItems, adminListItems, startWorkListItems } from './components/AsideItems';
 import Copyright from './components/Copyright'
 
-import { 
+import {
     CssBaseline,
     Drawer,
     Box,
@@ -16,7 +16,6 @@ import {
     Typography,
     Divider,
     IconButton,
-    Avatar,
     Container,
     Grid,
 } from '@material-ui/core';
@@ -128,7 +127,7 @@ export default function App() {
     const displayAdminPage = () => {
         let output;
 
-        if(AuthService.isAdmin()) {
+        if (AuthService.isAdmin()) {
             ProtectedAdmin.authenticate();
             output = (
                 <div>
@@ -142,7 +141,7 @@ export default function App() {
             ProtectedAdmin.LogOut();
         }
         return output;
-        
+
     }
 
     //make new router just for environment 
@@ -167,9 +166,6 @@ export default function App() {
                             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                                 Dashboard
                             </Typography>
-                            <IconButton color="inherit">
-                                <Avatar alt="Profile icon" src="" className={classes.large} />
-                            </IconButton>
                         </Toolbar>
                     </AppBar>
                     <Drawer
@@ -205,21 +201,21 @@ export default function App() {
                     <Copyright />
                 </Box>
             </Router>
-            );
+        );
     } else {
-        return(
-        <Router>
-            <Container className={clsx(classes.container && classes.centered)}>
-                <CssBaseline/>
-                <div>
-                    <UserRoutes/>
-                    <Box pt={4}>
-                        <Copyright />
-                    </Box>
-                </div>
-            </Container>
-        </Router>
+        return (
+            <Router>
+                <Container className={clsx(classes.container && classes.centered)}>
+                    <CssBaseline />
+                    <div>
+                        <UserRoutes />
+                        <Box pt={4}>
+                            <Copyright />
+                        </Box>
+                    </div>
+                </Container>
+            </Router>
         );
     }
-    
+
 }

@@ -35,14 +35,40 @@ public class BussinesProcesController {
     @Autowired
     private BussinesProcesRepository bussinesProcesRepository;
 
+
     @Autowired
     private EnvironmentRepository environmentRepository;
 
     @Autowired
     private BussinesProcesMapper bussinesProcesMapper;
 
-    @GetMapping("/{envId}")
+    /** 
+     * Itereert over elke bedrijfsproces in de repository.
+     * @return geeft alle bedrijfsproces terug.
+     */
+   
+    /** 
+     * @param id id van de bedrijfsproces die opgehaalt moet worden. 
+     * @return geeft een specifieke bedrijfsproces terug.
+     */
+
+
+
+    /** 
+     * Creatie van een nieuwe bedrijfsproces.
+     * @param data ingevulde bedrijfsproces parameters.
+     * @return slaat de nieuwe bedrijfsproces op in de repository.
+     */
     
+
+    /** 
+     * wijzigt een specifieke bedrijfsproces op basis van de id.
+     * @param newBussineProces nieuwe bedrijfsproces parameters.
+     * @return Vervangt de oude parameters door de nieuwe.
+     */
+    
+
+    @GetMapping("/{envId}")
     public ResponseEntity<MessageResponse> readBussinesProcesses(@PathVariable("envId") String envId) {
         try {
             List<BussinesProcesReadDto> bussineprocesses = new ArrayList<BussinesProcesReadDto>();
@@ -59,18 +85,30 @@ public class BussinesProcesController {
     }
 
     @GetMapping("/{id}")
-    
     public ResponseEntity<MessageResponse> readbussinesproces(@PathVariable("id") String id) {
         if(bussinesProcesRepository.existsById(id)) {
             BussinesProcesReadDto bussinesproces = bussinesProcesMapper.convertToReadDto(bussinesProcesRepository.findById(id).get());
             return ResponseEntity.ok(new MessageResponse("Successfully found bussinesproces", bussinesproces));
+        }
+    }
+
+     /** 
+     * Verwijdert een specifieke bedrijfsproces op basis van id.
+     * @param id id van de bedrijfsproces die verwijdert moet worden.
+     * @return een statusbericht
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deleteBussinesProces(@PathVariable("id") String id) {
+
+        if (bussinesProcesRepository.existsById(id)) {
+            bussinesProcesRepository.deleteById(id);
+            return ResponseEntity.ok(new MessageResponse("Successfully deleted bussines proces "));
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Failed to find bussinesproces with that ID"));
         }
     }
 
     @PostMapping("/")
-    
         public ResponseEntity<MessageResponse> createResource(@Valid @RequestBody BussinesProcesCreateDto bussinesProcesCreateDto) {
             try {
                 BussinesProces newbussinesproces = bussinesProcesMapper.convertFromCreateDto(bussinesProcesCreateDto);
@@ -82,7 +120,6 @@ public class BussinesProcesController {
         }
 
         @PutMapping("/")
-        
             public ResponseEntity<MessageResponse> updateResource(@Valid @RequestBody BussinesProcesEditDto bussinesProcesEditDto) {
                 if(bussinesProcesRepository.existsById(bussinesProcesEditDto.getId())) {
                     BussinesProces updateBussinesProces = bussinesProcesMapper.convertFromEditDto(bussinesProcesEditDto);
@@ -94,7 +131,6 @@ public class BussinesProcesController {
             }
 
             @DeleteMapping("/{id}")
-            
                 public ResponseEntity<MessageResponse> deleteBussinesProcesses(@PathVariable("id") String id) {
                     if(bussinesProcesRepository.existsById(id)) {
                         bussinesProcesRepository.deleteById(id);

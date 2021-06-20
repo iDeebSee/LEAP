@@ -44,7 +44,10 @@ const useStyles = (makeStyles((theme) => ({
         width: "100%"
     }
 })));
-
+/**
+ * Implementatie van useState.
+ * @param props Gebruikte properties voor CapabilityList.
+ */
 const CapabilityList = (props) => {
     const classes = useStyles(),
     capabilities = props.data,
@@ -56,15 +59,25 @@ const CapabilityList = (props) => {
     [id, setId] = useState(''),
     [currentCap, setCurrentCap] = useState(null);
 
+    /**
+     * Opent een popup box met de vraag of je de capability zeker wilt verwijderen.
+     * @param id de id van de capability die je wilt verwijderen.
+     */
     const openDeleteDialog = (id) => {
         setOpenDelete(true);
         setId(id);
     }
 
+    /**
+     * Sluit de popup box die werd geopend nadat openDeleteDialog werd afgevuurd.
+     */
     const closeDeleteDialog = () => {
         setOpenDelete(false);
     }
 
+    /**
+     * Verwijdert de capability 
+     */
     const deleteCapability = () => {
         props.onDelete(id);
         closeDeleteDialog();
@@ -87,7 +100,9 @@ const CapabilityList = (props) => {
         </Dialog>
     );
     
-
+    /**
+     * Wijzigt de parameters van een bestaande capability.
+     */
     const editCapability = () => {
         CapabilityService.update(props.envId, id, newName, newDesc, newParentId)
         .then(res => {
@@ -100,6 +115,12 @@ const CapabilityList = (props) => {
         });
     };
 
+    /**
+     *Zorgt ervoor dat bij het wijzigen van een parent capability 
+     * het niet mogelijk is om die parent capability een child als parent in te geven.
+     * @param capability de capability die je aan het wijzigen bent
+     * @returns een boolean die teruggeeft of een capability een parent kan zijn van een andere.
+     */
     const notInHierarchy = (capability) => {
         let output = true;
         if(currentCap !== null) {
@@ -114,6 +135,10 @@ const CapabilityList = (props) => {
         }
     };
 
+    /**
+     * Opent een edit popup box om een specifieke capability te wijzigen.
+     * @param capability de capability die gewijzigd moet worden.
+     */
     const openEditDialog = (capability) => {
         setCurrentCap(capability);
         setId(capability.id);
@@ -122,6 +147,9 @@ const CapabilityList = (props) => {
         setOpenedit(true);
     };
 
+    /**
+     * Sluit een geopende edit popup box.
+     */
     const closeEditDialog = () => {
         setOpenedit(false);
         setCurrentCap(null);

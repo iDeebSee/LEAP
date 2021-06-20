@@ -34,6 +34,10 @@ const styles = (theme) => ({
 });
 
 class Lvl2CapabilityCard extends Component {
+    /**
+     * Constructor van Lvl2CapabilityCard.
+     * @param props gebruikte properties.
+     */
     constructor(props) {
         super(props);
 
@@ -45,6 +49,10 @@ class Lvl2CapabilityCard extends Component {
         }
     }
 
+    /**
+     * Verwijdert een specifieke level 2 capability en al zijn children.
+     * @param capability de level 2 capability die verwijdert moet worden.
+     */
     handleDelete(capability) {
         this.setState({capability: {}, children: []});
         this.props.handleDelete(capability);

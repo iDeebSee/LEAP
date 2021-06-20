@@ -44,7 +44,12 @@ public class PasswordController {
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
-    
+
+    /**
+     * Een controle of de gebruiker wel bestaat en dan een request om wachtwoord te veranderen en een token om binnen de dag het wachtwoord nog te veranderen
+     * anders zal de email verlopen dit is dus om de email te versturen
+     * @return een statusbericht.
+     */
     @PostMapping("/edit/request_edit")
     public ResponseEntity<MessageResponse> newPassword(@Valid @RequestBody PasswordChangeRequestDto passwordChangeRequestDto) {
         if(userRepository.existsByNameAndEmail(passwordChangeRequestDto.getName(), passwordChangeRequestDto.getEmail())) {
@@ -59,6 +64,10 @@ public class PasswordController {
         }
     }
 
+    /**
+     * Controleert of de wachtwoord reset token nog geldig is.
+     * @return een statusbericht over de geldigheid.
+     */
     @GetMapping("/edit/check_token/{token}")
     public ResponseEntity<MessageResponse> checkResetToken(@PathVariable("token") String token) {
         if(passwordResetTokenRepository.existsByToken(token)) {
@@ -68,6 +77,10 @@ public class PasswordController {
         }
     }
 
+    /**
+     * Verandering van het wachtwoord
+     * @return een statusbericht met
+     */
     @PutMapping("/edit/edit_password")
     public ResponseEntity<MessageResponse> resetPassword(@RequestBody PasswordChangeDto passwordChangeDto) {
         if(passwordResetTokenRepository.existsByToken(passwordChangeDto.getToken())) {
@@ -81,6 +94,10 @@ public class PasswordController {
         }
     }
 
+    /**
+     * verstuurt de email om een wachtwoord aan te maken
+     * @return een statusbericht.
+     */
     @PostMapping("/create/request_creation")
     public ResponseEntity<MessageResponse> requestPasswordCreation(@Valid @RequestBody PasswordChangeRequestDto passwordChangeRequestDto) {
         if(userRepository.existsByNameAndEmail(passwordChangeRequestDto.getName(), passwordChangeRequestDto.getEmail())) {
@@ -95,6 +112,10 @@ public class PasswordController {
         }
     }
 
+    /**
+     * Controleert de token vooraleer een wachtwoord wordt aangemaakt.
+     * @return een statusbericht over de token.
+     */
     @GetMapping("/create/check_token/{token}")
     public ResponseEntity<MessageResponse> checkCreateToken(@PathVariable("token") String token) {
         if(passwordCreateTokenRepository.existsByToken(token)) {
@@ -104,6 +125,10 @@ public class PasswordController {
         }   
     }
 
+    /**
+     * Maakt effectief een wachtwoord aan.
+     * @return een statusbericht.
+     */
     @PutMapping("/create/create_password")
     public ResponseEntity<MessageResponse> createPassword(@RequestBody PasswordChangeDto passwordChangeDto) {
         if(passwordCreateTokenRepository.existsByToken(passwordChangeDto.getToken())) {

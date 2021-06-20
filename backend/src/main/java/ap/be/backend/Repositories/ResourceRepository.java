@@ -1,7 +1,6 @@
 package ap.be.backend.repositories;
 
-import ap.be.backend.models.Environment;
-import ap.be.backend.models.Resource;
+import ap.be.backend.models.*;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

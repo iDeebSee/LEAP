@@ -8,6 +8,7 @@ import ap.be.backend.dtos.readdtos.LinkedCapabilityReadDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.core.env.Environment;
 
 @Data
 @ToString
@@ -19,6 +20,9 @@ public class ResourceCreateDto {
 
     @NotBlank
     private String description;
-    
+
     private List<LinkedCapabilityReadDto> linkedCapabilities;
+
+    @NotBlank
+    private Environment environment;
 }

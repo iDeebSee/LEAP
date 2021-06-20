@@ -67,9 +67,9 @@ export default function Applications() {
                                 </div>
                             </Paper>
                             <br></br>
-                            <Paper className={fixedHeightPaper}>
+                            
                                 <SimpleTable></SimpleTable>
-                            </Paper>
+                        
                         </Grid>
                     </Grid>
                 </Container>

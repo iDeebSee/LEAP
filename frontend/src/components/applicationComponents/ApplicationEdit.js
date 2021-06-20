@@ -50,6 +50,11 @@ export default function ApplicationEdit(props) {
             textAlign: 'center',
             color: theme.palette.text.secondary,
         },
+        datePicker: {
+            '& > .MuiGrid-justify-xs-space-around': {
+                justifyContent: 'inherit',
+            },
+        },
     }));
 
     const location = props.location.pathname;
@@ -93,6 +98,9 @@ export default function ApplicationEdit(props) {
     }, [])
 
 
+    /**
+     * Wijziging van de acquisition datum.
+     */
     const handleDateChange = (date) => {
         if (date !== null || date !== undefined) {
             console.log(date);
@@ -102,6 +110,9 @@ export default function ApplicationEdit(props) {
         }
     };
 
+    /**
+     * Wijziging van de end of life datum.
+     */
     const handleEndOfLife = (date) => {
         if (date !== null || date !== undefined) {
             console.log(date);
@@ -110,6 +121,9 @@ export default function ApplicationEdit(props) {
         }
     };
 
+    /**
+     * Geeft alle timeValues terug.
+     */
     const getTimeValues = () => {
         ApplicationsService.getTimeValues().then(res => {
             setTimeValues(res.data);
@@ -119,12 +133,17 @@ export default function ApplicationEdit(props) {
         });
     }
 
+    /**
+     *behandelt timeValue aanpassingen.
+     */
     const handleChange = (event) => {
         setTimeValue(event.target.value);
         console.log(event.target.value);
     };
 
-
+    /**
+     * Update elke parameter.
+     */
     const update = () => {
 
         ApplicationsService.update(id, {
@@ -160,6 +179,9 @@ export default function ApplicationEdit(props) {
         });
     }
 
+    /**
+     * Wijzigt de naam van een applicatie.
+     */
     const handleNameChange = (e) => {
         setName(e.target.value);
         console.log(name);
@@ -185,16 +207,16 @@ export default function ApplicationEdit(props) {
                 <Grid item xs={3}>
                     <TextField style={{ padding: '10px', }} label="tolerated total cost per year" type="number" value={toleratedTotalCostPerYear} onChange={(e) => (e.target.value < 0) ? setToleratedTotalCostPerYear(0) : setToleratedTotalCostPerYear(e.target.value)} />
                 </Grid>
-                <Grid item xs={3}>
-                    <DatePicker xs={3} style={{ padding: '10px', justifyContent: 'inherit', width: '80%', }} label="acquisition date" date={handleDateChange} name="Acquisition date" value={acquisitionDate} />
+                <Grid item xs={3} className={classes.datePicker}>
+                    <DatePicker xs={3} label="acquisition date" date={handleDateChange} name="Acquisition date" value={acquisitionDate} />
                 </Grid>
-                <Grid item xs={3}>
-                    <DatePicker xs={3} style={{ padding: '10px', justifyContent: 'inherit', width: '80%', }} label="end of life" date={handleEndOfLife} name="End of life date" value={endOfLife} />
+                <Grid item xs={3} className={classes.datePicker}>
+                    <DatePicker xs={3} label="end of life" date={handleEndOfLife} name="End of life date" value={endOfLife} />
                 </Grid>
                 <Grid item xs={3}>
                     <InputLabel style={{ fontSize: '11px', position: 'relative', top: '20px', }} id="demo-simple-select-label">TIME Value</InputLabel>
                     <Select
-                        style={{ position: 'relative', top: '20px', width: '80%', }}
+                        style={{ position: 'relative', top: '20px', width: '50%', }}
                         xs={3}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
@@ -222,9 +244,11 @@ export default function ApplicationEdit(props) {
                 <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="completeness" type="number" value={completeness} onChange={(e) => (e.target.value > 5) ? setCompleteness(5) : (e.target.value < 0) ? setCompleteness(0) : setCompleteness(e.target.value)} /></Grid>
                 <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="correctness" type="number" value={iqCorrectness} onChange={(e) => (e.target.value > 5) ? setIqCorrectness(5) : (e.target.value < 0) ? setIqCorrectness(0) : setIqCorrectness(e.target.value)} /></Grid>
                 <Grid item xs={3}><TextField xs={3} style={{ padding: '10px', }} label="availability" type="number" value={availability} onChange={(e) => (e.target.value > 5) ? setAvailability(5) : (e.target.value < 0) ? setAvailability(0) : setAvailability(e.target.value)} /></Grid>
-                <Button style={{ margin: 'auto' }} onClick={update} color="primary">
+                <br></br>
+                <br></br>
+                <Button style={{marginLeft: '44%', marginTop: '3%',}} onClick={update} color="primary">
                     Update
-            </Button>
+                </Button>
             </Grid>
         </div>
     )

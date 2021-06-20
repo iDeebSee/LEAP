@@ -5,9 +5,11 @@ import ap.be.backend.dtos.createdtos.ResourceCreateDto;
 import ap.be.backend.dtos.editdtos.ResourceEditDto;
 
 import ap.be.backend.dtos.readdtos.ResourceReadDto;
+import ap.be.backend.models.Capability;
 import ap.be.backend.models.Environment;
 
 import ap.be.backend.payload.response.MessageResponse;
+import ap.be.backend.repositories.CapabilityRepository;
 import ap.be.backend.repositories.EnvironmentRepository;
 import ap.be.backend.repositories.ResourceRepository;
 import ap.be.backend.models.Resource;
@@ -33,7 +35,7 @@ public class ResourceController {
     @Autowired
     private ResourceMapper resourceMapper;
 
-    @GetMapping("/{envId}")
+    @GetMapping("/{envId}/")
     // public Iterable<Resource> readResources() {
     //     return resourcesRepository.findAll();
     // }

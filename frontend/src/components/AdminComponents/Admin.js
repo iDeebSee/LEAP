@@ -35,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Index() {
+    /**
+     * Implementatie van useState
+     * @param props gebruikte properties.
+     */
     const classes = useStyles(),
     [hideEdit, setHideEdit] = useState(true),
     [users, setUsers] = useState([]),
@@ -46,6 +50,9 @@ export default function Index() {
     [nameFieldValid, setNameFieldValid] = useState(true),
     [emailFieldValid, setEmailFieldValid] = useState(true);
 
+    /**
+     * Alle rollen worden opgehaald.
+     */
     const getRoles = useCallback(() => {
         AuthService.getRoles()
             .then(res => {
@@ -57,7 +64,9 @@ export default function Index() {
                 console.error(e);
             });
     }, []);
-
+    /**
+     * Alle gebruikers worden opgehaald.
+     */
     const getUsers = useCallback(() => {
         AuthService.getAll()
             .then(res => {
@@ -75,17 +84,26 @@ export default function Index() {
         getRoles();
     }, [getUsers, getRoles]);
 
+    /**
+     * Maakt alle velden leeg.
+     */
     const resetFields = () => {
         setName("");
         setEmail("");
         setChosenRoles([]);
     }
 
+    /**
+     * Bij het resetten van de page, moest er een veldje leeg zijn dat dat opnieuw valid wordt.
+     */
     const resetValidities = () => {
         setNameFieldValid(true);
         setEmailFieldValid(true);
     }
 
+    /**
+     * reset de form.
+     */
     const resetForm = () => {
         resetFields();
         resetValidities();
@@ -93,6 +111,9 @@ export default function Index() {
         getRoles();
     }
 
+    /**
+     * Wordt gebruikt om op een gebruiksvriendelijke manier gegevens van de gebruiker te wijzigen.
+     */
     const fillEditForm = (user) => {
         setId(user.id);
         setName(user.name);
@@ -102,7 +123,9 @@ export default function Index() {
     };
 
     const formValid = (name && nameFieldValid) && (email && emailFieldValid);
-
+    /**
+     * Wordt gebruikt om een gebruiker aan te maken.
+     */
     const createUser = () => {
         if(formValid) {
             AuthService.register(name, email, chosenRoles)
@@ -124,6 +147,9 @@ export default function Index() {
         }
     };
 
+    /**
+     * Wordt gebruikt om informatie van een gebruiker te wijzigen.
+     */
     const editUser = () => {
         if(formValid) {
             AuthService.update(id, {name: name, email: email, roles: chosenRoles})
@@ -138,6 +164,9 @@ export default function Index() {
         }
     };
 
+    /**
+     * Verwijdert een gebruiker op basis van id.
+     */
     const deleteUser = (id) => {
         AuthService.delete(id)
             .then(res => {

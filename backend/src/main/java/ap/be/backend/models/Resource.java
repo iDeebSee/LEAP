@@ -18,33 +18,40 @@ import java.util.List;
 /** 
  * @return String
  */
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return String
+ */
+
+/** 
+ * @return String
+ */
 @ToString
-
-/** 
- * @return String
- */
-
-/** 
- * @return String
- */
-
-/** 
- * @return String
- */
 @Getter 
 @Setter
 @NoArgsConstructor
 @Document(collection="Resources")
 public class Resource{
+    
+    /**
+     * @param id id van de resource
+     * @param name naam van de resource
+     * @param description beschrijving van resource
+     */
 
     @Id
     private String id;
     private String name;
     private String description;
     @DBRef
-    private List<Capability> linkedCapabilities = new ArrayList<Capability>();
-    @DBRef
     private Environment environment;
+
+    @DBRef
+    private List<Capability> linkedCapabilities = new ArrayList<Capability>();
 
     public Resource(@NonNull String name, @NonNull String description, @NonNull Environment env){
         this.name = name;

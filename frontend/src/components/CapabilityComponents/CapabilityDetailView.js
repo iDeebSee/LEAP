@@ -17,6 +17,10 @@ const styles = theme => ({
 });
 
 class CapabilityDetailView extends Component {
+    /**
+     * Contstructor van CapabilityDetailView.
+     * @param props gebruikte properties.
+     */
     constructor(props) {
         super(props);
 
@@ -29,10 +33,17 @@ class CapabilityDetailView extends Component {
         };
     }
 
+    /**
+     * Laadt de juiste capability op basis van de id.
+     */
     componentDidMount() {
         this.getCapability(this.props.match.params.id);
     }
 
+    /**
+     * Wordt gebruikt om een specifieke capability terug te krijgen.
+     * @param id de id van de capability moet opgehaald worden.
+     */
     getCapability(id) {
         CapabilityService.get(id)
             .then(res => {
