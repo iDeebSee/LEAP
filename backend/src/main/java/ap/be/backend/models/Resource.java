@@ -46,8 +46,9 @@ public class Resource{
     @DBRef
     private Environment environment;
 
-    public Resource(@NonNull String name, @NonNull String description){
+    public Resource(@NonNull String name, @NonNull String description, @NonNull Environment env){
         this.name = name;
         this.description = description;
+        this.environment = env;
     }
 }

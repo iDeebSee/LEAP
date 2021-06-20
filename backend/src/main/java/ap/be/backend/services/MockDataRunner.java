@@ -191,9 +191,9 @@ public class MockDataRunner implements CommandLineRunner {
             logger.info("{}", app);
         });
 
-        Resource resource1 = new Resource("Resource 1", "eerste resource");
-        Resource resource2 = new Resource("Resource 2", "tweede resource");
-        Resource resource3 = new Resource("Resource 3", "derde resource");
+        Resource resource1 = new Resource("Resource 1", "eerste resource", env1);
+        Resource resource2 = new Resource("Resource 2", "tweede resource", env1);
+        Resource resource3 = new Resource("Resource 3", "derde resource", env1);
 
         resourceRepository.save(resource1);
         resourceRepository.save(resource2);
