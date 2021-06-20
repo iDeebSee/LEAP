@@ -1,5 +1,5 @@
 import React from 'react';
-import Index from "../templates/Index.js";
+import EnvironmentsView from "./EnvironmentComponents/EnvironmentsView.js";
 import Applications from "../templates/Applications.js";
 import CapabilityDetailView from './CapabilityComponents/CapabilityDetailView';
 import CapabilitiesView from './CapabilityComponents/CapabilitiesView'
@@ -8,7 +8,6 @@ import SignIn from '../templates/SignIn';
 import ForgotPassword from '../templates/ForgotPassword';
 import StrategyDetailView from './StrategyComponents/StrategyDetailView';
 import StrategiesView from './StrategyComponents/StrategiesView';
-import EnvironmentDetailView from '../components/EnvironmentDetailView'
 import { ProtectedAdmin } from '../services/ProtectRoute';
 import ApplicationEdit from '../components/applicationComponents/ApplicationEdit';
 import Resources from '../templates/Resources';
@@ -19,22 +18,26 @@ import BussinesProces from '../templates/BussinesProces'
 import {
     Switch,
     Route,
-    Redirect
+    Redirect,
 } from "react-router-dom";
 import ResetPassword from '../templates/ResetPassword.js';
 import CreatePassword from '../templates/CreatePassword.js';
 
-export default function Routes() {
+export default function Routes(props) {
+
+    const setEnvId = (id) => {
+        props.setEnvId(id);
+    }
+
     return (
         <Switch>
-            <Route exact path="/home" component={Index} />
-            <Route exact path="/capabilities" component={CapabilitiesView} />
-            <Route exact path="/capabilities/:id" component={CapabilityDetailView} />
-            <Route exact path="/Environment/:id" component={EnvironmentDetailView} />
-            <Route exact path="/applications/:id" component={ApplicationEdit} />
-            <Route exact path="/applications" component={Applications} />
-            <Route exact path="/strategy" component={StrategiesView} />
-            <Route exact path="/strategy/:id" component={StrategyDetailView} />
+            <Route exact path="/home" render={() => <EnvironmentsView setEnvId={setEnvId}/>} />
+            <Route exact path="/capabilities/:envId" component={CapabilitiesView} />
+            <Route exact path="/capability/:envId/:id" component={CapabilityDetailView} />
+            <Route exact path="/applications/:envId" component={Applications} />
+            <Route exact path="/application/:envId/:id" component={ApplicationEdit} />
+            <Route exact path="/strategies/:envId" component={StrategiesView} />
+            <Route exact path="/strategy/:envId/:id" component={StrategyDetailView} />
             <Route exact path="/resources/" component={Resources} />
             <Route exact path="/businessprocess/" component={BussinesProces} />
             <AdminRoute path="/admin" component={Admin} />
@@ -48,12 +51,10 @@ const AdminRoute = ({ component: Component, ...rest }) => {
     return (
         <Route {...rest} render={props => {
             return (
-                ProtectedAdmin.getAuth() ?
+                ProtectedAdmin.getAuth() ? 
                     <Component {...props} /> : <Redirect to={{ pathname: "/home" }} />
             )
-        }
-        }
-        />
+        }}/>
     );
 }
 

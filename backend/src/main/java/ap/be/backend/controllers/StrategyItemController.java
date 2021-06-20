@@ -1,89 +1,99 @@
 package ap.be.backend.controllers;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ap.be.backend.dtos.createdtos.StrategyItemCreateDto;
+import ap.be.backend.dtos.editdtos.StrategyItemEditDto;
+import ap.be.backend.dtos.readdtos.StrategyItemReadDto;
+import ap.be.backend.models.Strategy;
 import ap.be.backend.models.StrategyItem;
 import ap.be.backend.payload.response.MessageResponse;
 import ap.be.backend.repositories.StrategyItemRepository;
+import ap.be.backend.repositories.StrategyRepository;
+import ap.be.backend.services.mappers.StrategyItemMapper;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@RequestMapping("/strategyItem")
 public class StrategyItemController {
 
     @Autowired
     private StrategyItemRepository strategyItemRepository;
 
-    /** 
-     * Itereert over elke strategieItem in de repository.
-     * @return geeft alle strategieItems terug.
-     */
-    @GetMapping("/strategyItem")
-    public Iterable<StrategyItem> readStrategies() {
-        return strategyItemRepository.findAll();
-    }
+    @Autowired 
+    private StrategyRepository strategyRepository;
 
-    /** 
-     * @param id id van de strategieItem die opgehaalt moet worden. 
-     * @return geeft een specifieke strategieItem terug.
-     */
-    @GetMapping("/strategyItem/{id}")
-    public StrategyItem readStrategy(@PathVariable("id") String id) {
-        return strategyItemRepository.findById(id).orElseThrow(RuntimeException::new);
-    }
+    @Autowired 
+    private StrategyItemMapper strategyItemMapper;
 
-    /** 
-     * Creatie van een nieuwe strategieItem.
-     * @param data ingevulde strategieItem parameters.
-     * @return slaat de nieuwe strategieItems op in de repository.
-     */
-    @PostMapping("/strategyItem")
-    public StrategyItem createStrategy(@RequestBody LinkedHashMap<Object, Object> data) {
-        System.out.println(data);
-        StrategyItem newStrategyItem = new StrategyItem();
-
-        newStrategyItem.setName(data.get("name").toString());
-        return strategyItemRepository.save(newStrategyItem);
-    }
-
-    /** 
-     * wijzigt een specifieke strategieItem op basis van de id.
-     * @param newStrategyItem nieuwe strategieItem parameters.
-     * @return Vervangt de oude parameters door de nieuwe.
-     */
-    @PutMapping("/strategyItem/{id}")
-    public StrategyItem updStrategy(@PathVariable("id") String id, @RequestBody StrategyItem newStrategyItem) {
-        StrategyItem strategy = strategyItemRepository.findById(id).orElseThrow(RuntimeException::new);
-        if(!newStrategyItem.getName().isBlank())
-            strategy.setName(newStrategyItem.getName());
-        return strategyItemRepository.save(strategy);
-    }
-
-     /** 
-     * Verwijdert een specifieke strategyItem op basis van id.
-     * @param id id van de strategieItem die verwijdert moet worden.
-     * @return een statusbericht
-     */
-    @DeleteMapping("/strategyItem/{id}")
-    public ResponseEntity<MessageResponse> deleteStrategy(@PathVariable("id") String id) {
-
-        if (strategyItemRepository.existsById(id)) {
-            strategyItemRepository.deleteById(id);
-            return ResponseEntity.ok(new MessageResponse("Successfully deleted strategy item"));
+    @GetMapping("/strategyItems/{strategyId}")
+    public ResponseEntity<MessageResponse> readStrategies(@PathVariable("strategyId") String strategyId) {
+        if(strategyRepository.existsById(strategyId)) {
+            List<StrategyItemReadDto> strategyItems = new ArrayList<StrategyItemReadDto>();
+            Strategy strategy = strategyRepository.findById(strategyId).get();
+            if(strategyItemRepository.existsByStrategy(strategy)) {
+                strategyItemRepository.findAllByStrategy(strategy).get().forEach(strategyItem -> {
+                    strategyItems.add(strategyItemMapper.convertToReadDto(strategyItem));
+                });
+            }
+            return ResponseEntity.ok(new MessageResponse("Successfully got all strategy items!", strategyItems));
         } else {
-            return ResponseEntity.badRequest().body(new MessageResponse("Item did not exist"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find strategy by that ID"));
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<MessageResponse> readStrategy(@PathVariable("id") String id) {
+        if(strategyItemRepository.existsById(id)) {
+            StrategyItemReadDto strategyItem = strategyItemMapper.convertToReadDto(strategyItemRepository.findById(id).get());
+            return ResponseEntity.ok(new MessageResponse("Successfully got strategy item!", strategyItem));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find strategy item by that ID"));
+        }
+    }
 
+    @PostMapping("/")
+    public ResponseEntity<MessageResponse> createStrategy(@Valid @RequestBody StrategyItemCreateDto strategyItemCreateDto) {
+        try {
+            StrategyItem strategyItem = strategyItemMapper.convertFromCreateDto(strategyItemCreateDto);
+            strategyItemRepository.save(strategyItem);
+            return ResponseEntity.ok(new MessageResponse("Successfully created new strategy item!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to create strategy item"));
+        }
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<MessageResponse> updateStrategy(@Valid @RequestBody StrategyItemEditDto strategyItemEditDto) {
+        if(strategyItemRepository.existsById(strategyItemEditDto.getId())) {
+            StrategyItem strategyItem = strategyItemMapper.convertFromEditDto(strategyItemEditDto);
+            strategyItemRepository.save(strategyItem);
+            return ResponseEntity.ok(new MessageResponse("Successfully updated strategy item!"));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to update strategy item"));
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deleteStrategy(@PathVariable("id") String id) {
+        if(strategyItemRepository.existsById(id)) {
+            strategyItemRepository.deleteById(id);
+            return ResponseEntity.ok(new MessageResponse("Successfully deleted strategy item"));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find strategy item by that ID"));
+        }
+    }
 }

@@ -26,14 +26,11 @@ public class EnvironmentIntegrationTest {
         Environment env = new Environment();
         env.setId("1");
         env.setName("env1");
-        env.setDescription("integration testing env1");
-
 
         envirenmentRepository.save(env);
         
         Optional<?> queryResult = envirenmentRepository.findById("1");
         assertFalse(queryResult.isEmpty());
         assertNotNull(queryResult.get());
-   
     }
 }

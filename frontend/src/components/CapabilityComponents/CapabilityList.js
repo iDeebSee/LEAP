@@ -104,14 +104,10 @@ const CapabilityList = (props) => {
      * Wijzigt de parameters van een bestaande capability.
      */
     const editCapability = () => {
-        let data = {"name": newName, "description": newDesc};
-        if(newParentId != null) {
-            data.parent = newParentId;
-        }
-        CapabilityService.update(id, data)
+        CapabilityService.update(props.envId, id, newName, newDesc, newParentId)
         .then(res => {
             console.log(res.data);
-            props.getCapabilities();
+            props.getCapabilities(props.envId);
             setOpenedit(false);
         })
         .catch(e => {
@@ -225,7 +221,7 @@ const CapabilityList = (props) => {
                         <ListItem key={nanoid()}>
                             <ListItemText>{cap.name}</ListItemText>
                             <ButtonGroup>
-                                <Button component={Link} to={`/capabilities/${cap.id}`}>View</Button>
+                                <Button component={Link} to={`/capability/${props.envId}/${cap.id}`}>View</Button>
                                 <Button onClick={() => {openEditDialog(cap)}}>Edit</Button>
                                 <Button onClick={() => {openDeleteDialog(cap.id)}}>Delete</Button>
                             </ButtonGroup>

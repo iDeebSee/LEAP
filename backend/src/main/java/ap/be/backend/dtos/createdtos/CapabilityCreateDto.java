@@ -18,4 +18,7 @@ public class CapabilityCreateDto {
     private String description;
 
     private String parent;
+
+    @NotBlank
+    private String environment;
 }

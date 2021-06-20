@@ -3,8 +3,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { NameField, EmailField } from '../components/AdminComponents/TextFields'
-import AuthService from '../services/Auth.service';
+import { NameField, EmailField } from '../components/TextFields'
 import { Paper } from '@material-ui/core';
 import PasswordService from '../services/Password.service';
 const useStyles = makeStyles((theme) => ({

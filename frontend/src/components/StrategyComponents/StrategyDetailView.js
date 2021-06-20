@@ -13,24 +13,38 @@ import {
     ListItemText,
     ListItem,
     ListSubheader,
-    
-
+    FormControl,
+    Grid, 
+    Paper,
+    InputLabel,
+    Select,
+    Input,
+    Checkbox,
+    MenuItem
 } from "@material-ui/core";
-import strategyItemService from "../../services/StrategyItemService";
-import StrategyService from "../../services/Strategy.service";
+import strategyItemService from "../../services/StrategyItem.service";
+import CapabilityService from '../../services/Capability.service';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Grid, Paper, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
-import { Link } from 'react-router-dom'
-
-const styles =(makeStyles((theme)  => ({
+import { useParams } from 'react-router-dom';
+import _ from 'lodash';
+const useStyles = (makeStyles((theme)  => ({
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+        maxWidth: 300,
+        overflow: "scroll"
+    },
     paper: {
         padding: theme.spacing(2),
         display: 'flex',
         overflow: 'auto',
         flexDirection: 'column',
+<<<<<<< HEAD
         width: "100%",
+=======
+>>>>>>> BE--samenhang
     },
     fixedHeight: {
         height: "42rem",
@@ -48,19 +62,29 @@ const styles =(makeStyles((theme)  => ({
     }
 })));
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+
 function StrategyDetailView (props) {
-   
-    const[strategy,setSTrategy]=useState([]);
-    const[newStratItem,setNewStratItem]=useState([]);
-    const[newNameStratItem,setNewNameStratItem]=useState("");
-    const[strategyItem,setStrategyItem]=useState([""]);
+    const classes = useStyles();
+    const[strategyItems,setStrategyItems]=useState([]);
     const[openEdit,setOpenEdit]=useState(false);
     const[openDelete,setOpenDelete]=useState(false);
-    const[ID,setID]=useState("");
-    const[currentStratItem,setCurrentStratItem]=useState([]);
-    const[newName,setNewName]=useState("");
+    const[strategyItemId, setStrategyItemId]=useState("");
+    const[newStrategyItemName, setNewStrategyItemName]=useState("");
+    const [capabilities, setCapabilities] = useState([]);
+    const [chosenCapabilities, setChosenCapabilities] = useState([]);
     const[open,setOpen]=useState(false);
     const[dialogtext,setdialogtext]=useState("");
+<<<<<<< HEAD
     
 
   /**
@@ -90,15 +114,16 @@ function StrategyDetailView (props) {
      * Creatie van een nieuwe stragegyItem.
      */
    function createStratItem() {
+=======
+    const { envId, id } = useParams();
+>>>>>>> BE--samenhang
 
+    function createStrategyItem() {
         let text = "";
-        if(strategyItem !== '' ) {
-            let data = {"name": newNameStratItem};
-            
-            strategyItemService.create(data)
+        if(newStrategyItemName) {
+            strategyItemService.create(newStrategyItemName, id, chosenCapabilities)
                 .then(res => {
                     console.log(res);
-                    setNewNameStratItem(res.data.name)
                     getStrategyItems();
                 })
                 .catch(e => {
@@ -116,21 +141,22 @@ function StrategyDetailView (props) {
      * Wijzigt een stragegyItem en geeft de lijst met items opnieuw terug.
      */
     const editStrategyItem = () => {
-        let data = {"name": newNameStratItem};
-       
-        strategyItemService.update(ID, data)
+        strategyItemService.update(strategyItemId, newStrategyItemName, id, chosenCapabilities)
         .then(res => {
-            console.log(res.data,ID);
+            console.log(res.data);
             getStrategyItems();
-
             setOpenEdit(false);
+<<<<<<< HEAD
 
+=======
+>>>>>>> BE--samenhang
         })
         .catch(e => {
             console.log(e);
         });
     };
 
+<<<<<<< HEAD
     /**
      * Geeft alle strategyItems terug.
      */
@@ -154,6 +180,34 @@ function StrategyDetailView (props) {
         getStrategyItems();
 
     },[getStrategyItems])
+=======
+
+    const getStrategyItems = useCallback(() => {
+        strategyItemService.getAll(id)
+            .then(res => {
+                console.log(res.data.message);
+                console.table(res.data.data)
+                setStrategyItems(res.data.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }, [id])
+
+    const getCapabilities = useCallback(() => {
+        CapabilityService.getLinked(envId)
+            .then(res => {
+                console.log(res.data.message)
+                console.table(res.data.data)
+                setCapabilities(res.data.data)
+            })
+    }, [envId, setCapabilities]);
+
+    useEffect(()=>{
+        getStrategyItems();
+        getCapabilities();
+    },[getStrategyItems, getCapabilities])
+>>>>>>> BE--samenhang
 
     /**
      * Opent een popup box.
@@ -162,6 +216,7 @@ function StrategyDetailView (props) {
         setOpen(true);
     }
 
+<<<<<<< HEAD
     /**
      * Sluit een popup box.
      */
@@ -175,6 +230,15 @@ function StrategyDetailView (props) {
      const openDeleteDialog = (id) => {
          setOpenDelete(true);
          setID(id); 
+=======
+    function handleClose() {
+        setOpen(false);
+    }
+
+    const openDeleteDialog = (id) => {
+        setOpenDelete(true);
+        setStrategyItemId(id); 
+>>>>>>> BE--samenhang
     }
 
     /**
@@ -184,12 +248,17 @@ function StrategyDetailView (props) {
         setOpenDelete(false)
     }
 
+<<<<<<< HEAD
     /**
      * Verwijdert een strategyItem op basis van id.
      */
     function deleteStrategyItem()
     {
         strategyItemService.delete(ID)
+=======
+    function deleteStrategyItem() {
+        strategyItemService.delete(strategyItemId)
+>>>>>>> BE--samenhang
         .then(res => {
             console.log(res)
             getStrategyItems()
@@ -199,7 +268,7 @@ function StrategyDetailView (props) {
         })
         setOpenDelete(false);
     }
-    const { classes } = props;
+
     const deleteDialog = (
         <Dialog open={openDelete} onClose={() => {closeDeleteDialog()}} className={classes.dialog}>
             <DialogTitle>Are you sure you want to delete this strategy?</DialogTitle>
@@ -216,6 +285,7 @@ function StrategyDetailView (props) {
             </DialogActions>
         </Dialog>
     );
+<<<<<<< HEAD
 
     /**
      * Opent een edit popup box.
@@ -233,22 +303,80 @@ function StrategyDetailView (props) {
     const closeEditDialog = () => {
        setOpenEdit(false);
        setCurrentStratItem(null);
+=======
+
+    const openEditDialog = (strategyItem) => {
+        setStrategyItemId(strategyItem.id);
+        setNewStrategyItemName(strategyItem.name);
+        setChosenCapabilities(strategyItem.linkedCapabilities);
+        setOpenEdit(true);
+    };
+
+    const closeEditDialog = () => {
+        setOpenEdit(false);
+        getCapabilities();
+        setChosenCapabilities([]);
+>>>>>>> BE--samenhang
     }
 
+    const handleEditChange = (capabilities) => {
+
+        //make array of unique objects from input
+        let output = _.uniqWith(capabilities, _.isEqual)
+
+        //go through all the CURRENT capabilities IN THE OBJECT WE'RE EDITING
+        chosenCapabilities.forEach(cap => {
+            //left of and (&&): see if the current capability exists in the unique input
+            //right of and (&&): see if the non unique input contains the current capability more than once
+            //this results in any duplicates in the input being removed, unlinking the capability that was already in the strategy item
+            if(_.find(output, cap) !== undefined && capabilities.filter(x => _.isEqual(x, cap)).length > 1) {
+                _.remove(output, cap)
+            }
+        });
+
+        setChosenCapabilities(output)
+    }
     
     const editDialog = (
         <Dialog open={openEdit} onClose={() => {closeEditDialog()}} className={classes.dialog}>
-            <DialogTitle>Edit strategy</DialogTitle>
+            <DialogTitle>Edit strategy item</DialogTitle>
             <DialogContent>
-                <TextField
-                        label="Name"
-                        type="text"
-                        variant="filled"
-                        color="primary"
-                        defaultValue={currentStratItem === null ? "" : newName}
-                        onChange={(e) => setNewNameStratItem(e.target.value)}
-                                                       
-                    />
+                <Grid container spacing={2} direction="column">
+                    <Grid item>
+                        <TextField
+                            label="Name"
+                            type="text"
+                            variant="filled"
+                            color="primary"
+                            defaultValue={newStrategyItemName}
+                            onChange={(e) => setNewStrategyItemName(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item className={classes.formControl}>
+                        <FormControl>
+                            <InputLabel id="multiple-select-checkbox-label">Capabilities</InputLabel>
+                            <Select
+                                labelId="multiple-select-checkbox-label"
+                                id="multiple-select-checkbox"
+                                multiple
+                                value={chosenCapabilities}
+                                onChange={(e) => {handleEditChange(e.target.value)}}
+                                input={<Input/>}
+                                renderValue={selected => joinSelectedItemNames(selected)}
+                                MenuProps={MenuProps}
+                            >
+                                {capabilities.map((capability) => {
+                                return(
+                                    <MenuItem key={nanoid()} value={capability}>
+                                        <Checkbox checked={chosenCapabilities.map(function(cap) {return cap.id}).indexOf(capability.id) > -1}/>
+                                        <ListItemText primary={capability.name}/>
+                                    </MenuItem>
+                                )})}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+
             </DialogContent>
             <DialogActions>
                 <ButtonGroup>
@@ -258,6 +386,7 @@ function StrategyDetailView (props) {
             </DialogActions>
         </Dialog>
     );
+<<<<<<< HEAD
             
         return(
             
@@ -290,6 +419,38 @@ function StrategyDetailView (props) {
             </List>
             {editDialog}
             {deleteDialog}
+=======
+    
+    //joins all names of the linked capabilities for display in the select
+    const joinSelectedItemNames = (selected) => {
+        let output = []
+        selected.forEach(item => {
+            output.push(item.name);
+        })
+
+        return output.join(', ');
+    }
+
+    return(
+        <Container>
+            <Paper className={clsx(classes.paper, classes.fixedHeight)}>
+                <List>
+                    <ListSubheader className={classes.listSubHeader}>strategyItem list</ListSubheader>
+                    {strategyItems.map(strat => {
+                        return (
+                            <ListItem key={nanoid()}>
+                                <ListItemText>{strat.name}</ListItemText>
+                                <ButtonGroup>
+                                    <Button onClick={() => {openEditDialog(strat)}}>Edit</Button>
+                                    <Button onClick={() => {openDeleteDialog(strat.id)}}>Delete</Button>
+                                </ButtonGroup>
+                            </ListItem>
+                            );
+                        })}
+                </List>
+                {editDialog}
+                {deleteDialog}
+>>>>>>> BE--samenhang
             </Paper>
             <ButtonGroup className={classes.buttonGroup}>
                 <Button variant="contained" color="primary" onClick={handleOpen}>Add Strategy Item</Button>
@@ -297,32 +458,61 @@ function StrategyDetailView (props) {
             <Dialog onClose={handleClose} open={open} className={classes.dialog}>
                 <DialogTitle>Create new Strategy Item</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>{dialogtext}</DialogContentText>
-                    <TextField
-                        label="Name"
-                        type="text"
-                        variant="filled"
-                        color="primary"
-                        required
-                        onChange={e => setNewNameStratItem(e.target.value)}
-                    />
-                    
-                    
-                      
-                    
+                    <Grid container spacing={2} direction="column">
+                        <Grid item>
+                            <DialogContentText>{dialogtext}</DialogContentText>
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="Name"
+                                type="text"
+                                variant="filled"
+                                color="primary"
+                                required
+                                onChange={e => setNewStrategyItemName(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item className={classes.formControl}>
+                            <FormControl>
+                                <InputLabel id="multiple-select-checkbox-label">Capabilities</InputLabel>
+                                <Select
+                                    labelId="multiple-select-checkbox-label"
+                                    id="multiple-select-checkbox"
+                                    multiple
+                                    value={chosenCapabilities}
+                                    onChange={(e) => {setChosenCapabilities(e.target.value)}}
+                                    input={<Input/>}
+                                    renderValue={selected => joinSelectedItemNames(selected)}
+                                    MenuProps={MenuProps}
+                                >
+                                    {capabilities.map((capability) => {
+                                    return(
+                                        <MenuItem key={nanoid()} value={capability}>
+                                            <Checkbox checked={chosenCapabilities.map(function(cap) {return cap.id}).indexOf(capability.id) > -1}/>
+                                            <ListItemText primary={capability.name}/>
+                                        </MenuItem>
+                                    )})}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
                 </DialogContent>
                 <DialogActions>
                     <ButtonGroup>
-                        <Button variant="text" color="primary" onClick={(e)=>changeStateStratItem(e)}>Create</Button>
+                        <Button variant="text" color="primary" onClick={() => {createStrategyItem()}}>Create</Button>
                         <Button variant="text" color="primary" onClick={handleClose}>Cancel</Button>
                     </ButtonGroup>
                 </DialogActions>
             </Dialog>
         </Container>
+<<<<<<< HEAD
         
         )
         
     }
+=======
+    )
+}
+>>>>>>> BE--samenhang
 
- 
-export default withStyles(styles)(StrategyDetailView);
+export default StrategyDetailView;

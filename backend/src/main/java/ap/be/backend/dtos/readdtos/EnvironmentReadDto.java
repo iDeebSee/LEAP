@@ -1,7 +1,5 @@
 package ap.be.backend.dtos.readdtos;
 
-import java.util.List;
-
 import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
@@ -18,9 +16,4 @@ public class EnvironmentReadDto {
 
     @NotBlank
     private String name;
-
-    @NotBlank
-    private String description;
-
-    private List<String> capabityList;
 }

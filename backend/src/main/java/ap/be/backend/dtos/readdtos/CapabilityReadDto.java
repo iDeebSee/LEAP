@@ -27,4 +27,7 @@ public class CapabilityReadDto {
     private int level;
 
     private String parent;
+
+    @NotBlank
+    private String environment;
 }

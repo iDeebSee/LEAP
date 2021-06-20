@@ -1,108 +1,99 @@
 package ap.be.backend.controllers;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ap.be.backend.dtos.createdtos.StrategyCreateDto;
+import ap.be.backend.dtos.editdtos.StrategyEditDto;
+import ap.be.backend.dtos.readdtos.StrategyReadDto;
+import ap.be.backend.models.Environment;
 import ap.be.backend.models.Strategy;
+import ap.be.backend.payload.response.MessageResponse;
+import ap.be.backend.repositories.EnvironmentRepository;
 import ap.be.backend.repositories.StrategyRepository;
+import ap.be.backend.services.mappers.StrategyMapper;
 
 @RestController
+@RequestMapping("/strategy")
 public class StrategyController {
 
     @Autowired
     private StrategyRepository strategyRepository;
 
-    
-    /** 
-     * Itereert over elke strategie in de repository.
-     * @return geeft alle strategiën terug.
-     */
-    @GetMapping("/strategy")
-    public Iterable<Strategy> readStrategies() {
-        return strategyRepository.findAll();
+    @Autowired
+    private EnvironmentRepository environmentRepository;
+
+    @Autowired 
+    private StrategyMapper strategyMapper;
+
+    @GetMapping("/strategies/{envId}")
+    public ResponseEntity<MessageResponse> readStrategies(@PathVariable("envId") String envId) {
+        try {
+            List<StrategyReadDto> strategies = new ArrayList<StrategyReadDto>();
+            Environment environment = environmentRepository.findById(envId).get();
+            if(strategyRepository.existsByEnvironment(environment)) {
+                strategyRepository.findAllByEnvironment(environment).get().forEach(strategy -> {
+                    strategies.add(strategyMapper.convertToReadDto(strategy));
+                });
+            }
+            return ResponseEntity.ok(new MessageResponse("Successfully got all strategies!", strategies));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to get strategies"));
+        }
     }
 
-    
-    /** 
-     * @param id id van de strategie die opgehaalt moet worden. 
-     * @return geeft een specifieke strategie terug.
-     */
-    @GetMapping("/strategy/{id}")
-    public Strategy readStrategy(@PathVariable("id") String id) {
-        return strategyRepository.findById(id).orElseThrow(RuntimeException::new);
+    @GetMapping("/{id}")
+    public ResponseEntity<MessageResponse> readStrategy(@PathVariable("id") String id) {
+        if(strategyRepository.existsById(id)) {
+            StrategyReadDto strategy = strategyMapper.convertToReadDto(strategyRepository.findById(id).get());
+            return ResponseEntity.ok(new MessageResponse("Successfully found strategy", strategy));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find strategy with that ID"));
+        }
     }
 
-    
-    /** 
-     * Creatie van een nieuwe strategie.
-     * @param data ingevulde strategie parameters.
-     * @return slaat de nieuwe strategie op in de repository.
-     */
-    @PostMapping("/strategy")
-    public Strategy createStrategy(@RequestBody LinkedHashMap<Object, Object> data) {
-        Strategy newStrategy = new Strategy();
-
-        newStrategy.setName(data.get("name").toString());
-        return strategyRepository.save(newStrategy);
+    @PostMapping("/")
+    public ResponseEntity<MessageResponse> createStrategy(@Valid @RequestBody StrategyCreateDto strategyCreateDto) {
+        try {
+            Strategy newStrategy = strategyMapper.convertFromCreateDto(strategyCreateDto);
+            strategyRepository.save(newStrategy);
+            return ResponseEntity.ok(new MessageResponse("Successfully created strategy"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to create strategy"));
+        }
     }
 
-    
-    /** 
-     * wijzigt een specifieke strategie op basis van de id.
-     * @param newStrategy nieuwe strategie parameters.
-     * @return Vervangt de oude parameters door de nieuwe.
-     */
-    @PutMapping("/strategy/{id}")
-    public Strategy updateStrategy(@PathVariable("id") String id, @RequestBody Strategy newStrategy) {
-        Strategy strategy = strategyRepository.findById(id).orElseThrow(RuntimeException::new);
-        if(!newStrategy.getName().isBlank())
-            strategy.setName(newStrategy.getName());
-        return strategyRepository.save(strategy);
+    @PutMapping("/")
+    public ResponseEntity<MessageResponse> updStrategy(@Valid @RequestBody StrategyEditDto strategyEditDto) {
+        if(strategyRepository.existsById(strategyEditDto.getId())) {
+            Strategy updatedStrategy = strategyMapper.convertFromEditDto(strategyEditDto);
+            strategyRepository.save(updatedStrategy);
+            return ResponseEntity.ok(new MessageResponse("Successfully updated strategy"));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find strategy with that ID"));
+        }
     }
 
-    
-    /** 
-     * Verwijdert een specifieke strategy op basis van id.
-     * @param id id van de strategie die verwijdert moet worden.
-     */
-    @DeleteMapping("/strategy/{id}")
-    public void deleteStrategy(@PathVariable("id") String id) {
-
-        strategyRepository.deleteById(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deleteStrategy(@PathVariable("id") String id) {
+        if(strategyRepository.existsById(id)) {
+            strategyRepository.deleteById(id);
+            return ResponseEntity.ok(new MessageResponse("Successfully deleted strategy"));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to find strategy with that ID"));
+        }
     }
-
-    /**
-     * Zoekt naar een specifieke strategyItem die gelinkt is aan een strategy.
-     * @param id gezochte strategyItem
-     * @return de gezochte strategyItem.
-     */
-    @GetMapping("/strategy/{id}")
-    public Strategy readStrategyItemList(@PathVariable("id") String id) {
-        return strategyRepository.findById(id).orElseThrow(RuntimeException::new);
-    }
-
-    /**
-     * Wijzigt een bestaande strategyItem.
-     * @param id de id van de strategyItem die gewijzigd moet worden.
-     * @param newStrategy nieuwe parameters die de oude moeten vervangen.
-     * @return de nieuwe parameters worden opgeslagen.
-     */
-    @PutMapping("/strategy/{id}")
-    public Strategy updateStrategy(@PathVariable("id") String id, @RequestBody Strategy newStrategy) {
-        Strategy strategy = strategyRepository.findById(id).orElseThrow(RuntimeException::new);
-        if(!newStrategy.getName().isBlank())
-            strategy.setName(newStrategy.getName());
-        return strategyRepository.save(strategy);
-    }
-
-
 }

@@ -12,10 +12,16 @@ import lombok.ToString;
 public class CapabilityEditDto {
     
     @NotBlank
+    private String id;
+
+    @NotBlank
     private String name;
 
     @NotBlank
     private String description;
 
     private String parent;
+
+    @NotBlank
+    private String environment;
 }

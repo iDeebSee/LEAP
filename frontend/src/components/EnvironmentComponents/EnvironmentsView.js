@@ -11,8 +11,8 @@ import {
 } from "@material-ui/core";
 import React, { Component } from "react";
 import { withStyles } from '@material-ui/core/styles';
-import EnvironmentList from '../components/EnvironmentList';
-import EnvironmentService from "../services/Environment.Service";
+import EnvironmentList from './EnvironmentList';
+import EnvironmentService from "../../services/Environment.Service";
 
 const styles = theme => ({
     root: {
@@ -52,6 +52,7 @@ class EnvirenmentView extends Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.createEnvironment = this.createEnvironment.bind(this);
+        this.setEnvId = this.setEnvId.bind(this);
 
         this.state = {
             environments:[],
@@ -96,13 +97,13 @@ class EnvirenmentView extends Component {
      */
     createEnvironment() {
         let text = "";
-        if(this.state.newEnvironmentName !== '' && this.state.newEnvironmentDescription !== '') {
-            let data = {name: this.state.newEnvironmentName, description: this.state.newEnvironmentDescription};
+        if(this.state.newEnvironmentName !== '') {
+            let data = {name: this.state.newEnvironmentName};
             
             EnvironmentService.create(data)
                 .then(res => {
                     console.log(res);
-                    this.setState({newEnvironmentName: '', newEnvironmentDescription: ''})
+                    this.setState({newEnvironmentName: ''})
                     this.getenvironments();
                 })
                 .catch(e => {
@@ -128,12 +129,15 @@ class EnvirenmentView extends Component {
         this.setState({open: false});
     }
 
+    setEnvId(id) {
+        this.props.setEnvId(id)
+    }
 
     render() {
         const { classes } = this.props;
         return(
             <Container>
-                <EnvironmentList data={this.state.environments} getenvironments={this.getenvironments} onCardDelete={this.onCardDelete}/>
+                <EnvironmentList data={this.state.environments} getenvironments={this.getenvironments} onCardDelete={this.onCardDelete} setEnvId={this.setEnvId}/>
                 <ButtonGroup className={classes.buttonGroup}>
                     <Button variant="contained" color="primary" onClick={this.handleOpen}>Add environment</Button>
                 </ButtonGroup>
@@ -149,21 +153,6 @@ class EnvirenmentView extends Component {
                             required
                             onChange={e => this.setState({newEnvironmentName: e.target.value})}
                         />
-                        <TextField
-                            id="outlined-multiline-static"
-                            label="Description"
-                            type="text"
-                            variant="filled"
-                            color="primary"
-                            required
-                            multiline
-                            rowsMax={6}
-                            rows={6}
-                            onChange={e => this.setState({newEnvironmentDescription: e.target.value})}
-                        />
-                        
-                          
-                        
                     </DialogContent>
                     <DialogActions>
                         <ButtonGroup>

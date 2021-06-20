@@ -99,8 +99,7 @@ const StrategyList = (props) => {
     * Wijzigt een strategy.
     */
     const editStrategy = () => {
-        let data = {"name": newName};
-        StrategyService.update(id, data)
+        StrategyService.update(props.envId, id, newName)
         .then(res => {
             console.log(res.data);
             props.getStrategies();
@@ -161,7 +160,7 @@ const StrategyList = (props) => {
                         <ListItem key={nanoid()}>
                             <ListItemText>{strat.name}</ListItemText>
                             <ButtonGroup>
-                                <Button component={Link} to={`/strategy/${strat.id}`}>View</Button>
+                                <Button component={Link} to={`/strategy/${props.envId}/${strat.id}`}>View</Button>
                                 <Button onClick={() => {openEditDialog(strat)}}>Edit</Button>
                                 <Button onClick={() => {openDeleteDialog(strat.id)}}>Delete</Button>
                             </ButtonGroup>

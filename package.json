@@ -9,6 +9,7 @@
     "react-validation": "^3.0.7"
   },
   "devDependencies": {
-    "jsdoc": "^3.6.7"
+    "jsdoc": "^3.6.7",
+    "eslint-plugin-react-hooks": "^4.2.0"
   }
 }

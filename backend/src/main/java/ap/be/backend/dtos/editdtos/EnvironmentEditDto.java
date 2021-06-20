@@ -13,7 +13,4 @@ public class EnvironmentEditDto {
     
     @NotBlank
     private String name;
-
-    @NotBlank
-    private String description;
 }

@@ -25,9 +25,11 @@ class CapabilityDetailView extends Component {
         super(props);
 
         this.getCapability = this.getCapability.bind(this);
+        this.getCapabilityParentName = this.getCapabilityParentName.bind(this);
 
         this.state = {
             capability: {},
+            parent: ''
         };
     }
 
@@ -54,14 +56,25 @@ class CapabilityDetailView extends Component {
             });
     }
 
+    getCapabilityParentName(id) {
+        CapabilityService.get(id)
+            .then(res => {
+                this.setState({parent: res.data.data.name});
+            })
+            .catch(e => {
+                console.error(e);
+            })
+    }
+
     render() {
         const { classes } = this.props;
 
         let parent = null;
         if(this.state.capability.parent !== null && this.state.capability.parent !== undefined) {
+            this.getCapabilityParentName(this.state.capability.parent)
             parent =
             <Grid item>
-                <Typography>Parent: {this.state.capability.parent.name}</Typography>
+                <Typography>Parent: {this.state.parent}</Typography>
             </Grid>
         }
         return(
@@ -73,7 +86,6 @@ class CapabilityDetailView extends Component {
                     </Grid>
                     {parent}
                 </Grid>
-                
             </Paper>
         )
     }

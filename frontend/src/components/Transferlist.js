@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     customList: {
         width: 200,
         height: 230,
-        
+        overflow:'scroll',
     }
 }));
 /**
@@ -31,10 +31,7 @@ function intersection(a, b) {
     return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-/**
- * Dient om meerdere wijzigen tegelijkertijd aan te kunnen brengen.
- */
-export default function TransferList({leftItems, setLeft, rightItems, setRight}) {
+export default function TransferList({leftItems, setLeft, leftTitle, rightItems, setRight, rightTitle}) {
     const classes = useStyles(), 
     [checked, setChecked] = useState([]);
 
@@ -128,7 +125,7 @@ export default function TransferList({leftItems, setLeft, rightItems, setRight})
 
     return (
         <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
-                    <Grid item><ListPanel items={left} title={'Roles'} align={"left"}/></Grid>
+                    <Grid item><ListPanel items={left} title={leftTitle} align={"left"}/></Grid>
                     <Grid item>
                         <Grid container direction="column" alignItems="center">
                             <Button
@@ -173,7 +170,7 @@ export default function TransferList({leftItems, setLeft, rightItems, setRight})
                             </Button>
                         </Grid>
                     </Grid>
-                    <Grid item><ListPanel items={right}  title={'Chosen roles'} align={"right"}/></Grid>
+                    <Grid item><ListPanel items={right}  title={rightTitle} align={"right"}/></Grid>
                 </Grid>
     );
 }

@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ap.be.backend.BackendApplication;
 import ap.be.backend.models.Capability;
+import ap.be.backend.models.Environment;
 import ap.be.backend.repositories.CapabilityRepository;
 
 @RunWith(SpringRunner.class)
@@ -23,11 +24,14 @@ public class CapabilityIntegrationTest {
 
     @Test
     public void capabilityTest(){
-        Capability capability = new Capability("testcap", "testdesc", null);
+        Environment env = new Environment();
+        env.setId("1");
+        env.setName("env1");
+        Capability capability = new Capability("testcap", "testdesc", null, env);
 
 
         repository.save(capability);
-        List<?> queryResult = repository.findAllByParent(null);
+        List<?> queryResult = repository.findAllByParent(null).get();
         assertFalse(queryResult.isEmpty());
         assertNotNull(queryResult.get(0));
     }

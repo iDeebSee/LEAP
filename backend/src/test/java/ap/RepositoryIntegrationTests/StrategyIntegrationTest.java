@@ -32,6 +32,5 @@ public class StrategyIntegrationTest {
         Optional<?> queryResult = strategyRepository.findById("1");
         assertFalse(queryResult.isEmpty());
         assertNotNull(queryResult.get());
-   
     }
 }

@@ -77,10 +77,11 @@ class StrategiesView extends Component {
      * Geeft alle strategiën terug.
      */
     getStrategies() {
-        StrategyService.getAll()
+        StrategyService.getAll(this.props.match.params.envId)
             .then(res => {
-                this.setState({strategies: res.data});
-                console.log("incoming strategies", res.data);
+                console.log(res.data.message);
+                console.table(res.data.data);
+                this.setState({strategies: res.data.data});
             })
             .catch(e => {
                 console.log(e);
@@ -104,9 +105,7 @@ class StrategiesView extends Component {
     createStrategy() {
         let text = "";
         if(this.state.newStrategyName !== '') {
-            let data = {"name": this.state.newStrategyName};
-
-            StrategyService.create(data)
+            StrategyService.create(this.props.match.params.envId, this.state.newStrategyName)
                 .then(res => {
                     console.log(res);
                     this.setState({newStrategyName: ''})
@@ -137,7 +136,7 @@ class StrategiesView extends Component {
         const { classes } = this.props;
         return(
             <Container>
-                <StrategyList data={this.state.strategies} getStrategies={this.getStrategies} onCardDelete={this.onCardDelete}/>
+                <StrategyList data={this.state.strategies} getStrategies={this.getStrategies} onCardDelete={this.onCardDelete} envId={this.props.match.params.envId}/>
                 <ButtonGroup className={classes.buttonGroup}>
                     <Button variant="contained" color="primary" onClick={this.handleOpen}>Add strategy</Button>
                 </ButtonGroup>
