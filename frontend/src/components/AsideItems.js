@@ -52,13 +52,13 @@ export const WorkListItems = (envId) => (
             </ListItemIcon>
             <ListItemText primary="Strategies" />
         </ListItem>
-        <ListItem button component={Link} to="/applications">
+        <ListItem button component={Link} to={`/applications/${envId}`}>
             <ListItemIcon>
                 <Assessment />
             </ListItemIcon>
             <ListItemText primary="Applications" />
         </ListItem>
-        <ListItem button component={Link} to="/resources">
+        <ListItem button component={Link} to={`/resources/${envId}`}>
             <ListItemIcon>
                 <SettingsIcon />
             </ListItemIcon>

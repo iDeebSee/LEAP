@@ -110,7 +110,7 @@ function Row(props) {
 
     const menuItems = (
         <>
-            <MenuItem ><Link to={"/applications/" + row.id}><EditIcon></EditIcon></Link></MenuItem>
+            <MenuItem ><Link to={"/applications/application/" + row.id}><EditIcon></EditIcon></Link></MenuItem>
             <MenuItem onClick={() => openDeleteDialog()}><DeleteIcon></DeleteIcon></MenuItem>
         </>
     );
@@ -207,15 +207,20 @@ export default function SimpleTable() {
     const classes = useStyles();
     const [map, setMap] = useState(new Map());
     const [application, setApplication] = React.useState([]);
+    const pathname = window.location.pathname;
+    const urlArray = pathname.split('/');
+    const envId = urlArray[2];
+    console.log(envId);
 
     /**
      * Geeft alle aplicaties terug.
      */
     function getApplications() {
-        ApplicationsService.getAll().then(res => {
-            setApplication(res.data);
-            console.log("res data", res.data);
+        ApplicationsService.getAll(envId).then(res => {
+            setApplication(res.data.data);
+            console.log("res data", res.data.data);
             console.log("app state ", application);
+            console.log("envid", envId);
             application.map(item => (console.log(item)));
 
         }).catch(err => {
@@ -253,6 +258,7 @@ export default function SimpleTable() {
     function getValues(values) {
 
         console.log("values", values);
+        console.log("envid", envId);
         ApplicationsService.create(values)
             .then(res => {
                 console.log(res);
@@ -302,16 +308,11 @@ export default function SimpleTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {/* {[...map.keys()].map(k => (
-
-                        <Row key={k.name} row={k} />
-                    ))} */}
-                    {[...application].map(app => (
+                    {application.map(app => (
                         <Row key={app.id} row={app} delete={deleteApplication} />
                     ))}
                 </TableBody>
             </Table>
-
         </TableContainer>
     );
 }

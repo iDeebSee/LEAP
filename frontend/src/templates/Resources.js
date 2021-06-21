@@ -64,15 +64,18 @@ export default function Resources() {
         }
     });
 
+     const pathname = window.location.pathname;
+    const urlArray = pathname.split('/');
+    const envId = urlArray[2];
     const classes = useStyles();
 
     /**
      * Wordt gebruikt om alle resources op te halen.
      */
     const getAllResources = () => {
-        ResourcesService.getAll().then(res => {
+        ResourcesService.getAll(envId).then(res => {
             console.log(res.data);
-            setResources(res.data);
+            setResources(res.data.data);
 
         });
     }
@@ -252,7 +255,6 @@ export default function Resources() {
                                 <TableBody >
                                     {resources.map((resource) => (
                                         <StyledTableRow key={resource.name}>
-
                                             <StyledTableCell component="th" scope="row">
                                                 {resource.name}
                                             </StyledTableCell>
