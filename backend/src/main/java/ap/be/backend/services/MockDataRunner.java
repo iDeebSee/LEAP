@@ -206,9 +206,9 @@ public class MockDataRunner implements CommandLineRunner {
         
         
         
-        BussinesProces bp1= new BussinesProces("zt","u mama zakaria",env1);
-        BussinesProces bp2= new BussinesProces("test2","zakaria is een zemmer",env2);
-        BussinesProces bp3= new BussinesProces("test3","zakaria pokemonhoofd",env3);
+        BussinesProces bp1= new BussinesProces("zt","test test ",env1);
+        BussinesProces bp2= new BussinesProces("test2","test est",env2);
+        BussinesProces bp3= new BussinesProces("test3","test test",env3);
 
         bussinesProcesRepository.save(bp1);
         bussinesProcesRepository.save(bp2);
