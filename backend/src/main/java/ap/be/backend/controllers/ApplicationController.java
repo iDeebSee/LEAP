@@ -31,7 +31,7 @@ public class ApplicationController {
     @Autowired
     private ApplicationMapper applicationMapper;
 
-    @GetMapping("/{envId}")
+    @GetMapping("applications/{envId}")
 //    public Iterable<Application> readApplication() {
 //        return applicationRepository.findAll();
 //    }
@@ -55,7 +55,7 @@ public class ApplicationController {
         return TIMEValue.values();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("application/{id}")
 //    public Application readApplication(@PathVariable("id") String id) {
 //        return applicationRepository.findById(id).orElseThrow(RuntimeException::new);
 //    }
@@ -68,7 +68,7 @@ public class ApplicationController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("application/")
 //    public Application createCapability(@RequestBody Application application) {
 //        return applicationRepository.save(application);
 //    }
@@ -82,7 +82,7 @@ public class ApplicationController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("application/{id}")
 //    public Application updateCapability(@PathVariable("id") String id, @RequestBody Application newApplication) {
 //        Application application = applicationRepository.findById(id).orElseThrow(RuntimeException::new);
 //        application.setName(newApplication.getName());
@@ -124,7 +124,7 @@ public class ApplicationController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("application/{id}")
 //    public void deleteCapability(@PathVariable("id") String id) {
 //        applicationRepository.deleteById(id);
 //    }

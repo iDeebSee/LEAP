@@ -1,24 +1,24 @@
 import http from "./https-common";
 
 class ResourcesService {
-    getAll() {
-        return http.get("/resources/");
+    getAll(envId) {
+        return http.get(`/resources/resources/${envId}`);
     }
 
     get(id) {
-        return http.get(`/resources/${id}`);
+        return http.get(`/resources/resource/${id}`);
     }
 
-    create(data) {
-        return http.post("/resources/", data);
+    create(envId, data, linkedCapabilities) {
+        return http.post("/resources/resource", envId, data, linkedCapabilities);
     }
 
-    update(id, data) {
-        return http.put(`/resources/${id}`, data);
+    update(envId, id, data, linkedCapabilities) {
+        return http.put(`/resources/resource/${id}`,envId, data, linkedCapabilities);
     }
 
     delete(id) {
-        return http.delete(`/resources/${id}`);
+        return http.delete(`/resources/resource/${id}`);
     }
 }
 

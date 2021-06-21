@@ -1,8 +1,8 @@
 import http from "./https-common";
 
 class ApplicationsService {
-    getAll() {
-        return http.get("/applications/");
+    getAll(envId) {
+        return http.get(`/applications/applications/${envId}`);
     }
 
     getTimeValues(){
@@ -10,24 +10,21 @@ class ApplicationsService {
     }
 
     get(id) {
-        return http.get(`/applications/${id}`);
+        return http.get(`/applications/application/${id}`);
     }
 
-    create(data) {
-        return http.post("/applications/", data);
+    create(envId, data, linkedCapabilities) {
+        return http.post("/applications/application", envId, data, linkedCapabilities);
     }
 
-    update(id, data) {
-        return http.put(`/applications/${id}`, data);
+    update( id, data) {
+        return http.put(`/applications/application/${id}`, data);
     }
 
     delete(id) {
-        return http.delete(`/applications/${id}`);
+        return http.delete(`/applications/application/${id}`);
     }
 
-    deleteAll() {
-        return http.delete("/applications/")
-    }
 }
 
 export default new ApplicationsService();

@@ -1,5 +1,6 @@
 
 package ap.be.backend.controllers;
+
 import ap.be.backend.dtos.createdtos.ResourceCreateDto;
 
 import ap.be.backend.dtos.editdtos.ResourceEditDto;
@@ -35,9 +36,9 @@ public class ResourceController {
     @Autowired
     private ResourceMapper resourceMapper;
 
-    @GetMapping("/{envId}/")
+    @GetMapping("/resources/{envId}")
     // public Iterable<Resource> readResources() {
-    //     return resourcesRepository.findAll();
+    // return resourcesRepository.findAll();
     // }
     public ResponseEntity<MessageResponse> readResources(@PathVariable("envId") String envId) {
         try {
@@ -54,12 +55,12 @@ public class ResourceController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/resource/{id}")
     // public Resource readResources(@PathVariable("id") String id) {
-    //     return resourcesRepository.findById(id).orElseThrow(RuntimeException::new);
+    // return resourcesRepository.findById(id).orElseThrow(RuntimeException::new);
     // }
     public ResponseEntity<MessageResponse> readResource(@PathVariable("id") String id) {
-        if(resourceRepository.existsById(id)) {
+        if (resourceRepository.existsById(id)) {
             ResourceReadDto resource = resourceMapper.convertToReadDto(resourceRepository.findById(id).get());
             return ResponseEntity.ok(new MessageResponse("Successfully found resource", resource));
         } else {
@@ -67,10 +68,10 @@ public class ResourceController {
         }
     }
 
-    @PostMapping("/")
-//    public Resource createCapability(@RequestBody Resource resources) {
-//        return resourceRepository.save(resources);
-//    }
+    @PostMapping("/resource")
+    // public Resource createCapability(@RequestBody Resource resources) {
+    // return resourceRepository.save(resources);
+    // }
     public ResponseEntity<MessageResponse> createResource(@Valid @RequestBody ResourceCreateDto resourceCreateDto) {
         try {
             Resource newResource = resourceMapper.convertFromCreateDto(resourceCreateDto);
@@ -81,15 +82,17 @@ public class ResourceController {
         }
     }
 
-    @PutMapping("/")
-//    public Resource updateCapability(@PathVariable("id") String id, @RequestBody Resource newResources) {
-//        Resource resources = resourceRepository.findById(id).orElseThrow(RuntimeException::new);
-//        resources.setName(newResources.getName());
-//        resources.setDescription(newResources.getDescription());
-//        return resourceRepository.save(resources);
-//    }
+    @PutMapping("/resource")
+    // public Resource updateCapability(@PathVariable("id") String id, @RequestBody
+    // Resource newResources) {
+    // Resource resources =
+    // resourceRepository.findById(id).orElseThrow(RuntimeException::new);
+    // resources.setName(newResources.getName());
+    // resources.setDescription(newResources.getDescription());
+    // return resourceRepository.save(resources);
+    // }
     public ResponseEntity<MessageResponse> updateResource(@Valid @RequestBody ResourceEditDto resourceEditDto) {
-        if(resourceRepository.existsById(resourceEditDto.getId())) {
+        if (resourceRepository.existsById(resourceEditDto.getId())) {
             Resource updatedResource = resourceMapper.convertFromEditDto(resourceEditDto);
             resourceRepository.save(updatedResource);
             return ResponseEntity.ok(new MessageResponse("Successfully updated resource"));
@@ -98,12 +101,12 @@ public class ResourceController {
         }
     }
 
-    @DeleteMapping("/{id}")
-//    public void deleteCapability(@PathVariable("id") String id) {
-//        resourceRepository.deleteById(id);
-//    }
+    @DeleteMapping("/resource/{id}")
+    // public void deleteCapability(@PathVariable("id") String id) {
+    // resourceRepository.deleteById(id);
+    // }
     public ResponseEntity<MessageResponse> deleteResource(@PathVariable("id") String id) {
-        if(resourceRepository.existsById(id)) {
+        if (resourceRepository.existsById(id)) {
             resourceRepository.deleteById(id);
             return ResponseEntity.ok(new MessageResponse("Successfully deleted resource"));
         } else {

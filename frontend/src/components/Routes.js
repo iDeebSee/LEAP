@@ -38,7 +38,7 @@ export default function Routes(props) {
             <Route exact path="/application/:envId/:id" component={ApplicationEdit} />
             <Route exact path="/strategies/:envId" component={StrategiesView} />
             <Route exact path="/strategy/:envId/:id" component={StrategyDetailView} />
-            <Route exact path="/resources/" component={Resources} />
+            <Route exact path="/resources/:envId" component={Resources} />
             <Route exact path="/businessprocess/" component={BussinesProces} />
             <AdminRoute path="/admin" component={Admin} />
             <Route path="*" render={() => <Redirect to={{ pathname: "/home" }} />} />
