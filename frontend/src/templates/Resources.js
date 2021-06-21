@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import ResourcesService from '../services/ResourcesService';
+import CapabilityService from '../services/Capability.service';
+import _ from 'lodash';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import {
     Table
@@ -16,7 +18,16 @@ import {
     , DialogTitle
     , DialogContent
     , DialogContentText
-    , DialogActions, ButtonGroup, Button, TextField
+    , DialogActions
+    , ButtonGroup
+    , Button
+    , TextField
+    , FormControl
+    , InputLabel
+    , Select
+    , ListItemText
+    , Checkbox
+    , Input
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -32,6 +43,8 @@ export default function Resources() {
     const [resourceID, setResourceID] = useState('');
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [chosenCapabilities, setChosenCapabilities] = useState([]);
+    const [capabilities, setCapabilities] = useState([]);
 
     const StyledTableCell = withStyles((theme) => ({
         head: {
@@ -64,10 +77,31 @@ export default function Resources() {
         }
     });
 
-     const pathname = window.location.pathname;
+
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+            },
+        },
+    };
+
+    const pathname = window.location.pathname;
     const urlArray = pathname.split('/');
     const envId = urlArray[2];
     const classes = useStyles();
+
+    const getCapabilities = useCallback(() => {
+        CapabilityService.getLinked(envId)
+            .then(res => {
+                console.log(res.data.message)
+                console.table(res.data.data)
+                setCapabilities(res.data.data)
+            })
+    }, [envId, setCapabilities]);
 
     /**
      * Wordt gebruikt om alle resources op te halen.
@@ -151,7 +185,7 @@ export default function Resources() {
     const createResource = () => {
         const data = { name, description }
         console.log(data);
-        ResourcesService.create(data).then(() => {
+        ResourcesService.create(envId, data, chosenCapabilities).then(() => {
             getAllResources();
         })
         closeCreateDialog();
@@ -168,6 +202,33 @@ export default function Resources() {
             closeEditDialog();
         });
         console.log("data in edit resource", data);
+    }
+
+    const handleEditChange = (capabilities) => {
+
+        //make array of unique objects from input
+        let output = _.uniqWith(capabilities, _.isEqual)
+
+        //go through all the CURRENT capabilities IN THE OBJECT WE'RE EDITING
+        chosenCapabilities.forEach(cap => {
+            //left of and (&&): see if the current capability exists in the unique input
+            //right of and (&&): see if the non unique input contains the current capability more than once
+            //this results in any duplicates in the input being removed, unlinking the capability that was already in the strategy item
+            if (_.find(output, cap) !== undefined && capabilities.filter(x => _.isEqual(x, cap)).length > 1) {
+                _.remove(output, cap)
+            }
+        });
+
+        setChosenCapabilities(output)
+    }
+
+    const joinSelectedItemNames = (selected) => {
+        let output = []
+        selected.forEach(item => {
+            output.push(item.name);
+        })
+
+        return output.join(', ');
     }
 
     console.log("name and desc in class", name, description);
@@ -200,8 +261,33 @@ export default function Resources() {
                         <TextField style={{ padding: '10px', width: '80%', margin: 'auto', }} id="standard-basic" label="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
                         <TextField style={{ padding: '10px', width: '80%', margin: 'auto', }} multiline label="description" type="text" value={description} rows={4} onChange={(e) => setDescription(e.target.value)} />
                     </Grid>
+                    <FormControl>
+                        <InputLabel id="multiple-select-checkbox-label">Capabilities</InputLabel>
+                        <Select
+                            labelId="multiple-select-checkbox-label"
+                            id="multiple-select-checkbox"
+                            multiple
+                            value={chosenCapabilities}
+                            onChange={(e) => { handleEditChange(e.target.value) }}
+                            input={<Input />}
+                            renderValue={selected => joinSelectedItemNames(selected)}
+                            MenuProps={MenuProps}
+                        >
+                            {capabilities.map((capability) => {
+                                return (
+                                    <MenuItem key={capability.id} value={capability}>
+                                        <Checkbox checked={chosenCapabilities.map(function (cap) { return cap.id }).indexOf(capability.id) > -1} />
+                                        <ListItemText primary={capability.name} />
+                                    </MenuItem>
+                                )
+                            })}
+                        </Select>
+                    </FormControl>
                 </DialogContent>
             </DialogContentText>
+
+
+
 
             <DialogActions>
                 <ButtonGroup>
@@ -236,6 +322,10 @@ export default function Resources() {
         getAllResources();
     }, []);
 
+    useEffect(() => {
+        getAllResources();
+        getCapabilities();
+    }, [getAllResources, getCapabilities])
 
 
     return (
